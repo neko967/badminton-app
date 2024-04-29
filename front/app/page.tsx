@@ -19,18 +19,10 @@ export default function Home() {
 
   const fetchData = useCallback(async () => {
     if (session) {
-      await fetch(API_URL, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: session.user?.email,
-        }),
-      }).then((res) => res.json())
-        .then((data) => {
-          setMembers(data);
-        });
+      const query = session.user?.email;
+      const response = await fetch (`${API_URL}?${query}`);
+      const data = await response.json();
+      setMembers(data);
     }
   }, [session]);
 
