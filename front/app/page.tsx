@@ -2,22 +2,24 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-interface Task {
+interface Member {
   id: number;
-  title: string;
-  description: string;
+  name: string;
+  total_game: number;
+  win_game: number;
+  strength: number;
 }
 
 export default function Home() {
-  const [tasks, setTasks] = useState([] as Task[]);
-  const [task, setTask] = useState({} as Task);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/tasks`;
+  const [members, setMembers] = useState([] as Member[]);
+  const [member, setMember] = useState({} as Member);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
 
   const fetchData = useCallback(async () => {
     await fetch(API_URL)
       .then((res) => res.json())
       .then((data) => {
-        setTasks(data);
+        setMembers(data);
       });
   }, []);
 
@@ -44,8 +46,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: task.title,
-        description: task.description,
+        name: member.name,
       }),
     }).then(() => {
       fetchData();
@@ -56,21 +57,23 @@ export default function Home() {
     <main className="mx-auto w-full flex justify-start items-center flex-col mt-32">
       <h1 className="font-semibold text-xl my-8">タスク一覧</h1>
       <section className="text-start w-96 mb-16">
-        {tasks.length === 0 ? (
+        {members.length === 0 ? (
           <p>タスクがありません</p>
         ) : (
           <dl className="flex flex-col w-full">
-            {tasks.map((task, index) => (
+            {members.map((member, index) => (
               <div
                 key={index}
                 className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
               >
-                <dt className="w-1/3">{task?.title}</dt>
+                <dt className="w-1/3">{member?.name}</dt>
                 <dd className="w-2/3 flex justify-between items-center">
-                  <span>{task?.description}</span>
+                  <span>{member?.total_game}</span>
+                  <span>{member?.win_game}</span>
+                  <span>{member?.strength}</span>
                   <button
                     className="border rounded p-2 hover:bg-slate-400 transition-all"
-                    onClick={() => handleDelete(task.id)}
+                    onClick={() => handleDelete(member.id)}
                     type="button"
                   >
                     削除
@@ -85,28 +88,14 @@ export default function Home() {
         <h2 className="text-lg mb-4">新しいタスクを追加</h2>
         <form className="flex flex-col gap-2" onSubmit={handleOnSubmit}>
           <div className="flex justify-between">
-            <label htmlFor="title">タスク名</label>
+            <label htmlFor="name">メンバー名</label>
             <input
-              id="title"
-              name="title"
+              id="name"
+              name="name"
               type="text"
               required
               className="bg-slate-200"
-              onChange={(e) => setTask({ ...task, title: e.target.value })}
-            />
-          </div>
-
-          <div className="flex justify-between">
-            <label htmlFor="description">説明</label>
-            <input
-              id="description"
-              name="description"
-              type="text"
-              required
-              className="bg-slate-200"
-              onChange={(e) =>
-                setTask({ ...task, description: e.target.value })
-              }
+              onChange={(e) => setMember({ ...member, name: e.target.value })}
             />
           </div>
           <div className="w-full m-auto mt-4 text-center">
