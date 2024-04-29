@@ -38,7 +38,6 @@ const handler = NextAuth({
         },
       };
     },
-    /*
   	async signIn({ user, account }) {
   	  const provider = account?.provider;
   	  const uid = user?.id;
@@ -75,7 +74,6 @@ const handler = NextAuth({
         return false;
       }
   	},
-    */
   },
 });
 
