@@ -32,13 +32,13 @@ export default function Home() {
           setMembers(data);
         });
     }
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     if (session) {
       fetchData();
     }
-  }, [fetchData]);
+  }, [session, fetchData]);
 
   const handleDelete = async (id: number) => {
     await fetch(`${API_URL}/${id}`, {
