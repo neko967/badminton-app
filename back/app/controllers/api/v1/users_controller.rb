@@ -1,5 +1,9 @@
 class Api::V1::UsersController < ApplicationController
 
+  def index
+    render json: User.all, status: :ok
+  end
+
   def create
     binding.pry
     user = User.find_or_create_by(provider: params[:provider], uid: params[:uid], name: params[:name], email: params[:email])                      
