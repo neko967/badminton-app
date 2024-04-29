@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import axios from 'axios';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const handler = NextAuth({
@@ -45,10 +44,6 @@ const handler = NextAuth({
   	  const email = user?.email;
 
   	  try {
-        console.log(provider);
-        console.log(uid);
-        console.log(name);
-        console.log(email);
         const response =  await fetch(`${apiUrl}/auth/${provider}/callback`, {
           method: "POST",
           headers: {
@@ -61,12 +56,9 @@ const handler = NextAuth({
             email: email,
           }),
         });
-        console.log("2");
   	  	if (response.status === 200) {
-          console.log("3");
   	  	  return true;
   	  	} else {
-          console.log("4");
   	  	  return false;
   	  	}
   	  } catch (error) {

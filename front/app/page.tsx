@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSession } from 'next-auth/react';
 
 interface Member {
   id: number;
@@ -14,6 +15,7 @@ export default function Home() {
   const [members, setMembers] = useState([] as Member[]);
   const [member, setMember] = useState({} as Member);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+  const { data: session, status } = useSession();
 
   const fetchData = useCallback(async () => {
     await fetch(API_URL)
@@ -24,8 +26,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // データを取得
-    fetchData();
+    if (session) {
+      fetchData();
+    }
   }, [fetchData]);
 
   const handleDelete = async (id: number) => {
@@ -38,19 +41,20 @@ export default function Home() {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // データを追加
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: member.name,
-      }),
-    }).then(() => {
-      fetchData();
-    });
+    if (session) {
+      await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: member.name,
+          email: session.user?.email,
+        }),
+      }).then(() => {
+        fetchData();
+      });
+    }
   };
 
   return (

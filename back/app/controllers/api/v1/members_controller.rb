@@ -1,12 +1,13 @@
 class Api::V1::MembersController < ApplicationController
     wrap_parameters false
+    before_action :set_current_user
   
     def index
-      render json: Member.all, status: :ok
+      render json: @current_user.members.all, status: :ok
     end
   
     def create
-      member = Member.new(member_params)
+      member = @current_user.members.build(member_params)
       if member.save
         render json: member, status: :created
       else
@@ -15,7 +16,7 @@ class Api::V1::MembersController < ApplicationController
     end
   
     def destroy
-      member = Member.find(params[:id])
+      member = @current_user.members.find(params[:id])
       member.destroy
       head :no_content
     end
@@ -24,6 +25,10 @@ class Api::V1::MembersController < ApplicationController
 
     def member_params
       params.permit(:name)
+    end
+
+    def set_current_user
+      @current_user = User.find_by(email: params[:email]) 
     end
   end
   

@@ -5,7 +5,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    binding.pry
     user = User.find_or_create_by(provider: params[:provider], uid: params[:uid], name: params[:name], email: params[:email])                      
     if user
       head :ok
