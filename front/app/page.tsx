@@ -18,11 +18,20 @@ export default function Home() {
   const { data: session, status } = useSession();
 
   const fetchData = useCallback(async () => {
-    await fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setMembers(data);
-      });
+    if (session) {
+      await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: session.user?.email,
+        }),
+      }).then((res) => res.json())
+        .then((data) => {
+          setMembers(data);
+        });
+    }
   }, []);
 
   useEffect(() => {
