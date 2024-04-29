@@ -4,7 +4,7 @@ import axios from 'axios';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const handler = NextAuth({
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET || '',
+  secret: process.env.NEXTAUTH_SECRET || '',
   providers: [
   	GoogleProvider({
   		clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
