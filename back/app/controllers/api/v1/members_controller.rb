@@ -16,7 +16,7 @@ class Api::V1::MembersController < ApplicationController
   end
 
   def destroy
-    member = Members.find(params[:id])
+    member = Member.find(params[:id])
     member.destroy
     head :no_content
   end
