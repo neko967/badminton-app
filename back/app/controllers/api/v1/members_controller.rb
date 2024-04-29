@@ -3,7 +3,7 @@ class Api::V1::MembersController < ApplicationController
     before_action :set_current_user
   
     def index
-      render json: @current_user.members.all, status: :ok
+      render json: @current_user.members, status: :ok
     end
   
     def create
