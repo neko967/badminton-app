@@ -20,7 +20,7 @@ export default function Home() {
   const fetchData = useCallback(async () => {
     if (session) {
       const query = session.user?.email;
-      const response = await fetch (`${API_URL}?${query}`);
+      const response = await fetch (`${API_URL}?email=${query}`);
       const data = await response.json();
       setMembers(data);
     }
