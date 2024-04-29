@@ -58,6 +58,7 @@ export default function Member() {
 
   return (
     <>
+    <main className="mx-auto w-full flex justify-start items-center flex-col mt-32">
       <h1 className="font-semibold text-xl my-8">全てのメンバー</h1>
       <section className="text-start w-96 mb-16">
         {members.length === 0 ? (
@@ -108,6 +109,7 @@ export default function Member() {
           </div>
         </form>
       </section>
+    </main>
     </>
   );
 }

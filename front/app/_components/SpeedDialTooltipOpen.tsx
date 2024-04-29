@@ -9,6 +9,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SinglesSelectDialog from './SinglesSelectDialog';
 import DoublesSelectDialog from './DoublesSelectDialog';
+import AddPersonDialog from './AddPersonDialog';
 
 export default function SpeedDialTooltipOpen() {
   const [dialOpen, setDialOpen] = React.useState(false);
@@ -80,6 +81,10 @@ export default function SpeedDialTooltipOpen() {
         <DoublesSelectDialog
           doublesOpen={doublesOpen}
           handleDoublesClose={handleDoublesClose}
+        />
+        <AddPersonDialog
+          addPersonOpen={addPersonOpen}
+          handleAddPersonClose={handleAddPersonClose}
         />
       </Box>
     </>
