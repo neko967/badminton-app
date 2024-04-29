@@ -11,9 +11,8 @@ export default function Login() {
   if (status !== 'authenticated') {
   	return (
   	  <div>
-  	  	<p>あなたはログインしていません</p>
   	  	<button onClick={() => signIn('google', {}, { prompt: 'login' })}>
-  	  		Googleでログイン
+  	  	  Googleでログイン
   	  	</button>
   	  </div>
   	);
