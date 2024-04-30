@@ -1,12 +1,6 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from 'next-auth/react';
 
 interface Member {
@@ -28,20 +22,10 @@ const MenuProps = {
   },
 };
 
-export default function DialogSelect({ addPersonOpen, handleAddPersonClose }: any) {
-  const [members, setMembers] = useState([] as Member[]);
+export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchData }: any) {
   const [member, setMember] = useState({} as Member);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
   const { data: session, status } = useSession();
-
-  const fetchData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL}?email=${query}`);
-      const data = await response.json();
-      setMembers(data);
-    }
-  }, [session]);
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

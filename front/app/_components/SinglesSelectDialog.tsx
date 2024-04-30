@@ -12,7 +12,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
 import MakePareDialog from './MakePareDialog';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';

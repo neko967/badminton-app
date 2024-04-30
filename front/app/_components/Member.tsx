@@ -1,6 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-import { useSession } from 'next-auth/react';
-
 interface Member {
   id: number;
   name: string;
@@ -9,34 +6,7 @@ interface Member {
   strength: number;
 }
 
-export default function Member() {
-  const [members, setMembers] = useState([] as Member[]);
-  const [member, setMember] = useState({} as Member);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-  const { data: session, status } = useSession();
-
-  const fetchData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL}?email=${query}`);
-      const data = await response.json();
-      setMembers(data);
-    }
-  }, [session]);
-
-  useEffect(() => {
-    if (session) {
-      fetchData();
-    }
-  }, [session, fetchData]);
-
-  const handleDelete = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      fetchData();
-    });
-  };
+export default function Member({members, handleDelete}: any) {
 
   return (
     <>
@@ -47,7 +17,7 @@ export default function Member() {
             <p>メンバーがいません</p>
           ) : (
             <dl className="flex flex-col w-full">
-              {members.map((member, index) => (
+              {members.map((member: any, index: any) => (
                 <div
                   key={index}
                   className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
@@ -55,7 +25,6 @@ export default function Member() {
                   <dt className="w-1/3">{member?.name}</dt>
                   <dd className="w-2/3 flex justify-between items-center">
                     <span>{member?.total_game}</span>
-                    <span>{member?.win_game}</span>
                     <span>{member?.strength}</span>
                     <button
                       className="border rounded p-2 hover:bg-slate-400 transition-all"

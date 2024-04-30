@@ -12,7 +12,7 @@ import SinglesSelectDialog from './SinglesSelectDialog';
 import DoublesSelectDialog from './DoublesSelectDialog';
 import AddPersonDialog from './AddPersonDialog';
 
-export default function SpeedDialTooltipOpen() {
+export default function SpeedDialTooltipOpen({fetchData}: any) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
@@ -86,6 +86,7 @@ export default function SpeedDialTooltipOpen() {
         <AddPersonDialog
           addPersonOpen={addPersonOpen}
           handleAddPersonClose={handleAddPersonClose}
+          fetchData={fetchData}
         />
       </Box>
     </>
