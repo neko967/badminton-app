@@ -10,9 +10,9 @@ export default function Member({members, handleDelete}: any) {
 
   return (
     <>
-      <main className="mx-auto w-full flex justify-start items-center flex-col mt-32">
+      <main className="mx-auto w-full flex justify-start items-center flex-col">
         <h1 className="font-semibold text-xl my-8">全てのメンバー</h1>
-        <section className="text-start w-96 mb-16">
+        <section className="text-start w-96 mb-16 px-6">
           {members.length === 0 ? (
             <p>メンバーがいません</p>
           ) : (
