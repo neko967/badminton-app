@@ -38,24 +38,6 @@ export default function Member() {
     });
   };
 
-  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (session) {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: member.name,
-          email: session.user?.email,
-        }),
-      }).then(() => {
-        fetchData();
-      });
-    }
-  };
-
   return (
     <>
       <main className="mx-auto w-full flex justify-start items-center flex-col mt-32">
