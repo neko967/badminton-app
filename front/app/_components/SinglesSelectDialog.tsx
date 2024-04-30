@@ -106,7 +106,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSinglesClose}>Cancel</Button>
+          <Button onClick={() => {handleSinglesClose(); setMembers([]);}}>Cancel</Button>
           <Button onClick={() => {handleSinglesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>

@@ -74,9 +74,9 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose }: an
             noValidate
             autoComplete="off"
           >
-            <TextField id="outlined-basic" 
-                       label="メンバー名" 
-                       variant="outlined" 
+            <TextField id="outlined-basic"
+                       label="メンバー名"
+                       variant="outlined"
                        name="name"
                        type="text"
                        required
