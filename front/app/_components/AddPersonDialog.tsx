@@ -52,35 +52,29 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose }: an
   return (
     <div>
       <Dialog disableEscapeKeyDown open={addPersonOpen} onClose={handleAddPersonClose}>
-        <DialogTitle>新しいメンバーを追加</DialogTitle>
-        <DialogContent>
-          <Box
-            component="form"
-            sx={{
-              '& > :not(style)': { m: 1, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField id="outlined-basic"
-                       label="メンバー名"
-                       variant="outlined"
-                       name="name"
-                       type="text"
-                       required
-                       className="bg-slate-200"
-                       onChange={(e) => setMember({ ...member, name: e.target.value })}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleAddPersonClose}>キャンセル</Button>
-          {session ?
-            <Button onClick={() => {handleAddPersonClose(); handleOnSubmit}}>追加</Button>
-          :
-            undefined
-          }
-        </DialogActions>
+        <main className="mx-auto w-full flex justify-start items-center flex-col">
+          <section className="w-96 border-2 p-4">
+            <h2 className="text-lg mb-4">新しいメンバーを追加</h2>
+            <form className="flex flex-col gap-2" onSubmit={handleOnSubmit}>
+              <div className="flex justify-between">
+                <label htmlFor="name">メンバー名</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  className="bg-slate-200"
+                  onChange={(e) => setMember({ ...member, name: e.target.value })}
+                />
+              </div>
+              <div className="w-full m-auto mt-4 text-center">
+                <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all">
+                  追加
+                </button>
+              </div>
+            </form>
+          </section>
+        </main>
       </Dialog>
     </div>
   );
