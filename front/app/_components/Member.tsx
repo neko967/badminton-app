@@ -88,27 +88,6 @@ export default function Member() {
             </dl>
           )}
         </section>
-        <section className="w-96 border-2 p-4">
-          <h2 className="text-lg mb-4">新しいメンバーを追加</h2>
-          <form className="flex flex-col gap-2" onSubmit={handleOnSubmit}>
-            <div className="flex justify-between">
-              <label htmlFor="name">メンバー名</label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="bg-slate-200"
-                onChange={(e) => setMember({ ...member, name: e.target.value })}
-              />
-            </div>
-            <div className="w-full m-auto mt-4 text-center">
-              <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all">
-                追加
-              </button>
-            </div>
-          </form>
-        </section>
       </main>
     </>
   );
