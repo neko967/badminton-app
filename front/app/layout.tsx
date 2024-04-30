@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next";
 import NextAuthProvider from '@/providers/NextAuth';
 
 import Header from "@/app/_components/header";
+import BottomNavigation from '@/app/_components/BottomNavigation';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <NextAuthProvider>
           <Header />
           {children}
+          <BottomNavigation />
         </NextAuthProvider>
       </body>
     </html>
