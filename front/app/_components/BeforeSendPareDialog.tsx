@@ -27,8 +27,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
             <p>ペアがありません</p>
           ) : (
             <div>
-              {makedPare.map((pare: any) => {
-                <div>
+              {makedPare.map((pare: any, index: number) => {
+                <div key={index}>
                   <p>ddd</p>
                   <p>pare[0]</p>
                   <p>{pare[1]}</p>
