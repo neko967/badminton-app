@@ -31,9 +31,11 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
+  const makedPare: any = [];
+  console.log(playersWithStatus);
+  console.log(makedPare);
 
   const handleMakePare = () => {
-    const makedPare = [];
     console.log(playersWithStatus);
     playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
     let i = playersWithStatus.length;
