@@ -31,7 +31,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
-  const makedPare: any = [];
+  const [makedPare, setMakedPare]: any = useState();
   console.log(playersWithStatus);
   console.log(makedPare);
 
@@ -39,9 +39,9 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     console.log(playersWithStatus);
     playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
     let i = playersWithStatus.length;
-    
+
     for (let i = 0; i < playersWithStatus.length; i += 2) {
-      makedPare.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
+      setMakedPare(...makedPare, [playersWithStatus[i].name, playersWithStatus[i + 1].name])
     }
     console.log(makedPare);
     console.log('aaa');
