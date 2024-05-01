@@ -25,9 +25,9 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
           {makedPare.length === 0 ? (
             <p>ペアがありません</p>
           ) : (
-            <div className="w-full flex items-center border-b border-slate-500 border-opacity-45">
+            <div className="flex flex-col w-full">
               {makedPare.map((pare: any, index: number) => (
-                <div key={index}>
+                <div key={index} className="w-full flex items-center">
                   <p>{pare[0]} - {pare[1]}</p>
                 </div>
               ))}
