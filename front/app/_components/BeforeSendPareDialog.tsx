@@ -21,7 +21,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
         {"このペアで対戦を組みますか？"}
       </DialogTitle>
       <DialogContent  id="alert-dialog-description">
-        <div className="text-start w-96 mb-32 px-6">
+        <div>
           {makedPare.length === 0 ? (
             <p>ペアがありません</p>
           ) : (
