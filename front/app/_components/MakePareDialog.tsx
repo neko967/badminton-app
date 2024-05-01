@@ -23,6 +23,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   const [makedPare, setMakedPare] = useState([[]]);
 
   const handleMakePare = async () => {
+    console.log(playersWithStatus);
     let i = playersWithStatus.length;
     while (i > 0) {
       
