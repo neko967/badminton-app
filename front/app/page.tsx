@@ -9,9 +9,12 @@ import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
 interface Member {
   id: number;
   name: string;
-  total_game: number;
-  win_game: number;
-  strength: number;
+  singles_total_game: number;
+  singles_twin_game: number;
+  singles_tstrength: number;
+  doubles_total_game: number;
+  doubles_twin_game: number;
+  doubles_tstrength: number;
 }
 
 export default function Home() {

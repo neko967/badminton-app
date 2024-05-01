@@ -90,7 +90,6 @@ export default function Match() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <div className="mx-auto w-full flex justify-start items-center flex-col">
-          <h1 className="font-semibold text-xl my-8">全てのメンバー</h1>
           <section className="text-start w-96 mb-32 px-6 ">
             {members.length === 0 ? (
               <p>メンバーがいません</p>
@@ -103,8 +102,8 @@ export default function Match() {
                   >
                     <dt className="w-1/3">{member?.name}</dt>
                     <dd className="w-2/3 flex justify-between items-center">
-                      <span>{member?.total_game}</span>
-                      <span>{member?.strength}</span>
+                      <span>{member?.singles_strength}</span>
+                      <span>{member?.doucles_strength}</span>
                       <button
                         className="border rounded p-2 hover:bg-slate-400 transition-all"
                         onClick={() => handleDelete(member.id)}

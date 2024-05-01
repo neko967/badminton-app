@@ -1,0 +1,2 @@
+class SinglesRecord < ApplicationRecord
+end
