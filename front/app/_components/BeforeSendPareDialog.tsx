@@ -20,8 +20,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
       <DialogTitle id="alert-dialog-title">
         {"このペアで対戦を組みますか？"}
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+      <DialogContent  id="alert-dialog-description">
+        <div className="text-start w-96 mb-32 px-6">
           {makedPare.length === 0 ? (
             <p>ペアがありません</p>
           ) : (
@@ -33,7 +33,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
               ))}
             </div>
           )}
-        </DialogContentText>
+        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBeforeSendPareDialogClose}>Disagree</Button>
