@@ -71,6 +71,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
 
   const [pareOpen, setPareOpen] = React.useState(false);
   const handlePareOpen = () => {
+    console.log(members);
     console.log(players);
     setPareOpen(true);
   };
@@ -100,7 +101,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
               >
                 {members.map((member) => (
                   <MenuItem key={member.name} value={member.name}>
-                    <Checkbox checked={players.indexOf(member.name) > -1} />
+                    <Checkbox checked={players.indexOf(member) > -1} />
                     <ListItemText primary={member.name} />
                   </MenuItem>
                 ))}
