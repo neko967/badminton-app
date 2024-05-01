@@ -1,9 +1,12 @@
 interface Member {
   id: number;
   name: string;
-  total_game: number;
-  win_game: number;
-  strength: number;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
 }
 
 export default function Member({members, handleDelete}: any) {
@@ -24,8 +27,8 @@ export default function Member({members, handleDelete}: any) {
                 >
                   <dt className="w-1/3">{member?.name}</dt>
                   <dd className="w-2/3 flex justify-between items-center">
-                    <span>{member?.total_game}</span>
-                    <span>{member?.strength}</span>
+                    <span>{member?.singles_strength}</span>
+                    <span>{member?.doubles_strength}</span>
                     <button
                       className="border rounded p-2 hover:bg-slate-400 transition-all"
                       onClick={() => handleDelete(member.id)}

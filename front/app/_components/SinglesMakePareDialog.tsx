@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
 import NativeSelect from '@mui/material/NativeSelect';
 import BeforeSendPareDialog from './BeforeSendPareDialog';
 
 interface Member {
   id: number;
   name: string;
-  total_game: number;
-  win_game: number;
-  strength: number;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
 }
 
 export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
-  const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
   const [makedPare, setMakedPare] = useState<(string[])[]>([]);
 
@@ -36,7 +29,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   }
 
   const handleMakePare = (playersWithStatus: Member[][]) => {
-    playersWithStatus[0].sort((a, b) => b.strength - a.strength);
+    playersWithStatus[0].sort((a, b) => b.singles_strength - a.singles_strength);
 
     const newPares = [];
     if (playersWithStatus[0].length % 2 === 0) {

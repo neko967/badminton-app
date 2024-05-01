@@ -6,9 +6,12 @@ import { useSession } from 'next-auth/react';
 interface Member {
   id: number;
   name: string;
-  total_game: number;
-  win_game: number;
-  strength: number;
+  singles_total_game: number;
+  singles_twin_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_twin_game: number;
+  doubles_strength: number;
 }
 
 const ITEM_HEIGHT = 48;

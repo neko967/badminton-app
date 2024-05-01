@@ -23,8 +23,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
   create_table "doubles_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "score_1"
     t.integer "score_2"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_doubles_records_on_user_id"
   end
 
   create_table "members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -53,8 +55,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
   create_table "singles_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "score_1"
     t.integer "score_2"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_singles_records_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -69,7 +73,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
 
   add_foreign_key "doubles_members", "doubles_records"
   add_foreign_key "doubles_members", "members"
+  add_foreign_key "doubles_records", "users"
   add_foreign_key "members", "users"
   add_foreign_key "singles_members", "members"
   add_foreign_key "singles_members", "singles_records"
+  add_foreign_key "singles_records", "users"
 end

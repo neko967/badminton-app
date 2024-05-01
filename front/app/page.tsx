@@ -10,11 +10,11 @@ interface Member {
   id: number;
   name: string;
   singles_total_game: number;
-  singles_twin_game: number;
-  singles_tstrength: number;
+  singles_win_game: number;
+  singles_strength: number;
   doubles_total_game: number;
-  doubles_twin_game: number;
-  doubles_tstrength: number;
+  doubles_win_game: number;
+  doubles_strength: number;
 }
 
 export default function Home() {

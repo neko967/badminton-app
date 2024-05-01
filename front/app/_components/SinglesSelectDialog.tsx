@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import MakePareDialog from './MakePareDialog';
+import SinglesMakePareDialog from './SinglesMakePareDialog';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 
@@ -115,7 +115,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
           <Button onClick={() => {handleSinglesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
-      <MakePareDialog pareOpen={pareOpen} 
+      <SinglesMakePareDialog pareOpen={pareOpen} 
                       handlePareClose={handlePareClose} 
                       playersWithStatus={playersWithStatus}
       />
