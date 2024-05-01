@@ -72,14 +72,8 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
   const [pareOpen, setPareOpen] = React.useState(false);
   const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
   const handlePareOpen = () => {
-    let i = players.length
-    for (i = 0; i < players.length; i++ ) {
-      const result = members.find(item => item.name === players[i]);
-      setPlayersWithStatus([...playersWithStatus, result]);
-      console.log(players[i]);
-      console.log(result);
-      console.log(playersWithStatus);
-    }
+    const result = members.filter(item => players.includes(item.name));
+    setPlayersWithStatus([result]);
     console.log(playersWithStatus);
     setPareOpen(true);
   };
@@ -109,7 +103,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
               >
                 {members.map((member) => (
                   <MenuItem key={member.name} value={member.name}>
-                    <Checkbox checked={players.indexOf(member) > -1} />
+                    <Checkbox checked={players.indexOf(member.name) > -1} />
                     <ListItemText primary={member.name} />
                   </MenuItem>
                 ))}
