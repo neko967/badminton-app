@@ -23,6 +23,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
             ccc
+          <dt className="">aaa{makedPare[0][0]}</dt>
           {makedPare.map((pare: any) => {
             <div
             
