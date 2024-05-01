@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -15,26 +16,19 @@ import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import NativeSelect from '@mui/material/NativeSelect';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 export default function MakePareDialog({ pareOpen, handlePareClose, players}: any) {
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+  const { data: session, status } = useSession();
+  const [howToPare, setHowToPare] = useState('');
+  const [makedPare, setMakedPare] = useState([[]]);
 
-  const [firstPlayer, setFirstPlayer] = useState('');
-  const handleFirstPlayerChange = (event: any) => {
-    setFirstPlayer(String(event.target.value) || '');
+  const handleMakePare = async () => {
+    let i = players.length;
+    while (i > 0) {
+      
+      i -= 2
+    }
   };
-
-  function setPlayers (dividedPlayers: any) {
-  }
 
   return (
     <div>
@@ -43,19 +37,16 @@ export default function MakePareDialog({ pareOpen, handlePareClose, players}: an
         <DialogContent>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
-              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Age
-              </InputLabel>
               <NativeSelect
                 defaultValue={10}
                 inputProps={{
-                  name: 'howtopare',
+                  name: 'makepare',
                   id: 'uncontrolled-native',
                 }}
               >
-                <option value={10}>ランダム</option>
-                <option value={20}>力が等しい</option>
-                <option value={30}>力が少し離れている</option>
+                <option value={10} onClick={() => setHowToPare('random')}>ランダム</option>
+                <option value={20} onClick={() => setHowToPare('even')}>力が等しい</option>
+                <option value={30} onClick={() => setHowToPare('little_diff')}>力が少し離れている</option>
               </NativeSelect>
             </FormControl>
           </Box>
@@ -63,7 +54,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, players}: an
         <DialogActions>
           <Button onClick={handlePareClose}>Cancel</Button>
           <Button onClick={() => {handlePareClose(); 
-                                  setPlayers([firstPlayer]); }
+                                  handleMakePare; }
                           }>Ok</Button>
         </DialogActions>
 

@@ -19,9 +19,12 @@ import { useSession } from 'next-auth/react';
 interface Member {
   id: number;
   name: string;
-  total_game: number;
-  win_game: number;
-  strength: number;
+  singles_total_game: number;
+  singles_twin_game: number;
+  singles_tstrength: number;
+  doubles_total_game: number;
+  doubles_twin_game: number;
+  doubles_tstrength: number;
 }
 
 const ITEM_HEIGHT = 48;
@@ -55,12 +58,12 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
     }
   }, [session, fetchData]);
 
-  const [personName, setPersonName]: any = useState([]);
+  const [players, setPlayers]: any = useState([]);
   const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setPlayers(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
@@ -68,6 +71,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
 
   const [pareOpen, setPareOpen] = React.useState(false);
   const handlePareOpen = () => {
+    console.log(players);
     setPareOpen(true);
   };
   const handlePareClose = (event: any, reason: any) => {
@@ -88,7 +92,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
-                value={personName}
+                value={players}
                 onChange={handleChange}
                 input={<OutlinedInput label="Tag" />}
                 renderValue={(selected) => selected.join(', ')}
@@ -96,7 +100,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
               >
                 {members.map((member) => (
                   <MenuItem key={member.name} value={member.name}>
-                    <Checkbox checked={personName.indexOf(member.name) > -1} />
+                    <Checkbox checked={players.indexOf(member.name) > -1} />
                     <ListItemText primary={member.name} />
                   </MenuItem>
                 ))}
@@ -105,13 +109,13 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleSinglesClose(); setPersonName([]);}}>Cancel</Button>
+          <Button onClick={() => {handleSinglesClose(); setPlayers([]);}}>Cancel</Button>
           <Button onClick={() => {handleSinglesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
       <MakePareDialog pareOpen={pareOpen} 
                       handlePareClose={handlePareClose} 
-                      players={personName}
+                      players={players}
       />
     </div>
   );
