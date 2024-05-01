@@ -45,11 +45,11 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         console.log('ccc');
         console.log(i);
         console.log('newPares', newPares);
-        console.log('playersWithStatus[i]', playersWithStatus[i]);
+        console.log('playersWithStatus[0][i]', playersWithStatus[0][i]);
         newPares.push([playersWithStatus[0][i].name, playersWithStatus[0][i + 1].name]);
       } else {
         console.log('ddd');
-        console.log('playersWithStatus[i]', playersWithStatus[i]);
+        console.log('playersWithStatus[0][i]', playersWithStatus[0][i]);
         newPares.push([playersWithStatus[0][i].name]);
       }
     }
