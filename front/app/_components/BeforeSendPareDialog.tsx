@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBeforeSendPareDialogClose, makedPare}: any) {
+export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBeforeSendPareDialogClose, makedPare, handleMakePare}: any) {
   console.log(makedPare);
   console.log(makedPare[0]);
 
@@ -36,10 +36,9 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBeforeSendPareDialogClose}>Disagree</Button>
-        <Button onClick={handleBeforeSendPareDialogClose} autoFocus>
-          Agree
-        </Button>
+        <Button onClick={handleBeforeSendPareDialogClose}>キャンセル</Button>
+        <Button onClick={handleMakePare}>組み直す</Button>
+        <Button onClick={handleBeforeSendPareDialogClose} autoFocus>登録する</Button>
       </DialogActions>
     </Dialog>
   );
