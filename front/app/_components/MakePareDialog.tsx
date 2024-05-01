@@ -35,20 +35,22 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
 
   const handleMakePare = (playersWithStatus: any) => {
     console.log(playersWithStatus);
+    console.log('playersWithStatus.length', playersWithStatus.length);
+    console.log('playersWithStatus[0].length', playersWithStatus[0].length);
     playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
 
     const newPares = [];
-    for (let i = 0; i < playersWithStatus.length; i += 2) {
-      if (playersWithStatus[i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック]
+    for (let i = 0; i < playersWithStatus[0].length; i += 2) {
+      if (playersWithStatus[0][i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック]
         console.log('ccc');
         console.log(i);
         console.log(newPares);
         console.log(playersWithStatus[i]);
-        newPares.push([playersWithStatus[i], playersWithStatus[i + 1]]);
+        newPares.push([playersWithStatus[0][i], playersWithStatus[0][i + 1]]);
       } else {
         console.log('ddd');
         console.log(playersWithStatus[i]);
-        newPares.push([playersWithStatus[i]]);
+        newPares.push([playersWithStatus[0][i]]);
       }
     }
     setMakedPare(newPares);
