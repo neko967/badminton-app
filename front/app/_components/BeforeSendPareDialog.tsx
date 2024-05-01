@@ -22,16 +22,13 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          ccc
           {makedPare.length === 0 ? (
             <p>ペアがありません</p>
           ) : (
             <div>
-              {makedPare.map((pare: any, index: number) => (
-                <div key={index}>
-                  <p>ddd</p>
-                  <p>{pare[0]}</p>
-                  <p>{pare[1]}</p>
+              {makedPare.map((pare: any) => (
+                <div>
+                  <p>{pare[0]} - {pare[1]}</p>
                 </div>
               ))}
             </div>
