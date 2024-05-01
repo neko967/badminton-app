@@ -29,9 +29,9 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
             <div>
               {makedPare.map((pare: any) => {
                 <div>
-                  ddd
-                  <dt className="">aaa{pare[0]}</dt>
-                  <dt className="">bbb{pare[1]}</dt>
+                  <p>ddd</p>
+                  <p>pare[0]</p>
+                  <p>{pare[1]}</p>
                 </div>
               })}
             </div>
