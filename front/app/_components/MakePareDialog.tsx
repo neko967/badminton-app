@@ -42,6 +42,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
       makedPare.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
     }
     console.log(makedPare);
+    console.log('aaa');
   };
 
   return (
@@ -71,7 +72,6 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
                                   handleMakePare; }
                           }>Ok</Button>
         </DialogActions>
-
       </Dialog>
     </div>
   );
