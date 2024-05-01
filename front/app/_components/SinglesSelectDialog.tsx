@@ -21,10 +21,10 @@ interface Member {
   name: string;
   singles_total_game: number;
   singles_twin_game: number;
-  singles_tstrength: number;
+  singles_strength: number;
   doubles_total_game: number;
   doubles_twin_game: number;
-  doubles_tstrength: number;
+  doubles_strength: number;
 }
 
 const ITEM_HEIGHT = 48;
@@ -74,7 +74,6 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
   const handlePareOpen = () => {
     const result = members.filter(item => players.includes(item.name));
     setPlayersWithStatus([result]);
-    console.log(playersWithStatus);
     setPareOpen(true);
   };
   const handlePareClose = (event: any, reason: any) => {

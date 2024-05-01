@@ -16,19 +16,32 @@ import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import NativeSelect from '@mui/material/NativeSelect';
 
+interface Member {
+  id: number;
+  name: string;
+  singles_total_game: number;
+  singles_twin_game: number;
+  strength: number;
+  doubles_total_game: number;
+  doubles_twin_game: number;
+  doubles_tstrength: number;
+}
+
 export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
-  const [makedPare, setMakedPare] = useState([[]]);
 
-  const handleMakePare = async () => {
+  const handleMakePare = () => {
+    const makedPare = [];
     console.log(playersWithStatus);
+    playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
     let i = playersWithStatus.length;
-    while (i > 0) {
-      
-      i -= 2
+    
+    for (let i = 0; i < playersWithStatus.length; i += 2) {
+      makedPare.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
     }
+    console.log(makedPare);
   };
 
   return (
