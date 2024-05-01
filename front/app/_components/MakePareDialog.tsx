@@ -36,7 +36,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   console.log(makedPare);
   console.log('bbb');
 
-  const handleMakePare = () => {
+  const handleMakePare = (playersWithStatus) => {
     console.log(playersWithStatus);
     playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
 
@@ -77,7 +77,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePareClose}>Cancel</Button>
-          <Button onClick={() => {handlePareClose(); handleMakePare();}}>Ok</Button>
+          <Button onClick={() => {handlePareClose(); handleMakePare(playersWithStatus);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
