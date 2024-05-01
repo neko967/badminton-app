@@ -19,38 +19,37 @@ import NativeSelect from '@mui/material/NativeSelect';
 interface Member {
   id: number;
   name: string;
-  singles_total_game: number;
-  singles_twin_game: number;
+  total_game: number;
+  win_game: number;
   strength: number;
-  doubles_total_game: number;
-  doubles_twin_game: number;
-  doubles_tstrength: number;
 }
 
 export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
-  const [makedPare, setMakedPare]: any = useState([]);
+  const [makedPare, setMakedPare] = useState<(string[])[]>([]);
 
-  const handleMakePare = (playersWithStatus: any) => {
-    console.log(playersWithStatus);
-    console.log('playersWithStatus.length', playersWithStatus.length);
-    console.log('playersWithStatus[0].length', playersWithStatus[0].length);
-    playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
+  function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }
+
+  const handleMakePare = (playersWithStatus: Member[][]) => {
+    playersWithStatus[0].sort((a, b) => b.strength - a.strength);
 
     const newPares = [];
-    for (let i = 0; i < playersWithStatus[0].length; i += 2) {
-      if (playersWithStatus[0][i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック]
-        console.log('ccc');
-        console.log(i);
-        console.log('newPares', newPares);
-        console.log('playersWithStatus[0][i]', playersWithStatus[0][i]);
+    if (playersWithStatus[0].length % 2 === 0) {
+      for (let i = 0; i < playersWithStatus[0].length; i += 2) {
         newPares.push([playersWithStatus[0][i].name, playersWithStatus[0][i + 1].name]);
-      } else {
-        console.log('ddd');
-        console.log('playersWithStatus[0][i]', playersWithStatus[0][i]);
-        newPares.push([playersWithStatus[0][i].name]);
+      }
+    } else {
+      let twice_player: Member = playersWithStatus[0][getRandomInt(playersWithStatus[0].length)];
+      let players_except_twice_player: Member[] = playersWithStatus[0].filter(item => item.id !== twice_player.id);
+      let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
+      let players_except_opponent_to_twice_player : Member[] = playersWithStatus[0].filter(item => item.id !== opponent_to_twice_player.id);
+      newPares.push([twice_player.name, opponent_to_twice_player.name]);
+      for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
+        newPares.push([playersWithStatus[0][i].name, playersWithStatus[0][i + 1].name]);
       }
     }
     setMakedPare(newPares);
