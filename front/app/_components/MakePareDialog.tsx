@@ -44,17 +44,17 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
       if (playersWithStatus[0][i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック]
         console.log('ccc');
         console.log(i);
-        console.log(newPares);
-        console.log(playersWithStatus[i]);
-        newPares.push([playersWithStatus[0][i], playersWithStatus[0][i + 1]]);
+        console.log('newPares', newPares);
+        console.log('playersWithStatus[i]', playersWithStatus[i]);
+        newPares.push([playersWithStatus[0][i].name, playersWithStatus[0][i + 1].name]);
       } else {
         console.log('ddd');
-        console.log(playersWithStatus[i]);
-        newPares.push([playersWithStatus[0][i]]);
+        console.log('playersWithStatus[i]', playersWithStatus[i]);
+        newPares.push([playersWithStatus[0][i].name]);
       }
     }
     setMakedPare(newPares);
-    console.log(makedPare);
+    console.log('makedPare', makedPare);
     console.log('aaa');
   };
 
