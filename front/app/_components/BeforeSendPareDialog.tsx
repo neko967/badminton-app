@@ -20,13 +20,14 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {makedPare.map((pare: any, index: any) => {
+            ccc
+          {makedPare.map((pare: any, index: number) => {
             <div
               key={index}
-              className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
             >
-              <dt className="w-1/3">{pare[0]}</dt>
-              <dt className="w-1/3">{pare[1]}</dt>
+              ddd
+              <dt className="">aaa{pare[0]}</dt>
+              <dt className="">bbb{pare[1]}</dt>
             </div>
           })}
         </DialogContentText>
