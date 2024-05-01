@@ -32,9 +32,6 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
   const [makedPare, setMakedPare]: any = useState([]);
-  console.log(playersWithStatus);
-  console.log(makedPare);
-  console.log('bbb');
 
   const handleMakePare = (playersWithStatus: any) => {
     console.log(playersWithStatus);
@@ -42,12 +39,14 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
 
     const newPares = [];
     for (let i = 0; i < playersWithStatus.length; i += 2) {
-      if (playersWithStatus[i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック
+      if (playersWithStatus[i + 1]) { // playersWithStatus[i + 1]が存在するかをチェック]
+        console.log('ccc');
         console.log(i);
         console.log(newPares);
         console.log(playersWithStatus[i].name);
         newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
       } else {
+        console.log('ddd');
         console.log(playersWithStatus[i].name);
         newPares.push([playersWithStatus[i].name]);
       }
