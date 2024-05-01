@@ -49,7 +49,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
       let players_except_opponent_to_twice_player : Member[] = playersWithStatus[0].filter(item => item.id !== opponent_to_twice_player.id);
       newPares.push([twice_player.name, opponent_to_twice_player.name]);
       for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
-        newPares.push([playersWithStatus[0][i].name, playersWithStatus[0][i + 1].name]);
+        newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
       }
     }
     setMakedPare(newPares);
