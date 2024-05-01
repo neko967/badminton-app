@@ -78,6 +78,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
       const result = members.find(item => item.name === players[i]);
       setNextPlayersWithStatus(result);
       setPlayersWithStatus([...playersWithStatus, nextPlayersWithStatus]);
+      console.log(playersWithStatus);
     }
     console.log(playersWithStatus);
     setPareOpen(true);
