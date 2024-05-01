@@ -9,7 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBeforeSendPareDialogClose, makedPare}: any) {
   console.log(makedPare);
   console.log(makedPare[0]);
-  console.log(makedPare[0][0]);
 
   return (
     <Dialog
@@ -23,12 +22,9 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-            ccc
-          
+          ccc
           {makedPare.map((pare: any) => {
-            <div
-            
-            >
+            <div>
               ddd
               <dt className="">aaa{pare[0]}</dt>
               <dt className="">bbb{pare[1]}</dt>
