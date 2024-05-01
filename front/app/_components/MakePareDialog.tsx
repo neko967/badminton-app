@@ -98,6 +98,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
           handleMakePare={handleMakePare}
+          playersWithStatus={playersWithStatus}
         />
       </React.Fragment>
     </div>
