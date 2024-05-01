@@ -21,7 +21,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
         {"このペアで対戦を組みますか？"}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        
           ccc
           {makedPare.map((pare: any) => {
             <div>
@@ -30,7 +30,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
               <dt className="">bbb{pare[1]}</dt>
             </div>
           })}
-        </DialogContentText>
+        
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBeforeSendPareDialogClose}>Disagree</Button>
