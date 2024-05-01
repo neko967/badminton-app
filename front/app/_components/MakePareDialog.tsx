@@ -36,7 +36,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   console.log(makedPare);
   console.log('bbb');
 
-  const handleMakePare = (playersWithStatus) => {
+  const handleMakePare = (playersWithStatus: any) => {
     console.log(playersWithStatus);
     playersWithStatus.sort((a: any, b: any) => b.strength - a.strength);
 
