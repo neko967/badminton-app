@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 
-import Match from '@/app/_components/Match';
+import Match from '@/app/_components/SinglesRecord';
 
 interface Member {
   id: number;
