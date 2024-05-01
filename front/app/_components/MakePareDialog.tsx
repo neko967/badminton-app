@@ -16,14 +16,14 @@ import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import NativeSelect from '@mui/material/NativeSelect';
 
-export default function MakePareDialog({ pareOpen, handlePareClose, players}: any) {
+export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const [howToPare, setHowToPare] = useState('');
   const [makedPare, setMakedPare] = useState([[]]);
 
   const handleMakePare = async () => {
-    let i = players.length;
+    let i = playersWithStatus.length;
     while (i > 0) {
       
       i -= 2

@@ -70,9 +70,16 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
   };
 
   const [pareOpen, setPareOpen] = React.useState(false);
+  const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
+  const [nextPlayersWithStatus, setNextPlayersWithStatus]: any = useState();
   const handlePareOpen = () => {
-    console.log(members);
-    console.log(players);
+    let i = players.length
+    for (i = 0; i < players.length; i++ ) {
+      const result = members.find(item => item.name === players[i]);
+      setNextPlayersWithStatus(result);
+      setPlayersWithStatus([...playersWithStatus, nextPlayersWithStatus]);
+    }
+    console.log(playersWithStatus);
     setPareOpen(true);
   };
   const handlePareClose = (event: any, reason: any) => {
@@ -116,7 +123,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
       </Dialog>
       <MakePareDialog pareOpen={pareOpen} 
                       handlePareClose={handlePareClose} 
-                      players={players}
+                      playersWithStatus={playersWithStatus}
       />
     </div>
   );
