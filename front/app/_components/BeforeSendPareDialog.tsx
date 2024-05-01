@@ -21,16 +21,22 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen, handleBe
         {"このペアで対戦を組みますか？"}
       </DialogTitle>
       <DialogContent>
-        
+        <DialogContentText id="alert-dialog-description">
           ccc
-          {makedPare.map((pare: any) => {
+          {makedPare.length === 0 ? (
+            <p>ペアがありません</p>
+          ) : (
             <div>
-              ddd
-              <dt className="">aaa{pare[0]}</dt>
-              <dt className="">bbb{pare[1]}</dt>
+              {makedPare.map((pare: any) => {
+                <div>
+                  ddd
+                  <dt className="">aaa{pare[0]}</dt>
+                  <dt className="">bbb{pare[1]}</dt>
+                </div>
+              })}
             </div>
-          })}
-        
+          )}
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBeforeSendPareDialogClose}>Disagree</Button>
