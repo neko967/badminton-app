@@ -15,6 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import NativeSelect from '@mui/material/NativeSelect';
+import BeforeSendPareDialog from './BeforeSendPareDialog';
 
 interface Member {
   id: number;
@@ -54,7 +55,15 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     }
     setMakedPare(newPares);
     console.log('makedPare', makedPare);
-    console.log('aaa');
+  };
+
+  const [beforeSendPareDialogOpen, setBeforeSendPareDialogOpen] = useState(false);
+  const handleBeforeSendPareDialogOpen = () => {
+    setBeforeSendPareDialogOpen(true);
+  };
+
+  const handleBeforeSendPareDialogClose = () => {
+    setBeforeSendPareDialogOpen(false);
   };
 
   return (
@@ -80,9 +89,16 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePareClose}>Cancel</Button>
-          <Button onClick={() => {handlePareClose(); handleMakePare(playersWithStatus);}}>Ok</Button>
+          <Button onClick={() => {handlePareClose(); handleMakePare(playersWithStatus); handleBeforeSendPareDialogOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
+      <React.Fragment>
+        <BeforeSendPareDialog
+          beforeSendPareDialogOpen={beforeSendPareDialogOpen}
+          handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
+          makedPare={makedPare}
+        />
+      </React.Fragment>
     </div>
   );
 }
