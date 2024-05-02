@@ -65,6 +65,9 @@ interface Member {
   doubles_total_game: number;
   doubles_win_game: number;
   doubles_strength: number;
+  history: [
+    { player_1: string, score_1: number, player_2: string, score_2: number }
+  ]
 }
 
 function createData(
@@ -100,6 +103,7 @@ function Row({ member, handleDelete }: {
         </TableCell>
         <TableCell align="right">{member.singles_strength}</TableCell>
         <TableCell align="right">{member.doubles_strength}</TableCell>
+        {/*
         <TableCell align="right">
           <button
             className="border rounded p-2 hover:bg-slate-400 transition-all"
@@ -109,8 +113,8 @@ function Row({ member, handleDelete }: {
             <DeleteIcon />
           </button>
         </TableCell>
+        */}
       </TableRow>
-      {/*
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -121,23 +125,15 @@ function Row({ member, handleDelete }: {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>日付</TableCell>
-                    <TableCell>形式</TableCell>
-                    <TableCell align="right">プレイヤー</TableCell>
+                    <TableCell>プレイヤー</TableCell>
                     <TableCell align="right">点数</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {member.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                  {member.history.map((historyRow, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{historyRow.player_2}</TableCell>
+                      <TableCell align="right">{historyRow.score_2}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -146,7 +142,6 @@ function Row({ member, handleDelete }: {
           </Collapse>
         </TableCell>
       </TableRow>
-      */}
     </React.Fragment>
   );
 }
@@ -171,7 +166,6 @@ export default function Member({members, handleDelete}:
             <TableCell>名前</TableCell>
             <TableCell align="right">シングルスパワー</TableCell>
             <TableCell align="right">ダブルスパワー</TableCell>
-            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
