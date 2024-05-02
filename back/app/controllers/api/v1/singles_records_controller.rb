@@ -7,11 +7,12 @@ class Api::V1::SinglesRecordsController < ApplicationController
 
   def create
     singles_record = @current_user.singles_records.create!()
-    if singles_member = SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_1_id]) 
-                     && SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_2_id])
-      render json: singles_member, status: :created
+    singles_member_1 = SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_1_id]) 
+    singles_member_2 = SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_2_id])
+    if singles_member_1 && singles_member_2
+      render json: singles_member_1, status: :created
     else
-      render json: singles_member.errors, status: :unprocessable_entity
+      render json: singles_member_1.errors, status: :unprocessable_entity
     end
   end
 

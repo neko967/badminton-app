@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 
-import Match from '@/app/_components/SinglesRecord';
+import SinglesRecord from '@/app/_components/SinglesRecord';
 
 interface Member {
   id: number;
@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <>
-      <Match />
+      <SinglesRecord />
     </>
   );
 }

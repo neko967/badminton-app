@@ -38,7 +38,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function Match() {
+export default function SinglesRecord() {
   const [value, setValue] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
