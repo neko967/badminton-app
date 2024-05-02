@@ -15,13 +15,13 @@ import { useSession } from 'next-auth/react';
 
 export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen, 
                                                  handleSinglesRecordEditDialogClose, 
-                                                 fetchData, singlesRecord}: {
+                                                 fetchData, singlesRecord_id}: {
                                                  singlesRecordEditDialogOpen: any; 
                                                  handleSinglesRecordEditDialogClose: any;
-                                                 fetchData: any, singlesRecord: any}) {
+                                                 fetchData: any, singlesRecord_id: number}) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
-  console.log('singlesRecord', singlesRecord);
+  console.log('singlesRecord_id', singlesRecord_id);
 
   const [score_1, setScore_1] = useState<number | string>(11);
   const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1>) => {
@@ -129,7 +129,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSinglesRecordEditDialogClose}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleSinglesRecordUpdate(singlesRecord.id);}}>Ok</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>

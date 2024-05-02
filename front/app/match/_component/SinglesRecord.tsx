@@ -114,7 +114,7 @@ export default function SinglesRecord() {
                       <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
                                                handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
                                                fetchData={fetchData}
-                                               singlesRecord={singlesRecord}
+                                               singlesRecord_id={singlesRecord.id}
                       />
                     </div>
                   </>
