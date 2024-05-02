@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 import EditIcon from '@mui/icons-material/Edit';
+import SinglesRecordEditDialog from './SinglesRecordEditDialog';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -66,24 +67,19 @@ export default function SinglesRecord() {
     }
   }, [session, fetchData]);
 
-  const [score_1, setScore_1] = useState();
-  const [score_2, setScore_2] = useState();
-  const handleSinglesRecordUpdate = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        score_1: score_1,
-        score_2: score_2,
-      }),
-    }).then(() => {
-      fetchData();
-    });
+  const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
+  const handleSinglesRecordEditDialogOpen = () => {
+    setSinglesRecordEditDialogOpen(true);
+  };
+
+  const handleSinglesRecordEditDialogClose: any = (event: React.SyntheticEvent<unknown>, reason?: string) => {
+    if (reason !== 'backdropClick') {
+      setSinglesRecordEditDialogOpen(false);
+    }
   };
 
   return (
+    <>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
@@ -99,23 +95,30 @@ export default function SinglesRecord() {
             ) : (
               <dl className="flex flex-col w-full">
                 {singlesRecords.map((singlesRecord: any, index: number) => (
-                  <div
-                    key={index}
-                    className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
-                  >
-                    <dt className="w-1/3">{singlesRecord?.player_1}</dt>
-                    <dt className="w-1/3">{singlesRecord?.score_1}</dt>
-                    <p>-</p>
-                    <dt className="w-1/3">{singlesRecord?.score_2}</dt>
-                    <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                    <button
-                      className="border rounded p-2 hover:bg-slate-400 transition-all"
-                      onClick={() => handleSinglesRecordUpdate(singlesRecord.id)}
-                      type="button"
+                  <>
+                    <div
+                      key={index}
+                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
                     >
-                      <EditIcon />
-                    </button>
-                  </div>
+                      <dt className="w-1/3">{singlesRecord?.player_1}</dt>
+                      <dt className="w-1/3">{singlesRecord?.score_1}</dt>
+                      <p>-</p>
+                      <dt className="w-1/3">{singlesRecord?.score_2}</dt>
+                      <dt className="w-1/3">{singlesRecord?.player_2}</dt>
+                      <button
+                        className="border rounded p-2 hover:bg-slate-400 transition-all"
+                        onClick={handleSinglesRecordEditDialogOpen}
+                        type="button"
+                      >
+                        <EditIcon />
+                      </button>
+                    </div>
+                    <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+                                             handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
+                                             fetchData={fetchData}
+                                             singlesRecord={singlesRecord}
+                    />
+                  </>
                 ))}
               </dl>
             )}
@@ -126,5 +129,6 @@ export default function SinglesRecord() {
         Item Two
       </CustomTabPanel>
     </Box>
+    </>
   );
 }
