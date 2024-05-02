@@ -86,8 +86,11 @@ export default function SinglesRecord() {
                     key={index}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
                   >
+                    <dt className="w-1/3">{singlesRecord?.player_1}</dt>
                     <dt className="w-1/3">{singlesRecord?.score_1}</dt>
+                    <p>-</p>
                     <dt className="w-1/3">{singlesRecord?.score_2}</dt>
+                    <dt className="w-1/3">{singlesRecord?.player_2}</dt>
                   </div>
                 ))}
               </dl>
