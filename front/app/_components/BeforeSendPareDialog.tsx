@@ -24,14 +24,20 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
                                               playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
+  console.log(playersWithStatus);
   console.log(makedPare);
   console.log(makedPare[0]);
   const router = useRouter();
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length; i ++) {
-        console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][0]).id);
-        console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][1]).id);
+      console.log(makedPare[i][0]);
+      console.log(makedPare[i][1]);
+      const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
+      const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
+      console.log(member1);
+      console.log(member2);
+
       if (session) {
         await fetch(API_URL, {
           method: "POST",
@@ -39,8 +45,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            member_1_id: playersWithStatus.find((item: Member) => item.name === makedPare[i][0]).id,
-            member_2_id: playersWithStatus.find((item: Member) => item.name === makedPare[i][1]).id,
+            member_1_id: member1.id,
+            member_2_id: member2.id,
             email: session.user?.email,
           }),
         })
