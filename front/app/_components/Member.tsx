@@ -54,6 +54,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Member {
   id: number;
@@ -105,7 +106,7 @@ function Row({ member, handleDelete }: {
             onClick={() => handleDelete(member.id)}
             type="button"
           >
-            削除
+            <DeleteIcon />
           </button>
         </TableCell>
       </TableRow>
