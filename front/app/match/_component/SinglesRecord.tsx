@@ -111,12 +111,12 @@ export default function SinglesRecord() {
                       >
                         <EditIcon />
                       </button>
+                      <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+                                               handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
+                                               fetchData={fetchData}
+                                               singlesRecord={singlesRecord}
+                      />
                     </div>
-                    <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
-                                             handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
-                                             fetchData={fetchData}
-                                             singlesRecord={singlesRecord}
-                    />
                   </>
                 ))}
               </dl>
