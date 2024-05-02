@@ -66,8 +66,10 @@ export default function SinglesRecord() {
     }
   }, [session, fetchData]);
 
+  const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
-  const handleSinglesRecordEditDialogOpen = () => {
+  const handleSinglesRecordEditDialogOpen = (id: number) => {
+    setSinglesRecord_id(id);
     setSinglesRecordEditDialogOpen(true);
   };
 
@@ -106,7 +108,7 @@ export default function SinglesRecord() {
                       <dt className="w-1/3">{singlesRecord?.player_2}</dt>
                       <button
                         className="border rounded p-2 hover:bg-slate-400 transition-all"
-                        onClick={handleSinglesRecordEditDialogOpen}
+                        onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
                         type="button"
                       >
                         <EditIcon />
@@ -114,7 +116,7 @@ export default function SinglesRecord() {
                       <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
                                                handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
                                                fetchData={fetchData}
-                                               singlesRecord_id={singlesRecord.id}
+                                               singlesRecord_id={singlesRecord_id}
                       />
                     </div>
                   </>
