@@ -2,7 +2,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
   before_action :set_current_user, only: %i[index create]
 
   def index
-    render json: @current_user.singles_records, methods: [:player_1, :player_2], status: :ok
+    render json: @current_user.singles_records, methods: [:players, :players_1, :players_2, :player_1, :player_2], status: :ok
   end
 
   def create
