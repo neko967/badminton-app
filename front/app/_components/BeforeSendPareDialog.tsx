@@ -11,10 +11,10 @@ interface Member {
   id: number;
   name: string;
   singles_total_game: number;
-  singles_twin_game: number;
+  singles_win_game: number;
   singles_strength: number;
   doubles_total_game: number;
-  doubles_twin_game: number;
+  doubles_win_game: number;
   doubles_strength: number;
 }
 
@@ -30,6 +30,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length.length; i ++) {
+        console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][0]).id);
+        console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][1]).id);
       if (session) {
         await fetch(API_URL, {
           method: "POST",
