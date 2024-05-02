@@ -33,8 +33,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
     for (let i = 0; i < makedPare.length; i ++) {
       console.log(makedPare[i][0]);
       console.log(makedPare[i][1]);
-      const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
-      const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
+      const member1 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][0]);
+      const member2 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][1]);
       console.log(member1);
       console.log(member2);
 
