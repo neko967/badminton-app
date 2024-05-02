@@ -56,7 +56,6 @@ export default function SinglesRecord() {
       const query = session.user?.email;
       const response = await fetch (`${API_URL}?email=${query}`);
       const data = await response.json();
-      console.log('data', data);
       setSinglesRecords(data);
     }
   }, [session]);
