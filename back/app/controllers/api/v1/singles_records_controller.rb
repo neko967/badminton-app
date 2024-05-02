@@ -6,7 +6,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
   end
 
   def create
-    singles_record = @current_user.singles_records.create!(player_1: Member.find(params[:member_1_id]), player_2: Member.find(params[:member_2_id]))
+    singles_record = @current_user.singles_records.create!(player_1: Member.find(params[:member_1_id]).name, player_2: Member.find(params[:member_2_id]).name)
     singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id]) 
     singles_player_2 = singles_record.singles_players.create(member_id: params[:member_2_id])
     if singles_player_1 && singles_player_2

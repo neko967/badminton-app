@@ -97,7 +97,7 @@ export default function SinglesRecord() {
               <p>記録がありません</p>
             ) : (
               <dl className="flex flex-col w-full">
-                {singlesRecords.map((singlesRecord: any, index: any) => (
+                {singlesRecords.map((singlesRecord: any, index: number) => (
                   <div
                     key={index}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
