@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -112,7 +113,7 @@ export default function SinglesRecord() {
                       onClick={() => handleSinglesRecordUpdate(singlesRecord.id)}
                       type="button"
                     >
-                      編集
+                      <EditIcon />
                     </button>
                   </div>
                 ))}

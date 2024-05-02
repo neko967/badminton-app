@@ -103,17 +103,6 @@ function Row({ member, handleDelete }: {
         </TableCell>
         <TableCell align="right">{member.singles_strength}</TableCell>
         <TableCell align="right">{member.doubles_strength}</TableCell>
-        {/*
-        <TableCell align="right">
-          <button
-            className="border rounded p-2 hover:bg-slate-400 transition-all"
-            onClick={() => handleDelete(member.id)}
-            type="button"
-          >
-            <DeleteIcon />
-          </button>
-        </TableCell>
-        */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -122,6 +111,15 @@ function Row({ member, handleDelete }: {
               <Typography variant="h6" gutterBottom component="div">
                 最近の試合
               </Typography>
+              {/*
+                <button
+                  className="border rounded p-2 hover:bg-slate-400 transition-all"
+                  onClick={() => handleDelete(member.id)}
+                  type="button"
+                >
+                  <DeleteIcon />
+                </button>
+              */}
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
