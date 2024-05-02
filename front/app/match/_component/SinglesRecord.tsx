@@ -48,12 +48,14 @@ export default function SinglesRecord() {
   const [singlesRecords, setSinglesRecords] = useState([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
+  console.log('singlesRecords', singlesRecords);
 
   const fetchData = useCallback(async () => {
     if (session) {
       const query = session.user?.email;
       const response = await fetch (`${API_URL}?email=${query}`);
       const data = await response.json();
+      console.log('data', data);
       setSinglesRecords(data);
     }
   }, [session]);

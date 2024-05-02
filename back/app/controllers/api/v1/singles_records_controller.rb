@@ -2,13 +2,13 @@ class Api::V1::SinglesRecordsController < ApplicationController
   before_action :set_current_user, only: %i[index create]
 
   def index
-    render json: @current_user.singles_records.all, status: :ok
+    render json: @current_user.singles_records, methods: :players, status: :ok
   end
 
   def create
     singles_record = @current_user.singles_records.create!()
-    singles_member_1 = SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_1_id]) 
-    singles_member_2 = SinglesMember.create(singles_record_id: singles_record.id, member_id: params[:member_2_id])
+    singles_member_1 = singles_record.singles_members.create(member_id: params[:member_1_id]) 
+    singles_member_2 = singles_record.singles_members.create(member_id: params[:member_2_id])
     if singles_member_1 && singles_member_2
       render json: singles_member_1, status: :created
     else

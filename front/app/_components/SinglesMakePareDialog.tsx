@@ -47,7 +47,6 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
       }
     }
     setMakedPare(newPares);
-    console.log('makedPare', makedPare);
   };
 
   const [beforeSendPareDialogOpen, setBeforeSendPareDialogOpen] = useState(false);

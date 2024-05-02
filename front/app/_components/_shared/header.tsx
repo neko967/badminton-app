@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
-import Login from './login';
-import Logout from './logout';
+import Login from '../login';
+import Logout from '../logout';
 
 const Header = () => {
   const { data: session, status } = useSession();

@@ -24,19 +24,12 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
                                               playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
-  console.log(playersWithStatus);
-  console.log(makedPare);
-  console.log(makedPare[0]);
   const router = useRouter();
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length; i ++) {
-      console.log(makedPare[i][0]);
-      console.log(makedPare[i][1]);
       const member1 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][0]);
       const member2 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][1]);
-      console.log(member1);
-      console.log(member2);
 
       if (session) {
         await fetch(API_URL, {
