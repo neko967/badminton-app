@@ -2,7 +2,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
   before_action :set_current_user, only: %i[index create]
 
   def index
-    render json: @current_user.singles_records, status: :ok
+    render json: @current_user.singles_records.order(created_at: :desc), status: :ok
   end
 
   def create
