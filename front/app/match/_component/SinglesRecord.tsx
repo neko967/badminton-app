@@ -113,16 +113,16 @@ export default function SinglesRecord() {
                       >
                         <EditIcon />
                       </button>
-                      <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
-                                               handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
-                                               fetchData={fetchData}
-                                               singlesRecord_id={singlesRecord_id}
-                      />
                     </div>
                   </>
                 ))}
               </dl>
             )}
+            <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+                                     handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
+                                     fetchData={fetchData}
+                                     singlesRecord_id={singlesRecord_id}
+            />
           </section>
         </div>
       </CustomTabPanel>
