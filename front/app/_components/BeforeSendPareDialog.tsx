@@ -29,7 +29,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
   const router = useRouter();
 
   const handlePareSubmit = async () => {
-    for (let i = 0; i < makedPare.length.length; i ++) {
+    for (let i = 0; i < makedPare.length; i ++) {
         console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][0]).id);
         console.log(playersWithStatus.find((item: Member) => item.name === makedPare[i][1]).id);
       if (session) {
