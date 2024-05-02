@@ -37,17 +37,9 @@ export default function Home() {
     }
   }, [session, fetchData]);
 
-  const handleDelete = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      fetchData();
-    });
-  };
-
   return (
     <>
-      <Member members={members} handleDelete={handleDelete}/>
+      <Member />
       <SpeedDialTooltipOpen fetchData={fetchData}/>
     </>
   );

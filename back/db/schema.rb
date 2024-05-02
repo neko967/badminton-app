@@ -11,18 +11,22 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
-  create_table "doubles_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "doubles_players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "member_id", null: false
     t.bigint "doubles_record_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["doubles_record_id"], name: "index_doubles_members_on_doubles_record_id"
-    t.index ["member_id"], name: "index_doubles_members_on_member_id"
+    t.index ["doubles_record_id"], name: "index_doubles_players_on_doubles_record_id"
+    t.index ["member_id"], name: "index_doubles_players_on_member_id"
   end
 
   create_table "doubles_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "score_1"
-    t.integer "score_2"
+    t.string "player_1", null: false
+    t.string "player_2", null: false
+    t.integer "score_12"
+    t.string "player_3", null: false
+    t.string "player_4", null: false
+    t.integer "score_34"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -43,17 +47,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
     t.index ["user_id"], name: "index_members_on_user_id"
   end
 
-  create_table "singles_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "singles_players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "member_id", null: false
     t.bigint "singles_record_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["member_id"], name: "index_singles_members_on_member_id"
-    t.index ["singles_record_id"], name: "index_singles_members_on_singles_record_id"
+    t.index ["member_id"], name: "index_singles_players_on_member_id"
+    t.index ["singles_record_id"], name: "index_singles_players_on_singles_record_id"
   end
 
   create_table "singles_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "player_1", null: false
     t.integer "score_1"
+    t.string "player_2", null: false
     t.integer "score_2"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -71,11 +77,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "doubles_members", "doubles_records"
-  add_foreign_key "doubles_members", "members"
+  add_foreign_key "doubles_players", "doubles_records"
+  add_foreign_key "doubles_players", "members"
   add_foreign_key "doubles_records", "users"
   add_foreign_key "members", "users"
-  add_foreign_key "singles_members", "members"
-  add_foreign_key "singles_members", "singles_records"
+  add_foreign_key "singles_players", "members"
+  add_foreign_key "singles_players", "singles_records"
   add_foreign_key "singles_records", "users"
 end

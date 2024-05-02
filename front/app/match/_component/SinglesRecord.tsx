@@ -40,7 +40,6 @@ function a11yProps(index: number) {
 
 export default function SinglesRecord() {
   const [value, setValue] = React.useState(0);
-
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -65,6 +64,23 @@ export default function SinglesRecord() {
       fetchData();
     }
   }, [session, fetchData]);
+
+  const [score_1, setScore_1] = useState();
+  const [score_2, setScore_2] = useState();
+  const handleSinglesRecordUpdate = async (id: number) => {
+    await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        score_1: score_1,
+        score_2: score_2,
+      }),
+    }).then(() => {
+      fetchData();
+    });
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -91,6 +107,13 @@ export default function SinglesRecord() {
                     <p>-</p>
                     <dt className="w-1/3">{singlesRecord?.score_2}</dt>
                     <dt className="w-1/3">{singlesRecord?.player_2}</dt>
+                    <button
+                      className="border rounded p-2 hover:bg-slate-400 transition-all"
+                      onClick={() => handleSinglesRecordUpdate(singlesRecord.id)}
+                      type="button"
+                    >
+                      編集
+                    </button>
                   </div>
                 ))}
               </dl>

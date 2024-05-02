@@ -2,17 +2,17 @@ class Api::V1::SinglesRecordsController < ApplicationController
   before_action :set_current_user, only: %i[index create]
 
   def index
-    render json: @current_user.singles_records, methods: [:player_1, :player_2], status: :ok
+    render json: @current_user.singles_records, status: :ok
   end
 
   def create
-    singles_record = @current_user.singles_records.create!()
-    singles_member_1 = singles_record.singles_members.create(member_id: params[:member_1_id]) 
-    singles_member_2 = singles_record.singles_members.create(member_id: params[:member_2_id])
-    if singles_member_1 && singles_member_2
-      render json: singles_member_1, status: :created
+    singles_record = @current_user.singles_records.create!(player_1: Member.find(:member_1_id), player_2: Member.find(:member_2_id))
+    singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id]) 
+    singles_player_2 = singles_record.singles_players.create(member_id: params[:member_2_id])
+    if singles_player_1 && singles_player_2
+      render json: singles_player_1, status: :created
     else
-      render json: singles_member_1.errors, status: :unprocessable_entity
+      render json: singles_player_1.errors, status: :unprocessable_entity
     end
   end
 
