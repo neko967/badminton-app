@@ -30,14 +30,16 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
 
   function shuffleArray(array: any) {
     for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // ランダムなインデックスを選ぶ
-      [array[i], array[j]] = [array[j], array[i]]; // i番目とj番目を入れ替える
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
   const handleMakePare = ({playersWithStatus}: {playersWithStatus: Member[][]}) => {
     const newPares = [];
     playersWithStatus[0].sort((a, b) => b.singles_strength - a.singles_strength);
+    console.log("playersWithStatus[0]", playersWithStatus[0]);
+    console.log("howToPare", howToPare);
 
     switch (howToPare) {
       case "random":
