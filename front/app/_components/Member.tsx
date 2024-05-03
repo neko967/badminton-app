@@ -58,29 +58,23 @@ function Row({ member, handleDelete }: {
               <Typography variant="h6" gutterBottom component="div">
                 最近の試合
               </Typography>
-              {member.history ?
-                <Table size="small" aria-label="purchases">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>プレイヤー</TableCell>
-                      <TableCell align="right">点数</TableCell>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>プレイヤー</TableCell>
+                    <TableCell align="right">点数</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {member.history.map((historyRow, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
+                      <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {member.history.map((historyRow, index: number) => (
-                      <TableRow key={index}>
-                        <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
-                        <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>  
-              :
-                <Typography>
-                  記録がありません
-                </Typography>
-              }           
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right py-3">
+                  ))}
+                </TableBody>
+              </Table>   
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right my-3">
                 メンバーを削除
               </Button>
             </Box>
@@ -106,7 +100,7 @@ export default function Member({members, handleDelete}:
             <TableCell align="right">ダブルスパワー</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody className="mb-36">
           {members.map((member: Member) => (
             <Row key={member.name} member={member} handleDelete={handleDelete}/>
           ))}
