@@ -1,43 +1,3 @@
-/*
-export default function Member({members, handleDelete}: any) {
-
-  return (
-    <>
-      <main className="mx-auto w-full flex justify-start items-center flex-col">
-        <h1 className="font-semibold text-xl my-8">全てのメンバー</h1>
-        <section className="text-start w-96 mb-32 px-6 ">
-          {members.length === 0 ? (
-            <p>メンバーがいません</p>
-          ) : (
-            <dl className="flex flex-col w-full">
-              {members.map((member: any, index: any) => (
-                <div
-                  key={index}
-                  className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
-                >
-                  <dt className="w-1/3">{member?.name}</dt>
-                  <dd className="w-2/3 flex justify-between items-center">
-                    <span>{member?.singles_strength}</span>
-                    <span>{member?.doubles_strength}</span>
-                    <button
-                      className="border rounded p-2 hover:bg-slate-400 transition-all"
-                      onClick={() => handleDelete(member.id)}
-                      type="button"
-                    >
-                      削除
-                    </button>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </section>
-      </main>
-    </>
-  );
-}
-*/
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -52,8 +12,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useCallback, useEffect, useState } from "react";
-import { useSession } from 'next-auth/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Member {
@@ -68,18 +26,6 @@ interface Member {
   history: [
     { player_1: string, score_1: number, player_2: string, score_2: number }
   ]
-}
-
-function createData(
-  name: string, calories: number, fat: number, carbs: number, price: number,
-) {
-  return {
-    name, calories, fat, carbs, price, 
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3, },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1, },
-    ],
-  };
 }
 
 function Row({ member, handleDelete }: {
@@ -111,15 +57,13 @@ function Row({ member, handleDelete }: {
               <Typography variant="h6" gutterBottom component="div">
                 最近の試合
               </Typography>
-              {/*
-                <button
-                  className="border rounded p-2 hover:bg-slate-400 transition-all"
-                  onClick={() => handleDelete(member.id)}
-                  type="button"
-                >
-                  <DeleteIcon />
-                </button>
-              */}
+              <button
+                className="border rounded p-2 hover:bg-slate-400 transition-all"
+                onClick={() => handleDelete(member.id)}
+                type="button"
+              >
+                <DeleteIcon />
+              </button>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -144,14 +88,6 @@ function Row({ member, handleDelete }: {
   );
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.99),
-  createData('Eclair', 262, 16.0, 24, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 1.5),
-];
-
 export default function Member({members, handleDelete}: 
                                {members: Member[]; handleDelete: (id: number) => void; }) {
 
@@ -166,11 +102,15 @@ export default function Member({members, handleDelete}:
             <TableCell align="right">ダブルスパワー</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {members.map((member: Member) => (
-            <Row key={member.name} member={member} handleDelete={handleDelete}/>
-          ))}
-        </TableBody>
+        {members.length === 0 ? (
+          <p>メンバーがいません</p>
+        ) : (
+          <TableBody>
+            {members.map((member: Member) => (
+              <Row key={member.name} member={member} handleDelete={handleDelete}/>
+            ))}
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   );
