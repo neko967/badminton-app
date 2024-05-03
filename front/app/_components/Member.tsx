@@ -56,11 +56,13 @@ function Row({ member, handleDelete }: {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                最近の試合
+                <div>最近の試合</div>
+                <div>              
+                  <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)}>
+                    メンバーを削除
+                  </Button>
+                </div>
               </Typography>
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)}>
-                メンバーを削除
-              </Button>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -100,7 +102,7 @@ export default function Member({members, handleDelete}:
           </TableRow>
         </TableHead>
         {members.length === 0 ? (
-          <p>メンバーがいません</p>
+          <div>メンバーがいません</div>
         ) : (
           <TableBody>
             {members.map((member: Member) => (
