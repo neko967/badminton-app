@@ -56,12 +56,7 @@ function Row({ member, handleDelete }: {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div" className="justify-between">
-                <div>最近の試合</div>
-                <div>              
-                  <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right">
-                    メンバーを削除
-                  </Button>
-                </div>
+                最近の試合
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
@@ -78,7 +73,10 @@ function Row({ member, handleDelete }: {
                     </TableRow>
                   ))}
                 </TableBody>
-              </Table>
+              </Table>             
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right">
+                メンバーを削除
+              </Button>
             </Box>
           </Collapse>
         </TableCell>
