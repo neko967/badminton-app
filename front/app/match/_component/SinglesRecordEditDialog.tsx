@@ -22,12 +22,12 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
 
-  const [score_1, setScore_1] = useState<number | string>(11);
+  const [score_1, setScore_1] = useState<number | string>('');
   const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1>) => {
     setScore_1(Number(event.target.value) || '');
   };
 
-  const [score_2, setScore_2] = useState<number | string>(11);
+  const [score_2, setScore_2] = useState<number | string>('');
   const handleScoreTwoChange = (event: SelectChangeEvent<typeof score_2>) => {
     setScore_2(Number(event.target.value) || '');
   };
@@ -65,50 +65,14 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-native">{player_1InDialog}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1InDialog}</InputLabel>
               <Select
-                native
+                labelId="demo-dialog-select-label-1"
+                id="demo-dialog-select-1"
                 value={score_1}
                 onChange={handleScoreOneChange}
-                input={<OutlinedInput label="Age" id="demo-dialog-native" />}
+                input={<OutlinedInput label="Point" />}
               >
-                <option aria-label="None" value="" />
-                <option value={0}>0</option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-                <option value={6}>6</option>
-                <option value={7}>7</option>
-                <option value={8}>8</option>
-                <option value={9}>9</option>
-                <option value={10}>10</option>
-                <option value={11}>11</option>
-                <option value={12}>12</option>
-                <option value={13}>13</option>
-                <option value={14}>14</option>
-                <option value={15}>15</option>
-                <option value={16}>16</option>
-                <option value={17}>17</option>
-                <option value={18}>18</option>
-                <option value={19}>19</option>
-                <option value={20}>20</option>
-                <option value={21}>21</option>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label">{player_2InDialog}</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={score_2}
-                onChange={handleScoreTwoChange}
-                input={<OutlinedInput label="Age" />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
                 <MenuItem value={0}>0</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
@@ -131,6 +95,57 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
                 <MenuItem value={19}>19</MenuItem>
                 <MenuItem value={20}>20</MenuItem>
                 <MenuItem value={21}>21</MenuItem>
+                <MenuItem value={22}>22</MenuItem>
+                <MenuItem value={23}>23</MenuItem>
+                <MenuItem value={24}>24</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={26}>26</MenuItem>
+                <MenuItem value={27}>27</MenuItem>
+                <MenuItem value={28}>28</MenuItem>
+                <MenuItem value={29}>29</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-dialog-select-label-2">{player_2InDialog}</InputLabel>
+              <Select
+                labelId="demo-dialog-select-label-2"
+                id="demo-dialog-select-2"
+                value={score_2}
+                onChange={handleScoreTwoChange}
+                input={<OutlinedInput label="Point" />}
+              >
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={7}>7</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={9}>9</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={11}>11</MenuItem>
+                <MenuItem value={12}>12</MenuItem>
+                <MenuItem value={13}>13</MenuItem>
+                <MenuItem value={14}>14</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={16}>16</MenuItem>
+                <MenuItem value={17}>17</MenuItem>
+                <MenuItem value={18}>18</MenuItem>
+                <MenuItem value={19}>19</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={21}>21</MenuItem>
+                <MenuItem value={22}>22</MenuItem>
+                <MenuItem value={23}>23</MenuItem>
+                <MenuItem value={24}>24</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={26}>26</MenuItem>
+                <MenuItem value={27}>27</MenuItem>
+                <MenuItem value={28}>28</MenuItem>
+                <MenuItem value={29}>29</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
               </Select>
             </FormControl>
           </Box>
