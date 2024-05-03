@@ -100,7 +100,7 @@ export default function Member({members, handleDelete}:
             <TableCell align="right">ダブルスパワー</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody className="mb-72">
+        <TableBody>
           {members.map((member: Member) => (
             <Row key={member.name} member={member} handleDelete={handleDelete}/>
           ))}
