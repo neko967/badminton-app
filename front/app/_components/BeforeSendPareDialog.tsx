@@ -20,7 +20,7 @@ interface Member {
 
 export default function BeforeSendPareDialog({beforeSendPareDialogOpen, 
                                               handleBeforeSendPareDialogClose, 
-                                              makedPare, handleMakePare, 
+                                              makedPare, howToPare, handleMakePare, 
                                               playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();

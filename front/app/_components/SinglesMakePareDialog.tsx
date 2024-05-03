@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -35,11 +35,11 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     }
   }
 
-  const handleMakePare = (playersWithStatus: Member[], howToPare: string) => {
+  const handleMakePare = () => {
     console.log("handleMakePareの中に入りました");
     const newPares = [];
-    playersWithStatus.sort((a, b) => b.singles_strength - a.singles_strength);
-    console.log("playersWithStatus[0]", playersWithStatus);
+    playersWithStatus.sort((a: Member, b: Member) => b.singles_strength - a.singles_strength);
+    console.log("playersWithStatus", playersWithStatus);
     console.log("howToPare", howToPare);
 
     switch (howToPare) {
@@ -51,10 +51,10 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           }
         } else {
           let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter(item => item.id !== twice_player.id);
+          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
           newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter(item => item.id !== opponent_to_twice_player.id);
+          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           shuffleArray(players_except_opponent_to_twice_player); 
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
             newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
@@ -68,9 +68,9 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           }
         } else {
           let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter(item => item.id !== twice_player.id);
+          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter(item => item.id !== opponent_to_twice_player.id);
+          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           newPares.push([twice_player.name, opponent_to_twice_player.name]);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
             newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
@@ -86,10 +86,10 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           }
         } else {
           let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter(item => item.id !== twice_player.id);
+          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
           newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter(item => item.id !== opponent_to_twice_player.id);
+          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           const firstHalf = players_except_opponent_to_twice_player.slice(0, players_except_opponent_to_twice_player.length / 2);
           const secondHalf = players_except_opponent_to_twice_player.slice(players_except_opponent_to_twice_player.length / 2);
           for (let i = 0; i < firstHalf.length ; i += 1 ) {
@@ -100,6 +100,12 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     }
     setMakedPare(newPares);
   };
+
+  useEffect(() => {
+    if (howToPare) {
+     console.log(howToPare);
+    }
+  }, [howToPare]);
 
   const [beforeSendPareDialogOpen, setBeforeSendPareDialogOpen] = useState(false);
   const handleBeforeSendPareDialogOpen = () => {
@@ -113,7 +119,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
   return (
     <div>
       <Dialog disableEscapeKeyDown open={pareOpen} onClose={handlePareClose}>
-        <DialogTitle>ペアの組み方</DialogTitle>
+        <DialogTitle>対戦ペアの組み方</DialogTitle>
         <DialogContent>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
@@ -133,7 +139,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePareClose}>Cancel</Button>
-          <Button onClick={() => {handlePareClose(); handleMakePare(playersWithStatus, howToPare); handleBeforeSendPareDialogOpen();}}>Ok</Button>
+          <Button onClick={() => {handlePareClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
       <React.Fragment>
@@ -141,6 +147,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           beforeSendPareDialogOpen={beforeSendPareDialogOpen}
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
+          howToPare={howToPare}
           handleMakePare={handleMakePare}
           playersWithStatus={playersWithStatus}
         />
