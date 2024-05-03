@@ -99,14 +99,16 @@ export default function SinglesRecord() {
                   <>
                     <div
                       key={index}
-                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2"
+                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-24"
                     >
                       <dt className="w-1/3">{singlesRecord?.player_1}</dt>
                       <dt className="w-1/3">{singlesRecord?.score_1}</dt>
                       <p>-</p>
                       <dt className="w-1/3">{singlesRecord?.score_2}</dt>
                       <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                      { singlesRecord?.score_1 && singlesRecord?.score_2 ||
+                      { singlesRecord?.score_1 && singlesRecord?.score_2 ?
+                        undefined
+                      :
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
                           onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
