@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Member {
@@ -57,13 +58,9 @@ function Row({ member, handleDelete }: {
               <Typography variant="h6" gutterBottom component="div">
                 最近の試合
               </Typography>
-              <button
-                className="border rounded p-2 hover:bg-slate-400 transition-all"
-                onClick={() => handleDelete(member.id)}
-                type="button"
-              >
-                <DeleteIcon />
-              </button>
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)}>
+                メンバーを削除
+              </Button>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
