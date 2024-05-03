@@ -55,26 +55,32 @@ function Row({ member, handleDelete }: {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div" className="justify-between">
+              <Typography variant="h6" gutterBottom component="div">
                 最近の試合
               </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>プレイヤー</TableCell>
-                    <TableCell align="right">点数</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {member.history.map((historyRow, index: number) => (
-                    <TableRow key={index}>
-                      <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
-                      <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
+              {member.history ?
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>プレイヤー</TableCell>
+                      <TableCell align="right">点数</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>             
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right">
+                  </TableHead>
+                  <TableBody>
+                    {member.history.map((historyRow, index: number) => (
+                      <TableRow key={index}>
+                        <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
+                        <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>  
+              :
+                <Typography>
+                  記録がありません
+                </Typography>
+              }           
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right py-3">
                 メンバーを削除
               </Button>
             </Box>
