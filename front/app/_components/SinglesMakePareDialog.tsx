@@ -35,7 +35,8 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     }
   }
 
-  const handleMakePare = ({playersWithStatus}: {playersWithStatus: Member[][]}) => {
+  const handleMakePare = (playersWithStatus : Member[][]) => {
+    console.log("handleMakePareの中に入りました");
     const newPares = [];
     playersWithStatus[0].sort((a, b) => b.singles_strength - a.singles_strength);
     console.log("playersWithStatus[0]", playersWithStatus[0]);
