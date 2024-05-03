@@ -158,7 +158,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose; setScore_1_plus_100_with_none(0); setScore_2_plus_100_with_none(0);}}>Cancel</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); setScore_1_plus_100_with_none(0); setScore_2_plus_100_with_none(0);}}>Cancel</Button>
           <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
