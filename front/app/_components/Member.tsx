@@ -55,10 +55,10 @@ function Row({ member, handleDelete }: {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div" className="float-right justify-between">
+              <Typography variant="h6" gutterBottom component="div" className="justify-between">
                 <div>最近の試合</div>
                 <div>              
-                  <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)}>
+                  <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right">
                     メンバーを削除
                   </Button>
                 </div>
