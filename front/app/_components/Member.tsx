@@ -91,6 +91,7 @@ export default function Member({members, handleDelete}:
                                {members: Member[]; handleDelete: (id: number) => void; }) {
 
   return (
+    <>
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
@@ -108,5 +109,11 @@ export default function Member({members, handleDelete}:
         </TableBody>
       </Table>
     </TableContainer>
+    {members.length === 0 &&
+      <div className="text-start px-6 mt-6">
+        <p>メンバーが登録されていません</p>
+      </div>
+    }
+    </>
   );
 }
