@@ -15,13 +15,12 @@ import { useSession } from 'next-auth/react';
 
 export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen, 
                                                  handleSinglesRecordEditDialogClose, 
-                                                 fetchData, singlesRecord_id}: {
+                                                 fetchData, singlesRecords, singlesRecord_id}: {
                                                  singlesRecordEditDialogOpen: any; 
                                                  handleSinglesRecordEditDialogClose: any;
-                                                 fetchData: any, singlesRecord_id: number}) {
+                                                 fetchData: any, singlesRecords: any, singlesRecord_id: number}) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
-  console.log('singlesRecord_id', singlesRecord_id);
 
   const [score_1, setScore_1] = useState<number | string>(11);
   const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1>) => {
@@ -53,11 +52,11 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
   return (
     <div>
       <Dialog disableEscapeKeyDown open={singlesRecordEditDialogOpen} onClose={handleSinglesRecordEditDialogClose}>
-        <DialogTitle>Fill the form</DialogTitle>
+        <DialogTitle>ポイントを入力してください</DialogTitle>
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-native">ポイント1</InputLabel>
+              <InputLabel htmlFor="demo-dialog-native">{singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1}</InputLabel>
               <Select
                 native
                 value={score_1}
@@ -90,7 +89,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label">ポイント2</InputLabel>
+              <InputLabel id="demo-dialog-select-label">{singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label"
                 id="demo-dialog-select"

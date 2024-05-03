@@ -125,6 +125,7 @@ export default function SinglesRecord() {
             <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
                                      handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
                                      fetchData={fetchData}
+                                     singlesRecords={singlesRecords}
                                      singlesRecord_id={singlesRecord_id}
             />
           </section>
