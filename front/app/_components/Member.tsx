@@ -130,8 +130,8 @@ function Row({ member, handleDelete }: {
                 <TableBody>
                   {member.history.map((historyRow, index: number) => (
                     <TableRow key={index}>
-                      <TableCell>{historyRow.player_2}</TableCell>
-                      <TableCell align="right">{historyRow.score_2}</TableCell>
+                      <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
+                      <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
