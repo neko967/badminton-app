@@ -107,7 +107,7 @@ export default function SinglesRecord() {
                       <dt className="w-1/3">{singlesRecord?.score_2}</dt>
                       <dt className="w-1/3">{singlesRecord?.player_2}</dt>
                       { singlesRecord?.score_1 && singlesRecord?.score_2 ?
-                        <div className="w-12 h-12"></div>
+                        <div className="w-16 h-12"></div>
                       :
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
