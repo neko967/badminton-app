@@ -35,6 +35,8 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
   const handleSinglesRecordUpdate = async (id: number) => {
     const score_1 = Number(score_1_plus_100_with_none) - 100;
     const score_2 = Number(score_2_plus_100_with_none) - 100;
+    console.log('score_1_plus_100_with_none', score_1_plus_100_with_none);
+    console.log('score_1', score_1);
 
     if (isNaN(score_1) || isNaN(score_2)) {
       console.error("Invalid score input");
@@ -54,6 +56,11 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
         fetchData();
       });
     }
+  };
+
+  const handleScoreReset = () => {
+    setScore_1_plus_100_with_none(''); 
+    setScore_2_plus_100_with_none('');
   };
 
   const [player_1InDialog, setPlayer_1InDialog] = useState<string>('');
@@ -158,8 +165,8 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); setScore_1_plus_100_with_none(0); setScore_2_plus_100_with_none(0);}}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
