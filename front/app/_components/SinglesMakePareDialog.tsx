@@ -6,8 +6,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import BeforeSendPareDialog from './BeforeSendPareDialog';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface Member {
   id: number;
@@ -21,9 +23,9 @@ interface Member {
 }
 
 export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
-  const [howToPare, setHowToPare] = useState<String>('random');
-  const handleChange = (value: String) => {
-    setHowToPare(value);
+  const [howToPare, setHowToPare] = useState<string>('random');
+  const handleChange = (event: SelectChangeEvent) => {
+    setHowToPare(event.target.value as string);
   };
 
   const [makedPare, setMakedPare] = useState<(string[])[]>([]);
@@ -127,17 +129,18 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         <DialogContent>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
-              <NativeSelect
-                defaultValue={10}
-                inputProps={{
-                  name: 'makepare',
-                  id: 'uncontrolled-native',
-                }}
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={howToPare}
+                label="Age"
+                onChange={handleChange}
               >
-                <option value={10} onClick={() => handleChange('random')}>ランダム</option>
-                <option value={20} onClick={() => handleChange('even')}>力が等しい</option>
-                <option value={30} onClick={() => handleChange('little_diff')}>力が少し離れている</option>
-              </NativeSelect>
+                <MenuItem value={'random'}>ランダム</MenuItem>
+                <MenuItem value={'even'}>力が等しい</MenuItem>
+                <MenuItem value={'little_diff'}>力が少し離れている</MenuItem>
+              </Select>
             </FormControl>
           </Box>
         </DialogContent>
