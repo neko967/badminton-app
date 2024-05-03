@@ -55,7 +55,7 @@ function Row({ member, handleDelete }: {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
+              <Typography variant="h6" gutterBottom component="div" className="float-right justify-between">
                 <div>最近の試合</div>
                 <div>              
                   <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)}>
@@ -101,15 +101,11 @@ export default function Member({members, handleDelete}:
             <TableCell align="right">ダブルスパワー</TableCell>
           </TableRow>
         </TableHead>
-        {members.length === 0 ? (
-          <div>メンバーがいません</div>
-        ) : (
-          <TableBody>
-            {members.map((member: Member) => (
-              <Row key={member.name} member={member} handleDelete={handleDelete}/>
-            ))}
-          </TableBody>
-        )}
+        <TableBody>
+          {members.map((member: Member) => (
+            <Row key={member.name} member={member} handleDelete={handleDelete}/>
+          ))}
+        </TableBody>
       </Table>
     </TableContainer>
   );
