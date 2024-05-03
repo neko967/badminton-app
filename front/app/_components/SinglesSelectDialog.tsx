@@ -73,7 +73,7 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
   const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
   const handlePareOpen = () => {
     const result = members.filter(item => players.includes(item.name));
-    setPlayersWithStatus([result]);
+    setPlayersWithStatus(result);
     setPareOpen(true);
   };
   const handlePareClose = (event: any, reason: any) => {
