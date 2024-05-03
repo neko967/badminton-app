@@ -106,7 +106,7 @@ export default function SinglesRecord() {
                       <p>-</p>
                       <dt className="w-1/3">{singlesRecord?.score_2}</dt>
                       <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                      { singlesRecord?.score_1 && singlesRecord?.score_2 ?
+                      { singlesRecord?.score_1 >= 0 && singlesRecord?.score_2 >= 0 ?
                         <div className="w-16 h-12"></div>
                       :
                         <button
