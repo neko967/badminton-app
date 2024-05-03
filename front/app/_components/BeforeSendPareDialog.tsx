@@ -28,8 +28,8 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length; i ++) {
-      const member1 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][0]);
-      const member2 = playersWithStatus[0].find((item: Member) => item.name === makedPare[i][1]);
+      const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
+      const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
 
       if (session) {
         await fetch(API_URL, {
