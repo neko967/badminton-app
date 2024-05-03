@@ -22,19 +22,24 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
 
-  const [score_1_plus_100, setScore_1] = useState<number>(0);
-  const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1_plus_100>) => {
-    setScore_1(Number(event.target.value));
+  const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
+  const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1_plus_100_with_none>) => {
+    setScore_1_plus_100_with_none(Number(event.target.value) || '');
   };
 
-  const [score_2_plus_100, setScore_2] = useState<number>(0);
-  const handleScoreTwoChange = (event: SelectChangeEvent<typeof score_2_plus_100>) => {
-    setScore_2(Number(event.target.value));
+  const [score_2_plus_100_with_none, setScore_2_plus_100_with_none] = useState<number | string>('');
+  const handleScoreTwoChange = (event: SelectChangeEvent<typeof score_2_plus_100_with_none>) => {
+    setScore_2_plus_100_with_none(Number(event.target.value) || '');
   };
 
   const handleSinglesRecordUpdate = async (id: number) => {
-    const score_1 = score_1_plus_100 - 100
-    const score_2 = score_1_plus_100 - 100
+    const score_1 = Number(score_1_plus_100_with_none) - 100;
+    const score_2 = Number(score_2_plus_100_with_none) - 100;
+
+    if (isNaN(score_1) || isNaN(score_2)) {
+      console.error("Invalid score input");
+      return;
+    }
     if (session) {
       await fetch(`${API_URL}/${id}`, {
         method: "PATCH",
@@ -71,7 +76,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               <Select
                 labelId="demo-dialog-select-label-1"
                 id="demo-dialog-select-1"
-                value={score_1_plus_100}
+                value={score_1_plus_100_with_none}
                 onChange={handleScoreOneChange}
                 input={<OutlinedInput label="Point" />}
               >
@@ -113,7 +118,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               <Select
                 labelId="demo-dialog-select-label-2"
                 id="demo-dialog-select-2"
-                value={score_2_plus_100}
+                value={score_2_plus_100_with_none}
                 onChange={handleScoreTwoChange}
                 input={<OutlinedInput label="Point" />}
               >
@@ -153,7 +158,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSinglesRecordEditDialogClose}>Cancel</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose; setScore_1_plus_100_with_none(0); setScore_2_plus_100_with_none(0);}}>Cancel</Button>
           <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
