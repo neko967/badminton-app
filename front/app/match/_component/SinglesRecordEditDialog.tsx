@@ -49,6 +49,15 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
     }
   };
 
+  const [player_1InDialog, setPlayer_1InDialog] = useState<string>('');
+  const [player_2InDialog, setPlayer_2InDialog] = useState<string>('');
+  useEffect(() => {
+    if (singlesRecord_id) {
+      setPlayer_1InDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1);
+      setPlayer_2InDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
+    }
+  }, [singlesRecord_id]);
+
   return (
     <div>
       <Dialog disableEscapeKeyDown open={singlesRecordEditDialogOpen} onClose={handleSinglesRecordEditDialogClose}>
@@ -56,7 +65,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-native">{singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-native">{player_1InDialog}</InputLabel>
               <Select
                 native
                 value={score_1}
@@ -89,7 +98,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label">{singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2}</InputLabel>
+              <InputLabel id="demo-dialog-select-label">{player_2InDialog}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label"
                 id="demo-dialog-select"
