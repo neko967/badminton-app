@@ -21,7 +21,11 @@ interface Member {
 }
 
 export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
-  const [howToPare, setHowToPare] = useState('random');
+  const [howToPare, setHowToPare] = useState<String>('random');
+  const handleChange = (value: String) => {
+    setHowToPare(value);
+  };
+
   const [makedPare, setMakedPare] = useState<(string[])[]>([]);
 
   function getRandomInt(max: number) {
@@ -55,7 +59,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
           newPares.push([twice_player.name, opponent_to_twice_player.name]);
           let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
-          shuffleArray(players_except_opponent_to_twice_player); 
+          shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
             newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
           }
@@ -103,7 +107,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
 
   useEffect(() => {
     if (howToPare) {
-     console.log(howToPare);
+     console.log('useEffectの中', howToPare);
     }
   }, [howToPare]);
 
@@ -130,9 +134,9 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
                   id: 'uncontrolled-native',
                 }}
               >
-                <option value={10} onClick={() => setHowToPare('random')}>ランダム</option>
-                <option value={20} onClick={() => setHowToPare('even')}>力が等しい</option>
-                <option value={30} onClick={() => setHowToPare('little_diff')}>力が少し離れている</option>
+                <option value={10} onClick={() => handleChange('random')}>ランダム</option>
+                <option value={20} onClick={() => handleChange('even')}>力が等しい</option>
+                <option value={30} onClick={() => handleChange('little_diff')}>力が少し離れている</option>
               </NativeSelect>
             </FormControl>
           </Box>

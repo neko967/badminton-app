@@ -75,7 +75,7 @@ export default function BeforeSendPareDialog({beforeSendPareDialogOpen,
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBeforeSendPareDialogClose}>キャンセル</Button>
-        <Button onClick={() => {handleMakePare(playersWithStatus);}}>組み直す</Button>
+        <Button onClick={() => {handleMakePare();}}>組み直す</Button>
         <Button onClick={() => {handleBeforeSendPareDialogClose(); handlePareSubmit();}} autoFocus>登録する</Button>
       </DialogActions>
     </Dialog>
