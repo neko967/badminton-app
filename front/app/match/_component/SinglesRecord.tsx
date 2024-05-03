@@ -106,13 +106,15 @@ export default function SinglesRecord() {
                       <p>-</p>
                       <dt className="w-1/3">{singlesRecord?.score_2}</dt>
                       <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                      <button
-                        className="border rounded p-2 hover:bg-slate-400 transition-all"
-                        onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
-                        type="button"
-                      >
-                        <EditIcon />
-                      </button>
+                      { singlesRecord?.score_1 && singlesRecord?.score_2 ||
+                        <button
+                          className="border rounded p-2 hover:bg-slate-400 transition-all"
+                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
+                          type="button"
+                        >
+                          <EditIcon />
+                        </button>  
+                      } 
                     </div>
                   </>
                 ))}
