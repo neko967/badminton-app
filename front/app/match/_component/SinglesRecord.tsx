@@ -90,7 +90,7 @@ export default function SinglesRecord() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <div className="mx-auto w-full flex justify-start items-center flex-col">
-          <section className="text-start w-96 mb-32 px-6 ">
+          <section className="text-start w-96 px-6 ">
             {singlesRecords.length === 0 ? (
               <p>記録がありません</p>
             ) : (
