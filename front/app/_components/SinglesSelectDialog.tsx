@@ -72,6 +72,9 @@ export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
   const [pareOpen, setPareOpen] = React.useState(false);
   const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
   const handlePareOpen = () => {
+    if (players.length < 2) {
+      return;
+    }
     const result = members.filter(item => players.includes(item.name));
     setPlayersWithStatus(result);
     setPareOpen(true);
