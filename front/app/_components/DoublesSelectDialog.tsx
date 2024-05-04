@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -13,6 +14,18 @@ import Select from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
+import DoublesMakePareDialog from './DoublesMakePareDialog';
+
+interface Member {
+  id: number;
+  name: string;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
+}
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,33 +43,50 @@ const names = [
 ];
 
 
-export default function DialogSelect({ doublesOpen, handleDoublesClose,
-                                       setLeftUpPlayer, setLeftDownPlayer, 
-                                       setRightUpPlayer, setRightDownPlayer}: any) {
-  const [personName, setPersonName]: any = React.useState([]);
-  const [players, setPlayers]: any = React.useState([]);
+export default function DialogSelect({ doublesOpen, handleDoublesClose }: any) {
+  const [members, setMembers] = useState([] as Member[]);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+  const { data: session, status } = useSession();
 
+  const fetchData = useCallback(async () => {
+    if (session) {
+      const query = session.user?.email;
+      const response = await fetch (`${API_URL}?email=${query}`);
+      const data = await response.json();
+      setMembers(data);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (session) {
+      fetchData();
+    }
+  }, [session, fetchData]);
+
+  const [players, setPlayers]: any = useState([]);
   const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setPlayers(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
 
-  function handlePlayers (personName: any) {
-    setPlayers(personName);
-  }
-
-  const [doublesTeamOpen, setDoublesTeamOpen] = React.useState(false);
-  const handleDoublesTeamClickOpen = () => {
-    setDoublesTeamOpen(true);
+  const [pareOpen, setPareOpen] = React.useState(false);
+  const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
+  const handlePareOpen = () => {
+    if (players.length < 2) {
+      return;
+    }
+    const result = members.filter(item => players.includes(item.name));
+    setPlayersWithStatus(result);
+    setPareOpen(true);
   };
-  const handleDoublesTeamClose = (event: any, reason: any) => {
+  const handlePareClose = (event: any, reason: any) => {
     if (reason !== 'backdropClick') {
-      setDoublesTeamOpen(false);
+      setPareOpen(false);
     }
   };
 
@@ -72,7 +102,7 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose,
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
-                value={personName}
+                value={players}
                 onChange={handleChange}
                 input={<OutlinedInput label="Tag" />}
                 renderValue={(selected) => selected.join(', ')}
@@ -80,7 +110,7 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose,
               >
                 {names.map((name) => (
                   <MenuItem key={name} value={name}>
-                    <Checkbox checked={personName.indexOf(name) > -1} />
+                    <Checkbox checked={players.indexOf(name) > -1} />
                     <ListItemText primary={name} />
                   </MenuItem>
                 ))}
@@ -90,127 +120,13 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose,
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDoublesClose}>Cancel</Button>
-          <Button onClick={() => {handleDoublesClose(); handlePlayers(personName); handleDoublesTeamClickOpen();}}>Ok</Button>
+          <Button onClick={() => {handleDoublesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
-      <MakeDoublesTeamDialog doublesTeamOpen={doublesTeamOpen} 
-                             handleDoublesTeamClose={handleDoublesTeamClose} 
-                             players={players}
-                             setLeftUpPlayer={setLeftUpPlayer}
-                             setLeftDownPlayer={setLeftDownPlayer}
-                             setRightUpPlayer={setRightUpPlayer}
-                             setRightDownPlayer={setRightDownPlayer}
+      <DoublesMakePareDialog pareOpen={pareOpen} 
+                             handlePareClose={handlePareClose} 
+                             playersWithStatus={playersWithStatus}
       />
-    </div>
-  );
-}
-
-function MakeDoublesTeamDialog({ doublesTeamOpen, handleDoublesTeamClose, players,
-                                 setLeftUpPlayer, setLeftDownPlayer, 
-                                 setRightUpPlayer, setRightDownPlayer }: any) {
-
-  const [firstPlayer, setFirstPlayer] = useState('');
-  const handleFirstPlayerChange = (event: any) => {
-    setFirstPlayer(String(event.target.value) || '');
-  };
-
-  const [secondPlayer, setSecondPlayer] = useState('');
-  const handleSecondPlayerChange = (event: any) => {
-    setSecondPlayer(String(event.target.value) || '');
-  };
-
-  const [thirdPlayer, setThirdPlayer] = useState('');
-  const handleThirdPlayerChange = (event: any) => {
-    setThirdPlayer(String(event.target.value) || '');
-  };
-
-  const [fourthPlayer, setFourthPlayer] = useState('');
-  const handleFourthPlayerChange = (event: any) => {
-    setFourthPlayer(String(event.target.value) || '');
-  };
-
-  function setPlayers (dividedPlayers: any) {
-    setLeftUpPlayer(dividedPlayers[0]);
-    setLeftDownPlayer(dividedPlayers[1]);
-    setRightUpPlayer(dividedPlayers[2]);
-    setRightDownPlayer(dividedPlayers[3]);
-  }
-
-  return (
-    <div>
-      <Dialog disableEscapeKeyDown open={doublesTeamOpen} onClose={handleDoublesTeamClose}>
-        <DialogTitle>チームの振り分け</DialogTitle>
-        <DialogContent>
-          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <FormControl sx={{ m: 1, minWidth: 228 }}>
-              <InputLabel id="demo-dialog-select-label">チーム１</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={firstPlayer}
-                onChange={handleFirstPlayerChange}
-                input={<OutlinedInput label="FirstPlayer" />}
-              >
-                <MenuItem value={players[0]}>{players[0]}</MenuItem>
-                <MenuItem value={players[1]}>{players[1]}</MenuItem>
-                <MenuItem value={players[2]}>{players[2]}</MenuItem>
-                <MenuItem value={players[3]}>{players[3]}</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 228 }}>
-              <InputLabel id="demo-dialog-select-label">チーム１</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={secondPlayer}
-                onChange={handleSecondPlayerChange}
-                input={<OutlinedInput label="SecondPlayer" />}
-              >
-                <MenuItem value={players[0]}>{players[0]}</MenuItem>
-                <MenuItem value={players[1]}>{players[1]}</MenuItem>
-                <MenuItem value={players[2]}>{players[2]}</MenuItem>
-                <MenuItem value={players[3]}>{players[3]}</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 228 }}>
-              <InputLabel id="demo-dialog-select-label">チーム２</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={thirdPlayer}
-                onChange={handleThirdPlayerChange}
-                input={<OutlinedInput label="ThirdPlayer" />}
-              >
-                <MenuItem value={players[0]}>{players[0]}</MenuItem>
-                <MenuItem value={players[1]}>{players[1]}</MenuItem>
-                <MenuItem value={players[2]}>{players[2]}</MenuItem>
-                <MenuItem value={players[3]}>{players[3]}</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 228 }}>
-              <InputLabel id="demo-dialog-select-label">チーム２</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={fourthPlayer}
-                onChange={handleFourthPlayerChange}
-                input={<OutlinedInput label="FourthPlayer" />}
-              >
-                <MenuItem value={players[0]}>{players[0]}</MenuItem>
-                <MenuItem value={players[1]}>{players[1]}</MenuItem>
-                <MenuItem value={players[2]}>{players[2]}</MenuItem>
-                <MenuItem value={players[3]}>{players[3]}</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDoublesTeamClose}>Cancel</Button>
-          <Button onClick={() => {handleDoublesTeamClose(); 
-                                  setPlayers([firstPlayer, secondPlayer, thirdPlayer, fourthPlayer]); }
-                          }>Ok</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
