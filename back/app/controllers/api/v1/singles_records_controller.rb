@@ -28,8 +28,8 @@ class Api::V1::SinglesRecordsController < ApplicationController
     player_1.singles_strength - 50
     player_2.singles_strength - 50
     total_strength = (player_1.singles_strength - 50) + (player_2.singles_strength - 50)
-    minus_strength_player_1 = ((player_1.singles_strength - 50) / total_strength).total_score.round
-    minus_strength_player_2 = total_score - get_strength_player_1
+    minus_strength_player_1 = (((player_1.singles_strength - 50).to_f / total_strength.to_f) * total_score).round
+    minus_strength_player_2 = total_score - minus_strength_player_1
 
     new_strength_player_1 = player_1.singles_strength - minus_strength_player_1 + score_1
     player_1.update(singles_strength: new_strength_player_1)
