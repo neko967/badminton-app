@@ -19,7 +19,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
                                                  singlesRecordEditDialogOpen: any; 
                                                  handleSinglesRecordEditDialogClose: any;
                                                  fetchData: any, singlesRecords: any, singlesRecord_id: number}) {
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+  const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
 
   const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
@@ -47,13 +47,15 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
     console.log('score_2', score_2);
 
     if (session) {
-      await fetch(`${API_URL}/${id}`, {
+      await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          player_1: player_1NameInDialog,
           score_1: score_1,
+          player_2: player_2NameInDialog,
           score_2: score_2,
         }),
       }).then(() => {
@@ -67,12 +69,12 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
     setScore_2_plus_100_with_none('');
   };
 
-  const [player_1InDialog, setPlayer_1InDialog] = useState<string>('');
-  const [player_2InDialog, setPlayer_2InDialog] = useState<string>('');
+  const [player_1NameInDialog, setPlayer_1NameInDialog] = useState<string>('');
+  const [player_2NameInDialog, setPlayer_2NameInDialog] = useState<string>('');
   useEffect(() => {
     if (singlesRecord_id) {
-      setPlayer_1InDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1);
-      setPlayer_2InDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
+      setPlayer_1NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1);
+      setPlayer_2NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
     }
   }, [singlesRecord_id]);
 
@@ -83,7 +85,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1InDialog}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1NameInDialog}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
                 id="demo-dialog-select-1"
@@ -125,7 +127,7 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label-2">{player_2InDialog}</InputLabel>
+              <InputLabel id="demo-dialog-select-label-2">{player_2NameInDialog}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
                 id="demo-dialog-select-2"

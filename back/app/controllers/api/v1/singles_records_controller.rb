@@ -18,11 +18,24 @@ class Api::V1::SinglesRecordsController < ApplicationController
 
   def update
     singles_record = SinglesRecord.find(params[:id])
-    if singles_record.update(score_1: params[:score_1], score_2: params[:score_2])
-      render json: singles_record, status: :created
-    else
-      render json: singles_record.errors, status: :unprocessable_entity
-    end
+    singles_record.update(score_1: params[:score_1], score_2: params[:score_2])
+
+    player_1 = singles_record.singles_recored_players.find_by(name: params[:player_1])
+    score_1 = params[:score_1]
+    player_2 = singles_record.singles_recored_players.find_by(name: params[:player_2])
+    score_2 = params[:score_2]
+    total_score = score_1 + score_2
+    player_1.singles_strength - 50
+    player_2.singles_strength - 50
+    total_strength = (player_1.singles_strength - 50) + (player_2.singles_strength - 50)
+    minus_strength_player_1 = ((player_1.singles_strength - 50) / total_strength).total_score.round
+    minus_strength_player_2 = total_score - get_strength_player_1
+
+    new_strength_player_1 = player_1.singles_strength - minus_strength_player_1 + score_1
+    player_1.update(singles_strength: new_strength_player_1)
+
+    new_strength_player_2 = player_2.singles_strength - minus_strength_player_2 + score_2
+    player_2.update(singles_strength: new_strength_player_2)
   end
 
   private
