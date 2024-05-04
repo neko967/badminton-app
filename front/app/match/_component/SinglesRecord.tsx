@@ -49,7 +49,6 @@ export default function SinglesRecord() {
   const [singlesRecords, setSinglesRecords] = useState([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
-  console.log('singlesRecords', singlesRecords);
 
   const fetchData = useCallback(async () => {
     if (session) {

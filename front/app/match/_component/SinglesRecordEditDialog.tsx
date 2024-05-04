@@ -39,12 +39,6 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
 
     const score_1 = Number(score_1_plus_100_with_none) - 100;
     const score_2 = Number(score_2_plus_100_with_none) - 100;
-    console.log('score_1_plus_100_with_none', score_1_plus_100_with_none);
-    console.log('Number(score_1_plus_100_with_none)', Number(score_1_plus_100_with_none));
-    console.log('score_1', score_1);
-    console.log('score_2_plus_100_with_none', score_2_plus_100_with_none);
-    console.log('Number(score_2_plus_100_with_none)', Number(score_2_plus_100_with_none));
-    console.log('score_2', score_2);
 
     if (session) {
       await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
