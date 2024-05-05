@@ -1,6 +1,6 @@
 "use client";
 
-import SinglesRecord from '@/app/match/_component/SinglesRecord';
+import Records from '@/app/match/_component/Records';
 
 interface Member {
   id: number;
@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <>
-      <SinglesRecord />
+      <Records />
     </>
   );
 }

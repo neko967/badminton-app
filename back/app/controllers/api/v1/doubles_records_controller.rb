@@ -6,10 +6,15 @@ class Api::V1::DoublesRecordsController < ApplicationController
   end
 
   def create
-    doubles_record = @current_user.doubles_records.create!(player_1: Member.find(params[:member_1_id]).name, player_2: Member.find(params[:member_2_id]).name)
-    doubles_player_1 = doubles_record.doubles_players.create(member_id: params[:member_1_id]) 
+    doubles_record = @current_user.doubles_records.create!(player_1: Member.find(params[:member_1_id]).name,
+                                                           player_2: Member.find(params[:member_2_id]).name,
+                                                           player_3: Member.find(params[:member_3_id]).name,
+                                                           player_4: Member.find(params[:member_4_id]).name)
+    doubles_player_1 = doubles_record.doubles_players.create(member_id: params[:member_1_id])
     doubles_player_2 = doubles_record.doubles_players.create(member_id: params[:member_2_id])
-    if doubles_player_1 && doubles_player_2
+    doubles_player_3 = doubles_record.doubles_players.create(member_id: params[:member_3_id])
+    doubles_player_4 = doubles_record.doubles_players.create(member_id: params[:member_4_id])
+    if doubles_player_1 && doubles_player_2 && doubles_player_3 && doubles_player_4
       render json: doubles_player_1, status: :created
     else
       render json: doubles_player_1.errors, status: :unprocessable_entity

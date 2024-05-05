@@ -13,78 +13,84 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 
-export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen, 
-                                                 handleSinglesRecordEditDialogClose, 
-                                                 fetchSinglesData, singlesRecords, singlesRecord_id}: {
-                                                 singlesRecordEditDialogOpen: any; 
-                                                 handleSinglesRecordEditDialogClose: any;
-                                                 fetchSinglesData: any, singlesRecords: any, singlesRecord_id: number}) {
-  const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+export default function DoublesRecordEditDialog({doublesRecordEditDialogOpen, 
+                                                 handleDoublesRecordEditDialogClose, 
+                                                 fetchDoublesData, doublesRecords, doublesRecord_id}: {
+                                                 doublesRecordEditDialogOpen: any; 
+                                                 handleDoublesRecordEditDialogClose: any;
+                                                 fetchDoublesData: any, doublesRecords: any, doublesRecord_id: number}) {
+  const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const { data: session, status } = useSession();
 
-  const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
-  const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1_plus_100_with_none>) => {
-    setScore_1_plus_100_with_none(Number(event.target.value) || '');
+  const [score_12_plus_100_with_none, setScore_12_plus_100_with_none] = useState<number | string>('');
+  const handleScoreOneTwoChange = (event: SelectChangeEvent<typeof score_12_plus_100_with_none>) => {
+    setScore_12_plus_100_with_none(Number(event.target.value) || '');
   };
 
-  const [score_2_plus_100_with_none, setScore_2_plus_100_with_none] = useState<number | string>('');
-  const handleScoreTwoChange = (event: SelectChangeEvent<typeof score_2_plus_100_with_none>) => {
-    setScore_2_plus_100_with_none(Number(event.target.value) || '');
+  const [score_34_plus_100_with_none, setScore_34_plus_100_with_none] = useState<number | string>('');
+  const handleScoreThreeFourChange = (event: SelectChangeEvent<typeof score_34_plus_100_with_none>) => {
+    setScore_34_plus_100_with_none(Number(event.target.value) || '');
   };
 
-  const handleSinglesRecordUpdate = async (id: number) => {
-    if ( score_1_plus_100_with_none === '' || score_2_plus_100_with_none === '') {
+  const handleDoublesRecordUpdate = async (id: number) => {
+    if ( score_12_plus_100_with_none === '' || score_34_plus_100_with_none === '') {
       return;
     }
 
-    const score_1 = Number(score_1_plus_100_with_none) - 100;
-    const score_2 = Number(score_2_plus_100_with_none) - 100;
+    const score_12 = Number(score_12_plus_100_with_none) - 100;
+    const score_34 = Number(score_34_plus_100_with_none) - 100;
 
     if (session) {
-      await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
+      await fetch(`${API_URL_DOUBLES_RECORD}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           player_1: player_1NameInDialog,
-          score_1: score_1,
           player_2: player_2NameInDialog,
-          score_2: score_2,
+          score_12: score_12,
+          player_3: player_3NameInDialog,
+          player_4: player_4NameInDialog,
+          score_34: score_34,
         }),
       }).then(() => {
-        fetchSinglesData();
+        fetchDoublesData();
       });
     }
   };
 
   const handleScoreReset = () => {
-    setScore_1_plus_100_with_none(''); 
-    setScore_2_plus_100_with_none('');
+    setScore_12_plus_100_with_none(''); 
+    setScore_34_plus_100_with_none('');
   };
 
   const [player_1NameInDialog, setPlayer_1NameInDialog] = useState<string>('');
   const [player_2NameInDialog, setPlayer_2NameInDialog] = useState<string>('');
+  const [player_3NameInDialog, setPlayer_3NameInDialog] = useState<string>('');
+  const [player_4NameInDialog, setPlayer_4NameInDialog] = useState<string>('');
   useEffect(() => {
-    if (singlesRecord_id) {
-      setPlayer_1NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1);
-      setPlayer_2NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
+    if (doublesRecord_id) {
+      setPlayer_1NameInDialog(doublesRecords.find( ({ id }: any) => id == doublesRecord_id ).player_1);
+      setPlayer_2NameInDialog(doublesRecords.find( ({ id }: any) => id == doublesRecord_id ).player_2);
+      setPlayer_3NameInDialog(doublesRecords.find( ({ id }: any) => id == doublesRecord_id ).player_3);
+      setPlayer_4NameInDialog(doublesRecords.find( ({ id }: any) => id == doublesRecord_id ).player_4);
     }
-  }, [singlesRecord_id]);
+  }, [doublesRecord_id]);
 
   return (
     <div>
-      <Dialog disableEscapeKeyDown open={singlesRecordEditDialogOpen} onClose={handleSinglesRecordEditDialogClose}>
+      <Dialog disableEscapeKeyDown open={doublesRecordEditDialogOpen} onClose={handleDoublesRecordEditDialogClose}>
         <DialogTitle>ポイントを入力してください</DialogTitle>
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1NameInDialog}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1NameInDialog} {player_2NameInDialog}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
                 id="demo-dialog-select-1"
-                value={score_1_plus_100_with_none}
-                onChange={handleScoreOneChange}
+                value={score_12_plus_100_with_none}
+                onChange={handleScoreOneTwoChange}
                 input={<OutlinedInput label="Point" />}
               >
                 <MenuItem value={100}>0</MenuItem>
@@ -121,12 +127,12 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label-2">{player_2NameInDialog}</InputLabel>
+              <InputLabel id="demo-dialog-select-label-2">{player_3NameInDialog} {player_4NameInDialog}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
                 id="demo-dialog-select-2"
-                value={score_2_plus_100_with_none}
-                onChange={handleScoreTwoChange}
+                value={score_34_plus_100_with_none}
+                onChange={handleScoreThreeFourChange}
                 input={<OutlinedInput label="Point" />}
               >
                 <MenuItem value={100}>0</MenuItem>
@@ -165,8 +171,8 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
+          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
+          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset(); handleDoublesRecordUpdate(doublesRecord_id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
