@@ -64,51 +64,109 @@ export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handl
         if (playersWithStatus.length % 4 === 0) {
           shuffleArray(playersWithStatus); 
           for (let i = 0; i < playersWithStatus.length; i += 4) {
-            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name, playersWithStatus[i + 2].name, playersWithStatus[i + 3].name]);
+            newPares.push([playersWithStatus[i].name,
+                           playersWithStatus[i + 1].name,
+                           playersWithStatus[i + 2].name,
+                           playersWithStatus[i + 3].name]);
           }
         } else if (playersWithStatus.length % 4 === 1) {
           const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
           const opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
-          newPares.push([three_twice_players_array[0].name, three_twice_players_array[1].name, three_twice_players_array[2].name, opponent_to_twice_player.name]);
+          newPares.push([three_twice_players_array[0].name,
+                         three_twice_players_array[1].name,
+                         three_twice_players_array[2].name,
+                         opponent_to_twice_player.name]);
           const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i].name,
+                           players_except_opponent_to_twice_player[i + 1].name,
+                           players_except_opponent_to_twice_player[i + 2].name,
+                           players_except_opponent_to_twice_player[i + 3].name]);
           }
         } else if (playersWithStatus.length % 4 === 2) {
           const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
           const [two_opponent_to_twice_player, normal_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
-          newPares.push([two_twice_players_array[0].name, two_twice_players_array[1].name, two_opponent_to_twice_player[0].name, two_opponent_to_twice_player[1].name]);
+          newPares.push([two_twice_players_array[0].name,
+                         two_twice_players_array[1].name,
+                         two_opponent_to_twice_player[0].name,
+                         two_opponent_to_twice_player[1].name]);
           const players_except_opponent_to_twice_player: Member[] = [two_twice_players_array, normal_players_array].flat();
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i].name,
+                           players_except_opponent_to_twice_player[i + 1].name,
+                           players_except_opponent_to_twice_player[i + 2].name,
+                           players_except_opponent_to_twice_player[i + 3].name]);
           }
         } else if (playersWithStatus.length % 4 === 3) {
           const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
           const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
           const [three_opponent_to_twice_players_array, normal_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
-          newPares.push([twice_player.name, three_opponent_to_twice_players_array[0].name, three_opponent_to_twice_players_array[1].name, three_opponent_to_twice_players_array[2].name]);
+          newPares.push([twice_player.name,
+                         three_opponent_to_twice_players_array[0].name,
+                         three_opponent_to_twice_players_array[1].name,
+                         three_opponent_to_twice_players_array[2].name]);
           const players_except_opponent_to_twice_player: Member[] = [twice_player, normal_players_array].flat();
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i].name,
+                           players_except_opponent_to_twice_player[i + 1].name,
+                           players_except_opponent_to_twice_player[i + 2].name,
+                           players_except_opponent_to_twice_player[i + 3].name]);
           }
         }
         break;
       case "even":
-        if (playersWithStatus.length % 2 === 0) {
-          for (let i = 0; i < playersWithStatus.length; i += 2) {
-            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
+        if (playersWithStatus.length % 4 === 0) {
+          for (let i = 0; i < playersWithStatus.length; i += 4) {
+            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name, playersWithStatus[i + 2].name, playersWithStatus[i + 3].name]);
           }
-        } else {
-          let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
-          let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
-          newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
+        } else if (playersWithStatus.length % 4 === 1) {
+          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
+          const one_opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
+          newPares.push([three_twice_players_array[0].name,
+                         three_twice_players_array[1].name,
+                         three_twice_players_array[2].name,
+                         one_opponent_to_twice_player.name]);
+          const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== one_opponent_to_twice_player.id);
+          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_opponent_to_twice_player[i].name,
+                           players_except_opponent_to_twice_player[i + 1].name,
+                           players_except_opponent_to_twice_player[i + 2].name,
+                           players_except_opponent_to_twice_player[i + 3].name]);
+          }
+        } else if (playersWithStatus.length % 4 === 2) {
+          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
+          const [two_opponent_to_twice_player, once_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
+          newPares.push([two_twice_players_array[0].name,
+                         two_twice_players_array[1].name,
+                         two_opponent_to_twice_player[0].name,
+                         two_opponent_to_twice_player[1].name]);
+          const players_except_two_pponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== two_opponent_to_twice_player[0].id
+                                                                                                                && item.id !== two_opponent_to_twice_player[1].id);
+          for (let i = 0; i < players_except_two_pponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_two_pponent_to_twice_player[i].name,
+                           players_except_two_pponent_to_twice_player[i + 1].name,
+                           players_except_two_pponent_to_twice_player[i + 2].name,
+                           players_except_two_pponent_to_twice_player[i + 3].name]);
+          }
+        } else if (playersWithStatus.length % 4 === 3) {
+          const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
+          const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+          const [three_players_opponent_to_twice_player_array, once_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
+          newPares.push([twice_player.name,
+                         three_players_opponent_to_twice_player_array[0].name,
+                         three_players_opponent_to_twice_player_array[1].name,
+                         three_players_opponent_to_twice_player_array[2].name]);
+          const players_except_three_opponent_to_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== three_players_opponent_to_twice_player_array[0].id
+                                                                                                                  && item.id !== three_players_opponent_to_twice_player_array[1].id
+                                                                                                                  && item.id !== three_players_opponent_to_twice_player_array[2].id);
+          for (let i = 0; i < players_except_three_opponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_three_opponent_to_twice_player[i].name,
+                           players_except_three_opponent_to_twice_player[i + 1].name,
+                           players_except_three_opponent_to_twice_player[i + 2].name,
+                           players_except_three_opponent_to_twice_player[i + 3].name]);
           }
         }
         break;

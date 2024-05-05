@@ -113,7 +113,7 @@ export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }:
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDoublesClose}>Cancel</Button>
+          <Button onClick={() => {handleDoublesClose(); setPlayers([]);}}>Cancel</Button>
           <Button onClick={() => {handleDoublesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
