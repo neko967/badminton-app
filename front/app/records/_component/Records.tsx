@@ -46,8 +46,12 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                        doublesRecords, handleDoublesRecordEditDialogOpen}: any) {
   const searchParams = useSearchParams();
   const set_value = searchParams.get('set_value');
-  const defaultValue = set_value ? Number(set_value) : 0;
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (set_value !== null) {
+      setValue(Number(set_value));
+    }
+  }, [set_value]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
