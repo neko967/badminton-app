@@ -18,9 +18,9 @@ interface Member {
   doubles_strength: number;
 }
 
-export default function BeforeSendPareDialog({beforeSendPareDialogOpen, 
+export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen, 
                                               handleBeforeSendPareDialogClose, 
-                                              makedPare, howToPare, handleMakePare, 
+                                              makedPare, handleMakePare, 
                                               playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();

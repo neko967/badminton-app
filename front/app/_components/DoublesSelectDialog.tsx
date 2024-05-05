@@ -13,7 +13,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
 import DoublesMakePareDialog from './DoublesMakePareDialog';
 
 interface Member {
@@ -38,12 +37,7 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'ゲストA','ゲストB','ゲストC','ゲストD', 'ゲストE','ゲストF','ゲストG','ゲストH'
-];
-
-
-export default function DialogSelect({ doublesOpen, handleDoublesClose }: any) {
+export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }: any) {
   const [members, setMembers] = useState([] as Member[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
   const { data: session, status } = useSession();
@@ -74,19 +68,19 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose }: any) {
     );
   };
 
-  const [pareOpen, setPareOpen] = React.useState(false);
+  const [doublesMakePareDialogOpen, setDoublesMakePareDialogOpenOpen] = React.useState(false);
   const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
   const handlePareOpen = () => {
-    if (players.length < 2) {
+    if (players.length < 4) {
       return;
     }
     const result = members.filter(item => players.includes(item.name));
     setPlayersWithStatus(result);
-    setPareOpen(true);
+    setDoublesMakePareDialogOpenOpen(true);
   };
-  const handlePareClose = (event: any, reason: any) => {
+  const handleDoublesMakePareDialogClose = (event: any, reason: any) => {
     if (reason !== 'backdropClick') {
-      setPareOpen(false);
+      setDoublesMakePareDialogOpenOpen(false);
     }
   };
 
@@ -108,10 +102,10 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose }: any) {
                 renderValue={(selected) => selected.join(', ')}
                 MenuProps={MenuProps}
               >
-                {names.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={players.indexOf(name) > -1} />
-                    <ListItemText primary={name} />
+                {members.map((member) => (
+                  <MenuItem key={member.name} value={member.name}>
+                    <Checkbox checked={players.indexOf(member.name) > -1} />
+                    <ListItemText primary={member.name} />
                   </MenuItem>
                 ))}
               </Select>
@@ -123,8 +117,8 @@ export default function DialogSelect({ doublesOpen, handleDoublesClose }: any) {
           <Button onClick={() => {handleDoublesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
-      <DoublesMakePareDialog pareOpen={pareOpen} 
-                             handlePareClose={handlePareClose} 
+      <DoublesMakePareDialog doublesMakePareDialogOpen={doublesMakePareDialogOpen} 
+                             handleDoublesMakePareDialogClose={handleDoublesMakePareDialogClose} 
                              playersWithStatus={playersWithStatus}
       />
     </div>

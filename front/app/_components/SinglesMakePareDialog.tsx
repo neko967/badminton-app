@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
-import BeforeSendPareDialog from './BeforeSendPareDialog';
+import SinglesBeforeSendPareDialog from './SinglesBeforeSendPareDialog';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -22,7 +22,7 @@ interface Member {
   doubles_strength: number;
 }
 
-export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
+export default function SinglesMakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
   const [howToPare, setHowToPare] = useState<string>('random');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
@@ -104,12 +104,6 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     setMakedPare(newPares);
   };
 
-  useEffect(() => {
-    if (howToPare) {
-     console.log('useEffectの中', howToPare);
-    }
-  }, [howToPare]);
-
   const [beforeSendPareDialogOpen, setBeforeSendPareDialogOpen] = useState(false);
   const handleBeforeSendPareDialogOpen = () => {
     setBeforeSendPareDialogOpen(true);
@@ -147,7 +141,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
         </DialogActions>
       </Dialog>
       <React.Fragment>
-        <BeforeSendPareDialog
+        <SinglesBeforeSendPareDialog
           beforeSendPareDialogOpen={beforeSendPareDialogOpen}
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}

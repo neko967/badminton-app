@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
-import BeforeSendPareDialog from './BeforeSendPareDialog';
+import DoublesBeforeSendPareDialog from './DoublesBeforeSendPareDialog';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -22,7 +22,7 @@ interface Member {
   doubles_strength: number;
 }
 
-export default function MakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
+export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handleDoublesMakePareDialogClose, playersWithStatus}: any) {
   const [howToPare, setHowToPare] = useState<string>('random');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
@@ -41,26 +41,58 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     }
   }
 
+  function getRandomThreeAndRestShuffle(array: any) {
+    const shuffled = array.sort(() => 0.5 - Math.random());
+    const randomThree = shuffled.slice(0, 3);
+    const rest = shuffled.slice(3);
+    return [randomThree, rest];
+  }
+
+  function getRandomTwoAndRestShuffle(data: any) {
+    const shuffled = data.sort(() => 0.5 - Math.random());
+    const randomTwo = shuffled.slice(0, 2);
+    const rest = shuffled.slice(2);
+    return [randomTwo, rest];
+  }
+
   const handleMakePare = () => {
     const newPares = [];
-    playersWithStatus.sort((a: Member, b: Member) => b.singles_strength - a.singles_strength);
+    playersWithStatus.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
 
     switch (howToPare) {
       case "random":
-        if (playersWithStatus.length % 2 === 0) {
+        if (playersWithStatus.length % 4 === 0) {
           shuffleArray(playersWithStatus); 
-          for (let i = 0; i < playersWithStatus.length; i += 2) {
-            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
+          for (let i = 0; i < playersWithStatus.length; i += 4) {
+            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name, playersWithStatus[i + 2].name, playersWithStatus[i + 3].name]);
           }
-        } else {
-          let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
-          let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
+        } else if (playersWithStatus.length % 4 === 1) {
+          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
+          const opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
+          newPares.push([three_twice_players_array[0].name, three_twice_players_array[1].name, three_twice_players_array[2].name, opponent_to_twice_player.name]);
+          const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           shuffleArray(players_except_opponent_to_twice_player);
-          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
+          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
+          }
+        } else if (playersWithStatus.length % 4 === 2) {
+          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
+          const [two_opponent_to_twice_player, normal_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
+          newPares.push([two_twice_players_array[0].name, two_twice_players_array[1].name, two_opponent_to_twice_player[0].name, two_opponent_to_twice_player[1].name]);
+          const players_except_opponent_to_twice_player: Member[] = [two_twice_players_array, normal_players_array].flat();
+          shuffleArray(players_except_opponent_to_twice_player);
+          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
+          }
+        } else if (playersWithStatus.length % 4 === 3) {
+          const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
+          const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+          const [three_opponent_to_twice_players_array, normal_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
+          newPares.push([twice_player.name, three_opponent_to_twice_players_array[0].name, three_opponent_to_twice_players_array[1].name, three_opponent_to_twice_players_array[2].name]);
+          const players_except_opponent_to_twice_player: Member[] = [twice_player, normal_players_array].flat();
+          shuffleArray(players_except_opponent_to_twice_player);
+          for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
+            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name, players_except_opponent_to_twice_player[i + 2].name, players_except_opponent_to_twice_player[i + 3].name]);
           }
         }
         break;
@@ -104,12 +136,6 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
     setMakedPare(newPares);
   };
 
-  useEffect(() => {
-    if (howToPare) {
-     console.log('useEffectの中', howToPare);
-    }
-  }, [howToPare]);
-
   const [beforeSendPareDialogOpen, setBeforeSendPareDialogOpen] = useState(false);
   const handleBeforeSendPareDialogOpen = () => {
     setBeforeSendPareDialogOpen(true);
@@ -121,7 +147,7 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
 
   return (
     <div>
-      <Dialog disableEscapeKeyDown open={pareOpen} onClose={handlePareClose}>
+      <Dialog disableEscapeKeyDown open={doublesMakePareDialogOpen} onClose={handleDoublesMakePareDialogClose}>
         <DialogTitle>対戦ペアの組み方</DialogTitle>
         <DialogContent>
           <Box sx={{ minWidth: 120 }}>
@@ -142,12 +168,12 @@ export default function MakePareDialog({ pareOpen, handlePareClose, playersWithS
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handlePareClose}>Cancel</Button>
-          <Button onClick={() => {handlePareClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}}>Ok</Button>
+          <Button onClick={handleDoublesMakePareDialogClose}>Cancel</Button>
+          <Button onClick={() => {handleDoublesMakePareDialogClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
       <React.Fragment>
-        <BeforeSendPareDialog
+        <DoublesBeforeSendPareDialog
           beforeSendPareDialogOpen={beforeSendPareDialogOpen}
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}

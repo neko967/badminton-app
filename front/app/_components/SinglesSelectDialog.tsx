@@ -38,7 +38,7 @@ const MenuProps = {
   },
 };
 
-export default function DialogSelect({ singlesOpen, handleSinglesClose }: any) {
+export default function SinglesSelectDialog({ singlesOpen, handleSinglesClose }: any) {
   const [members, setMembers] = useState([] as Member[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
   const { data: session, status } = useSession();
