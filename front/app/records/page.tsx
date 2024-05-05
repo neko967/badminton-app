@@ -1,6 +1,6 @@
 "use client";
 
-import Records from '@/app/match/_component/Records';
+import Records from '@/app/records/_component/Records';
 
 interface Member {
   id: number;

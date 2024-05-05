@@ -45,7 +45,7 @@ export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen,
         })
       }
     }
-    router.push('/match');
+    router.push('/records?set_value=0');
   };
 
   return (

@@ -53,7 +53,7 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
         })
       }
     }
-    router.push('/match');
+    router.push('/records?set_value=1');
   };
 
   return (

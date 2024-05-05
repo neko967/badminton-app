@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
 import DoublesRecordEditDialog from './DoublesRecordEditDialog';
@@ -43,7 +44,10 @@ function a11yProps(index: number) {
 
 export default function Records() {
   const { data: session, status } = useSession();
-  const [value, setValue] = React.useState(0);
+  const searchParams = useSearchParams();
+  const set_value = searchParams.get('set_value');
+  const defaultValue = Number(set_value);
+  const [value, setValue] = useState(defaultValue);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -167,13 +171,17 @@ export default function Records() {
                       key={index}
                       className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                     >
-                      <dt className="w-1/3">{doublesRecord?.player_1}</dt>
-                      <dt className="w-1/3">{doublesRecord?.player_2}</dt>
+                      <dt className="w-1/3">
+                        <p>{doublesRecord?.player_1}</p>
+                        <p>{doublesRecord?.player_2}</p>
+                      </dt>
                       <dt className="w-1/3">{doublesRecord?.score_12}</dt>
                       <p>-</p>
                       <dt className="w-1/3">{doublesRecord?.score_34}</dt>
-                      <dt className="w-1/3">{doublesRecord?.player_3}</dt>
-                      <dt className="w-1/3">{doublesRecord?.player_4}</dt>
+                      <dt className="w-1/3">
+                        <p>{doublesRecord?.player_3}</p>
+                        <p>{doublesRecord?.player_4}</p>
+                      </dt>
                       { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
