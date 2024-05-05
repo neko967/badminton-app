@@ -93,8 +93,8 @@ export default function Records() {
   const [doublesRecord_id, setDoublesRecord_id] = useState<number>(0);
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
   const handleDoublesRecordEditDialogOpen = (id: number) => {
-    setSinglesRecord_id(id);
-    setSinglesRecordEditDialogOpen(true);
+    setDoublesRecord_id(id);
+    setDoublesRecordEditDialogOpen(true);
   };
   const handleDoublesRecordEditDialogClose: any = (event: React.SyntheticEvent<unknown>, reason?: string) => {
     if (reason !== 'backdropClick') {
@@ -111,7 +111,6 @@ export default function Records() {
           <Tab label="ダブルス" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <></>
       <CustomTabPanel value={value} index={0}>
         <div className="mx-auto w-full flex justify-start items-center flex-col">
           <section className="text-start w-96 px-6 ">

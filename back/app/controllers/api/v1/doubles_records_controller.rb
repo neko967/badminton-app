@@ -21,6 +21,11 @@ class Api::V1::DoublesRecordsController < ApplicationController
     end
   end
 
+  def update
+    doubles_record = DoublesRecord.find(params[:id])
+    doubles_record.update(score_12: params[:score_12], score_34: params[:score_34])
+  end
+
   private
 
   def set_current_user
