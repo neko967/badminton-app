@@ -46,7 +46,7 @@ export default function Records() {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const set_value = searchParams.get('set_value');
-  const defaultValue = Number(set_value);
+  const defaultValue = set_value ? Number(set_value) : 0;
   const [value, setValue] = useState(defaultValue);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
