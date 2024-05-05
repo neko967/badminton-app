@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
@@ -40,6 +40,107 @@ function a11yProps(index: number) {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
+}
+
+function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen, 
+                       doublesRecords, handleDoublesRecordEditDialogOpen}: any) {
+  const searchParams = useSearchParams();
+  const set_value = searchParams.get('set_value');
+  const defaultValue = set_value ? Number(set_value) : 0;
+  const [value, setValue] = useState(defaultValue);
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <>
+      <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
+        <Tab label="シングルス" {...a11yProps(0)} />
+        <Tab label="ダブルス" {...a11yProps(1)} />
+      </Tabs>
+      <CustomTabPanel value={value} index={0}>
+        <div className="mx-auto w-full flex justify-start items-center flex-col">
+          <section className="text-start w-96 px-6 ">
+            {singlesRecords.length === 0 ? (
+              <p>記録がありません</p>
+            ) : (
+              <dl className="flex flex-col w-full">
+                {singlesRecords.map((singlesRecord: any, index: number) => (
+                  <>
+                    <div
+                      key={index}
+                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
+                    >
+                      <dt className="w-1/3">{singlesRecord?.player_1}</dt>
+                      <dt className="w-1/3">{singlesRecord?.score_1}</dt>
+                      <p>-</p>
+                      <dt className="w-1/3">{singlesRecord?.score_2}</dt>
+                      <dt className="w-1/3">{singlesRecord?.player_2}</dt>
+                      { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
+                        <button
+                          className="border rounded p-2 hover:bg-slate-400 transition-all"
+                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
+                          type="button"
+                        >
+                          <EditIcon />
+                        </button>
+                      :
+                        <div className="w-16 h-12"></div>
+                      } 
+                    </div>
+                  </>
+                ))}
+              </dl>
+            )}
+          </section>
+        </div>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <div className="mx-auto w-full flex justify-start items-center flex-col">
+          <section className="text-start w-96 px-6 ">
+            {doublesRecords.length === 0 ? (
+              <p>記録がありません</p>
+            ) : (
+              <dl className="flex flex-col w-full">
+                {doublesRecords.map((doublesRecord: any, index: number) => (
+                  <>
+                    <div
+                      key={index}
+                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
+                    >
+                      <dt className="w-1/3">
+                        <p>{doublesRecord?.player_1}</p>
+                        <p>{doublesRecord?.player_2}</p>
+                      </dt>
+                      <dt className="w-1/3">{doublesRecord?.score_12}</dt>
+                      <p>-</p>
+                      <dt className="w-1/3">{doublesRecord?.score_34}</dt>
+                      <dt className="w-1/3">
+                        <p>{doublesRecord?.player_3}</p>
+                        <p>{doublesRecord?.player_4}</p>
+                      </dt>
+                      { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
+                        <button
+                          className="border rounded p-2 hover:bg-slate-400 transition-all"
+                          onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
+                          type="button"
+                        >
+                          <EditIcon />
+                        </button>
+                      :
+                        <div className="w-16 h-12"></div>
+                      } 
+                    </div>
+                  </>
+                ))}
+              </dl>
+            )}
+          </section>
+        </div>
+      </CustomTabPanel>
+    </>
+  );
 }
 
 export default function Records() {
@@ -109,104 +210,24 @@ export default function Records() {
   return (
     <>
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
-          <Tab label="シングルス" {...a11yProps(0)} />
-          <Tab label="ダブルス" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        <div className="mx-auto w-full flex justify-start items-center flex-col">
-          <section className="text-start w-96 px-6 ">
-            {singlesRecords.length === 0 ? (
-              <p>記録がありません</p>
-            ) : (
-              <dl className="flex flex-col w-full">
-                {singlesRecords.map((singlesRecord: any, index: number) => (
-                  <>
-                    <div
-                      key={index}
-                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
-                    >
-                      <dt className="w-1/3">{singlesRecord?.player_1}</dt>
-                      <dt className="w-1/3">{singlesRecord?.score_1}</dt>
-                      <p>-</p>
-                      <dt className="w-1/3">{singlesRecord?.score_2}</dt>
-                      <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                      { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
-                        <button
-                          className="border rounded p-2 hover:bg-slate-400 transition-all"
-                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
-                          type="button"
-                        >
-                          <EditIcon />
-                        </button>
-                      :
-                        <div className="w-16 h-12"></div>
-                      } 
-                    </div>
-                  </>
-                ))}
-              </dl>
-            )}
-            <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
-                                     handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
-                                     fetchSinglesData={fetchSinglesData}
-                                     singlesRecords={singlesRecords}
-                                     singlesRecord_id={singlesRecord_id}
-            />
-          </section>
-        </div>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <div className="mx-auto w-full flex justify-start items-center flex-col">
-          <section className="text-start w-96 px-6 ">
-            {doublesRecords.length === 0 ? (
-              <p>記録がありません</p>
-            ) : (
-              <dl className="flex flex-col w-full">
-                {doublesRecords.map((doublesRecord: any, index: number) => (
-                  <>
-                    <div
-                      key={index}
-                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
-                    >
-                      <dt className="w-1/3">
-                        <p>{doublesRecord?.player_1}</p>
-                        <p>{doublesRecord?.player_2}</p>
-                      </dt>
-                      <dt className="w-1/3">{doublesRecord?.score_12}</dt>
-                      <p>-</p>
-                      <dt className="w-1/3">{doublesRecord?.score_34}</dt>
-                      <dt className="w-1/3">
-                        <p>{doublesRecord?.player_3}</p>
-                        <p>{doublesRecord?.player_4}</p>
-                      </dt>
-                      { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
-                        <button
-                          className="border rounded p-2 hover:bg-slate-400 transition-all"
-                          onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
-                          type="button"
-                        >
-                          <EditIcon />
-                        </button>
-                      :
-                        <div className="w-16 h-12"></div>
-                      } 
-                    </div>
-                  </>
-                ))}
-              </dl>
-            )}
-            <DoublesRecordEditDialog doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
-                                     handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
-                                     fetchDoublesData={fetchDoublesData}
-                                     doublesRecords={doublesRecords}
-                                     doublesRecord_id={doublesRecord_id}
-            />
-          </section>
-        </div>
-      </CustomTabPanel>
+      <Suspense fallback={<div>Loading...</div>}>
+        <TabComponent singlesRecords={singlesRecords} 
+                      doublesRecords={doublesRecords}
+                      handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
+                      handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
+      </Suspense>
+      <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+                               handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
+                               fetchSinglesData={fetchSinglesData}
+                               singlesRecords={singlesRecords}
+                               singlesRecord_id={singlesRecord_id}
+      />
+      <DoublesRecordEditDialog doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
+                               handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
+                               fetchDoublesData={fetchDoublesData}
+                               doublesRecords={doublesRecords}
+                               doublesRecord_id={doublesRecord_id}
+      />
     </Box>
     </>
   );
