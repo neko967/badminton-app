@@ -30,10 +30,18 @@ class Api::V1::SinglesRecordsController < ApplicationController
     minus_strength_player_2 = total_score - minus_strength_player_1
 
     new_strength_player_1 = player_1.singles_strength - minus_strength_player_1 + score_1
-    player_1.update(singles_strength: new_strength_player_1)
+    player_1.update(singles_strength: new_strength_player_1,
+                    singles_total_game: player_1.singles_total_game + 1)
 
     new_strength_player_2 = player_2.singles_strength - minus_strength_player_2 + score_2
-    player_2.update(singles_strength: new_strength_player_2)
+    player_2.update(singles_strength: new_strength_player_2
+                    singles_total_game: player_2.singles_total_game + 1)
+
+    if (score_1 > score_2) {
+      player_1.update(singles_win_game: player_1.singles_win_game + 1)
+    } elsif (score_1 < score_2) {
+      player_2.update(singles_win_game: player_2.singles_win_game + 1)
+    }
   end
 
   private
