@@ -1,4 +1,3 @@
-import { type Session } from "next-auth";
 import React from 'react';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
@@ -12,7 +11,7 @@ import SinglesSelectDialog from './SinglesSelectDialog';
 import DoublesSelectDialog from './DoublesSelectDialog';
 import AddPersonDialog from './AddPersonDialog';
 
-export default function SpeedDialTooltipOpen({fetchData}: any) {
+export default function SpeedDialTooltipOpen({members, fetchData}: any) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
@@ -76,10 +75,12 @@ export default function SpeedDialTooltipOpen({fetchData}: any) {
           ))}
         </SpeedDial>
         <SinglesSelectDialog
+          members={members}
           singlesOpen={singlesOpen}
           handleSinglesClose={handleSinglesClose}
         />
         <DoublesSelectDialog
+          members={members}
           doublesOpen={doublesOpen}
           handleDoublesClose={handleDoublesClose}
         />

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
-
 import Member from './_components/Member';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
 
@@ -72,16 +71,22 @@ export default function Home() {
 
   return (
     <>
-    {session ?
-      <>
-        <Member members={members} handleDelete={handleDelete}/>
-        <SpeedDialTooltipOpen fetchData={fetchData}/>
-      </>
-    :
-    <div className="text-start px-6 mt-6">
-      <p>ログインをしてください</p>
-    </div>
-    }
+      {session ?
+        <>
+          <Member
+            members={members}
+            handleDelete={handleDelete}
+          />
+          <SpeedDialTooltipOpen
+            members={members}
+            fetchData={fetchData}
+          />
+        </>
+      :
+        <div className="text-start px-6 mt-6">
+          <p>ログインをしてください</p>
+        </div>
+      }
     </>
   );
 }

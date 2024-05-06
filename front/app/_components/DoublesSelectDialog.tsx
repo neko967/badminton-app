@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -24,6 +23,31 @@ interface Member {
   doubles_total_game: number;
   doubles_win_game: number;
   doubles_strength: number;
+  history: (SinglesRecord | DoublesRecord)[];
+}
+
+interface SinglesRecord {
+  id: number;
+  player_1: string;
+  score_1: number;
+  player_2: string;
+  score_2: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface DoublesRecord {
+  id: number;
+  player_1: string;
+  player_2: string;
+  score_12: number;
+  player_3: string;
+  player_4: string;
+  score_34: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
 const ITEM_HEIGHT = 48;
@@ -37,26 +61,7 @@ const MenuProps = {
   },
 };
 
-export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }: any) {
-  const [members, setMembers] = useState([] as Member[]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-  const { data: session, status } = useSession();
-
-  const fetchData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL}?email=${query}`);
-      const data = await response.json();
-      setMembers(data);
-    }
-  }, [session]);
-
-  useEffect(() => {
-    if (session) {
-      fetchData();
-    }
-  }, [session, fetchData]);
-
+export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose }: any) {
   const [players, setPlayers]: any = useState([]);
   const handleChange = (event: any) => {
     const {
@@ -74,7 +79,7 @@ export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }:
     if (players.length < 4) {
       return;
     }
-    const result = members.filter(item => players.includes(item.name));
+    const result = members.filter((item: Member) => players.includes(item.name));
     setPlayersWithStatus(result);
     setDoublesMakePareDialogOpenOpen(true);
   };
@@ -102,7 +107,7 @@ export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }:
                 renderValue={(selected) => selected.join(', ')}
                 MenuProps={MenuProps}
               >
-                {members.map((member) => (
+                {members.map((member: Member) => (
                   <MenuItem key={member.name} value={member.name}>
                     <Checkbox checked={players.indexOf(member.name) > -1} />
                     <ListItemText primary={member.name} />
@@ -117,9 +122,10 @@ export default function DoublesSelectDialog({ doublesOpen, handleDoublesClose }:
           <Button onClick={() => {handleDoublesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
-      <DoublesMakePareDialog doublesMakePareDialogOpen={doublesMakePareDialogOpen} 
-                             handleDoublesMakePareDialogClose={handleDoublesMakePareDialogClose} 
-                             playersWithStatus={playersWithStatus}
+      <DoublesMakePareDialog 
+        doublesMakePareDialogOpen={doublesMakePareDialogOpen} 
+        handleDoublesMakePareDialogClose={handleDoublesMakePareDialogClose} 
+        playersWithStatus={playersWithStatus}
       />
     </div>
   );
