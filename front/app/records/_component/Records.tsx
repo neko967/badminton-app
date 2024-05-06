@@ -202,26 +202,33 @@ export default function Records() {
 
   return (
     <>
-    <Box sx={{ width: '100%' }}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <TabComponent singlesRecords={singlesRecords} 
-                      doublesRecords={doublesRecords}
-                      handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
-                      handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
-      </Suspense>
-      <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
-                               handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
-                               fetchSinglesData={fetchSinglesData}
-                               singlesRecords={singlesRecords}
-                               singlesRecord_id={singlesRecord_id}
-      />
-      <DoublesRecordEditDialog doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
-                               handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
-                               fetchDoublesData={fetchDoublesData}
-                               doublesRecords={doublesRecords}
-                               doublesRecord_id={doublesRecord_id}
-      />
-    </Box>
+      {session ?
+      <>
+        <Box sx={{ width: '100%' }}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <TabComponent singlesRecords={singlesRecords} 
+                          doublesRecords={doublesRecords}
+                          handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
+                          handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
+          </Suspense>
+        </Box>
+        <SinglesRecordEditDialog singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+                                 handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
+                                 fetchSinglesData={fetchSinglesData}
+                                 singlesRecords={singlesRecords}
+                                 singlesRecord_id={singlesRecord_id}
+        />
+        <DoublesRecordEditDialog doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
+                                 handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
+                                 fetchDoublesData={fetchDoublesData}
+                                 doublesRecords={doublesRecords}
+                                 doublesRecord_id={doublesRecord_id}
+        />
+      </>
+      :
+      <p>ログインしてください</p>
+      }
+
     </>
   );
 }

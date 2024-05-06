@@ -72,8 +72,14 @@ export default function Home() {
 
   return (
     <>
-      <Member members={members} handleDelete={handleDelete}/>
-      <SpeedDialTooltipOpen fetchData={fetchData}/>
+    {session ?
+      <>
+        <Member members={members} handleDelete={handleDelete}/>
+        <SpeedDialTooltipOpen fetchData={fetchData}/>
+      </>
+    :
+      <p>ログインをしてください</p>
+    }
     </>
   );
 }
