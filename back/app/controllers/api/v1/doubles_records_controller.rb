@@ -28,8 +28,8 @@ class Api::V1::DoublesRecordsController < ApplicationController
     player_1 = doubles_record.doubles_recorded_players.find_by(name: params[:player_1])
     player_2 = doubles_record.doubles_recorded_players.find_by(name: params[:player_2])
     score_12 = params[:score_12]
-    player_3 = singles_record.doubles_recorded_players.find_by(name: params[:player_3])
-    player_4 = singles_record.doubles_recorded_players.find_by(name: params[:player_4])
+    player_3 = doubles_record.doubles_recorded_players.find_by(name: params[:player_3])
+    player_4 = doubles_record.doubles_recorded_players.find_by(name: params[:player_4])
     score_34 = params[:score_34]
     total_score = score_12 + score_34
     player_12_strength = player_1.doubles_strength + player_2.doubles_strength
