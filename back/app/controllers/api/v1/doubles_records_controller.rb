@@ -53,13 +53,13 @@ class Api::V1::DoublesRecordsController < ApplicationController
     new_strength_player_4 = player_4.doubles_strength - minus_strength_player_34 + score_34
     player_4.update(doubles_strength: new_strength_player_4
                     doubles_total_game: player_4.doubles_total_game + 1)
-    if (score_12 > score_34) {
+    if score_12 > score_34
       player_1.update(doubles_win_game: player_1.doubles_win_game + 1)
       player_2.update(doubles_win_game: player_2.doubles_win_game + 1)
-    } elsif (score_12 < score_34) {
+    elsif score_12 < score_34
       player_3.update(doubles_win_game: player_3.doubles_win_game + 1)
       player_4.update(doubles_win_game: player_4.doubles_win_game + 1)
-    }
+    end
   end
 
   private
