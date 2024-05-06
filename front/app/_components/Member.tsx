@@ -81,25 +81,43 @@ function Row({ member, handleDelete }: {
                 最近の試合
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>プレイヤー</TableCell>
-                    <TableCell align="right">点数</TableCell>
-                  </TableRow>
-                </TableHead>
                 <TableBody>
                   {member.history.map((historyRow, index: number) => (
                     <>
                       {"score_1" in historyRow && 
                         <TableRow key={index}>
-                          <TableCell>{historyRow.player_1} - {historyRow.player_2}</TableCell>
-                          <TableCell align="right">{historyRow.score_1} - {historyRow.score_2}</TableCell>
+                          <TableCell>
+                            <div className="w-full flex items-center">
+                              <dt className="w-1/3">
+                                <p>{historyRow.player_1}</p>
+                              </dt>
+                              <dt>{historyRow.score_1}</dt>
+                              <p>-</p>
+                              <dt>{historyRow.score_2}</dt>
+                              <dt className="w-1/3">
+                                <p>{historyRow.player_2}</p>
+                              </dt>
+                            </div>
+                          </TableCell>
                         </TableRow>
                       }
                       {"score_12" in historyRow &&
                         <TableRow key={index}>
-                          <TableCell>{historyRow.player_1}{historyRow.player_2} - {historyRow.player_3}{historyRow.player_4}</TableCell>
-                          <TableCell align="right">{historyRow.score_12} - {historyRow.score_34}</TableCell>
+                          <TableCell>
+                          <div className="w-full flex items-center">
+                            <dt className="w-1/3">
+                              <p>{historyRow.player_1}</p>
+                              <p>{historyRow.player_2}</p>
+                            </dt>
+                            <dt>{historyRow.score_12}</dt>
+                            <p>-</p>
+                            <dt>{historyRow.score_34}</dt>
+                            <dt className="w-1/3">
+                              <p>{historyRow.player_3}</p>
+                              <p>{historyRow.player_4}</p>
+                            </dt>
+                          </div>
+                          </TableCell>
                         </TableRow>
                       }
                     </>

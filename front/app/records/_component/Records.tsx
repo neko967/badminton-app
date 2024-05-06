@@ -113,9 +113,9 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                         <p>{doublesRecord?.player_1}</p>
                         <p>{doublesRecord?.player_2}</p>
                       </dt>
-                      <dt className="w-1/3">{doublesRecord?.score_12}</dt>
+                      <dt>{doublesRecord?.score_12}</dt>
                       <p>-</p>
-                      <dt className="w-1/3">{doublesRecord?.score_34}</dt>
+                      <dt>{doublesRecord?.score_34}</dt>
                       <dt className="w-1/3">
                         <p>{doublesRecord?.player_3}</p>
                         <p>{doublesRecord?.player_4}</p>
