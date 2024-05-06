@@ -39,19 +39,19 @@ class Api::V1::DoublesRecordsController < ApplicationController
     minus_strength_player_34 = total_score - minus_strength_player_12
 
     new_strength_player_1 = player_1.doubles_strength - minus_strength_player_12 + score_12
-    player_1.update(doubles_strength: new_strength_player_1
+    player_1.update(doubles_strength: new_strength_player_1,
                     doubles_total_game: player_1.doubles_total_game + 1)
 
     new_strength_player_2 = player_2.doubles_strength - minus_strength_player_12 + score_12
-    player_2.update(doubles_strength: new_strength_player_2
+    player_2.update(doubles_strength: new_strength_player_2,
                     doubles_total_game: player_2.doubles_total_game + 1)
 
     new_strength_player_3 = player_3.doubles_strength - minus_strength_player_34 + score_34
-    player_3.update(doubles_strength: new_strength_player_3
+    player_3.update(doubles_strength: new_strength_player_3,
                     doubles_total_game: player_3.doubles_total_game + 1)
 
     new_strength_player_4 = player_4.doubles_strength - minus_strength_player_34 + score_34
-    player_4.update(doubles_strength: new_strength_player_4
+    player_4.update(doubles_strength: new_strength_player_4,
                     doubles_total_game: player_4.doubles_total_game + 1)
     if score_12 > score_34
       player_1.update(doubles_win_game: player_1.doubles_win_game + 1)

@@ -34,7 +34,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
                     singles_total_game: player_1.singles_total_game + 1)
 
     new_strength_player_2 = player_2.singles_strength - minus_strength_player_2 + score_2
-    player_2.update(singles_strength: new_strength_player_2
+    player_2.update(singles_strength: new_strength_player_2,
                     singles_total_game: player_2.singles_total_game + 1)
 
     if score_1 > score_2
