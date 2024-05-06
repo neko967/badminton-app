@@ -44,9 +44,9 @@ interface DoublesRecord {
 }
 
 export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen, 
-                                              handleBeforeSendPareDialogClose, 
-                                              makedPare, handleMakePare, 
-                                              playersWithStatus}: any) {
+                                                     handleBeforeSendPareDialogClose, 
+                                                     makedPare, handleMakePare, 
+                                                     playersWithStatus}: any) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -90,8 +90,16 @@ export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen,
           ) : (
             <div className="flex flex-col w-full">
               {makedPare.map((pare: any, index: number) => (
-                <div key={index} className="w-full flex items-center">
-                  <p>{pare[0]} - {pare[1]}</p>
+                <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45">
+                  <div className="w-5/12 flex justify-start">
+                    <p>{pare[0]}</p>
+                  </div>
+                  <div className="w-1/6 flex justify-center">
+                    <p>-</p>
+                  </div>
+                  <div className="w-5/12 flex justify-start">
+                    <p>{pare[1]}</p>
+                  </div>
                 </div>
               ))}
             </div>
