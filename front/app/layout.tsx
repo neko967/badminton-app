@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 
 import { getServerSession } from "next-auth/next";
 import NextAuthProvider from '@/providers/NextAuth';
@@ -30,6 +31,8 @@ export default async function RootLayout({
           <BottomNavigation />
         </NextAuthProvider>
       </body>
+      <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GA_ID}`}/>
+      <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GA_ID}`} />
     </html>
   );
 }
