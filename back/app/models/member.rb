@@ -7,7 +7,7 @@ class Member < ApplicationRecord
 
   def history
     singles_records = self.singles_played_records.where.not(score_1: nil, score_2: nil).limit(5)
-    doubles_records = self.doubles_played_records.where.not(score_1: nil, score_2: nil).limit(5)
+    doubles_records = self.doubles_played_records.where.not(score_12: nil, score_34: nil).limit(5)
     singles_and_doubles_records = singles_records + doubles_records
     sorted_records = member_singles_and_doubles_records.sort_by(&:updated_at).reverse.take(5)
     return sorted_records
