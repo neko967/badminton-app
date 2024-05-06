@@ -39,17 +39,6 @@ interface DoublesRecord {
   updated_at: Date;
 }
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchData }: any) {
   const [member, setMember] = useState({} as Member);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
@@ -77,7 +66,7 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetc
     <div>
       <Dialog disableEscapeKeyDown open={addPersonOpen} onClose={handleAddPersonClose}>
         <main className="mx-auto w-full flex justify-start items-center flex-col">
-          <section className="w-96 border-2 p-4">
+          <section className="w-80 border-2 p-4">
             <h2 className="text-lg mb-4 text-center">新しいメンバーを追加</h2>
             <form className="flex flex-col gap-2" onSubmit={handleOnSubmit}>
               <div className="flex justify-between">
