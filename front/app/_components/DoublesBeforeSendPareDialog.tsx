@@ -16,6 +16,31 @@ interface Member {
   doubles_total_game: number;
   doubles_win_game: number;
   doubles_strength: number;
+  history: (SinglesRecord | DoublesRecord)[];
+}
+
+interface SinglesRecord {
+  id: number;
+  player_1: string;
+  score_1: number;
+  player_2: string;
+  score_2: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface DoublesRecord {
+  id: number;
+  player_1: string;
+  player_2: string;
+  score_12: number;
+  player_3: string;
+  player_4: string;
+  score_34: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen, 
@@ -74,7 +99,21 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
             <div className="flex flex-col w-full">
               {makedPare.map((pare: any, index: number) => (
                 <div key={index} className="w-full flex items-center">
-                  <p>{pare[0]} {pare[1]} - {pare[2]} {pare[3]}</p>
+                  <div className="w-5/12 flex justify-start">
+                    <div>
+                      <p>{pare[0]}</p>
+                      <p>{pare[1]}</p>
+                    </div>
+                  </div>
+                  <div className="w-1/6 flex justify-center">
+                    <p>-</p>
+                  </div>
+                  <div className="w-5/12 flex justify-end">
+                    <div>
+                      <p>{pare[2]}</p>
+                      <p>{pare[3]}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
