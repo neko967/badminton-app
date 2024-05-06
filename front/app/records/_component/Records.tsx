@@ -118,16 +118,20 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                       className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                     >
                       <div className="w-5/6 flex items-center">
-                        <div className="w-1/3 justify-start">
-                          <p>{doublesRecord?.player_1}</p>
-                          <p>{doublesRecord?.player_2}</p>
+                        <div className="w-1/3 flex justify-start">
+                          <div>
+                            <p>{doublesRecord?.player_1}</p>
+                            <p>{doublesRecord?.player_2}</p>
+                          </div>
                         </div>
-                        <div className="w-1/3 justify-center">
+                        <div className="w-1/3 flex justify-center">
                           <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
                         </div>
-                        <div className="w-1/3 justify-end">
-                          <p>{doublesRecord?.player_3}</p>
-                          <p>{doublesRecord?.player_4}</p>
+                        <div className="w-1/3 flex justify-end">
+                          <div>
+                            <p>{doublesRecord?.player_3}</p>
+                            <p>{doublesRecord?.player_4}</p>
+                          </div>
                         </div>
                       </div>
                       <div className="w-1/6 flex items-center justify-end">
