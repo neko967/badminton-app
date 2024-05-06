@@ -28,7 +28,7 @@ export default function Menu() {
             <BottomNavigationAction icon={<HomeIcon />} onClick={() => router.push('/')}/>
             <BottomNavigationAction icon={<RestoreIcon />} onClick={() => router.push('/records')}/>
           </BottomNavigation>
-        </Paper> 
+        </Paper>
       </Box>
     </div>
   );
