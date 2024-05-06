@@ -20,13 +20,11 @@ class Api::V1::SinglesRecordsController < ApplicationController
     singles_record = SinglesRecord.find(params[:id])
     singles_record.update(score_1: params[:score_1], score_2: params[:score_2])
 
-    player_1 = singles_record.singles_recored_players.find_by(name: params[:player_1])
+    player_1 = singles_record.singles_recorded_players.find_by(name: params[:player_1])
     score_1 = params[:score_1]
-    player_2 = singles_record.singles_recored_players.find_by(name: params[:player_2])
+    player_2 = singles_record.singles_recorded_players.find_by(name: params[:player_2])
     score_2 = params[:score_2]
     total_score = score_1 + score_2
-    player_1.singles_strength - 50
-    player_2.singles_strength - 50
     total_strength = (player_1.singles_strength - 50) + (player_2.singles_strength - 50)
     minus_strength_player_1 = (((player_1.singles_strength - 50).to_f / total_strength.to_f) * total_score).round
     minus_strength_player_2 = total_score - minus_strength_player_1
