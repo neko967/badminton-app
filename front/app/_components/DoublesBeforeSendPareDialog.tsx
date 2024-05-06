@@ -98,7 +98,7 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
           ) : (
             <div className="flex flex-col w-full">
               {makedPare.map((pare: any, index: number) => (
-                <div key={index} className="w-full flex items-center">
+                <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2">
                   <div className="w-5/12 flex justify-start">
                     <div>
                       <p>{pare[0]}</p>
