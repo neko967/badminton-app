@@ -106,7 +106,7 @@ function Row({ member, handleDelete }: {
                   ))}
                 </TableBody>
               </Table>   
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right my-3">
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right my-4">
                 メンバーを削除
               </Button>
             </Box>

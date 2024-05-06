@@ -78,7 +78,9 @@ export default function Home() {
         <SpeedDialTooltipOpen fetchData={fetchData}/>
       </>
     :
+    <div className="text-start px-6 mt-6">
       <p>ログインをしてください</p>
+    </div>
     }
     </>
   );
