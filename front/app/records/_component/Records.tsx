@@ -122,10 +122,10 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                           <p>{doublesRecord?.player_1}</p>
                           <p>{doublesRecord?.player_2}</p>
                         </div>
-                        <div className="w-1/3 flex justify-center">
+                        <div className="w-1/3 justify-center">
                           <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
                         </div>
-                        <div className="w-1/3 flex justify-end">
+                        <div className="w-1/3 justify-end">
                           <p>{doublesRecord?.player_3}</p>
                           <p>{doublesRecord?.player_4}</p>
                         </div>

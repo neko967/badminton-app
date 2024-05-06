@@ -109,10 +109,10 @@ function Row({ member, handleDelete }: {
                               <p>{historyRow.player_1}</p>
                               <p>{historyRow.player_2}</p>
                             </div>
-                            <div className="w-1/6 flex justify-center">
+                            <div className="w-1/6 justify-center">
                               <p>{historyRow.score_12} - {historyRow.score_34}</p>
                             </div>
-                            <div className="w-5/12 flex justify-end">
+                            <div className="w-5/12 justify-end">
                               <p>{historyRow.player_3}</p>
                               <p>{historyRow.player_4}</p>
                             </div>
