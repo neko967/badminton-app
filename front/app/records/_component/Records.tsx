@@ -72,22 +72,30 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                       key={index}
                       className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                     >
-                      <dt className="w-1/3">{singlesRecord?.player_1}</dt>
-                      <dt className="w-1/3">{singlesRecord?.score_1}</dt>
-                      <p>-</p>
-                      <dt className="w-1/3">{singlesRecord?.score_2}</dt>
-                      <dt className="w-1/3">{singlesRecord?.player_2}</dt>
-                      { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
-                        <button
-                          className="border rounded p-2 hover:bg-slate-400 transition-all"
-                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
-                          type="button"
-                        >
-                          <EditIcon />
-                        </button>
-                      :
-                        <div className="w-16 h-12"></div>
-                      } 
+                      <div className="w-5/6 flex items-center justify-between">
+                        <div>
+                          <p>{singlesRecord?.player_1}</p>
+                        </div>
+                        <div>
+                          <p>{singlesRecord?.score_1} - {singlesRecord?.score_2}</p>
+                        </div>
+                        <div>
+                          <p>{singlesRecord?.player_2}</p>
+                        </div>
+                      </div>
+                      <div className="w-1/6 items-center justify-end">
+                        { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
+                          <button
+                            className="border rounded p-2 hover:bg-slate-400 transition-all"
+                            onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
+                            type="button"
+                          >
+                            <EditIcon />
+                          </button>
+                        :
+                          <div className="w-16 h-12"></div>
+                        }
+                      </div>
                     </div>
                   </>
                 ))}
@@ -109,22 +117,20 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                       key={index}
                       className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                     >
-                      <div className="w-11/12 flex items-center justify-between">
+                      <div className="w-5/6 flex items-center justify-between">
                         <div>
                           <p>{doublesRecord?.player_1}</p>
                           <p>{doublesRecord?.player_2}</p>
                         </div>
                         <div>
-                          <p>{doublesRecord?.score_12}</p>
-                          <p>-</p>
-                          <p>{doublesRecord?.score_34}</p>
+                          <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
                         </div>
                         <div>
                           <p>{doublesRecord?.player_3}</p>
                           <p>{doublesRecord?.player_4}</p>
                         </div>
                       </div>
-                      <div className="w-1/12 items-center justify-end">
+                      <div className="w-1/6 items-center justify-end">
                         { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
                           <button
                             className="border rounded p-2 hover:bg-slate-400 transition-all"
