@@ -87,16 +87,16 @@ function Row({ member, handleDelete }: {
                       {"score_1" in historyRow && 
                         <TableRow key={index}>
                           <TableCell>
-                            <div className="w-full flex items-center">
-                              <dt className="w-1/3">
+                            <div className="w-full flex items-center justify-between">
+                              <div>
                                 <p>{historyRow.player_1}</p>
-                              </dt>
-                              <dt>{historyRow.score_1}</dt>
-                              <p>-</p>
-                              <dt>{historyRow.score_2}</dt>
-                              <dt className="w-1/3">
+                              </div>
+                              <div>
+                                <p>{historyRow.score_1} - {historyRow.score_2}</p>
+                              </div>
+                              <div>
                                 <p>{historyRow.player_2}</p>
-                              </dt>
+                              </div>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -110,9 +110,7 @@ function Row({ member, handleDelete }: {
                               <p>{historyRow.player_2}</p>
                             </div>
                             <div>
-                              <dt>{historyRow.score_12}</dt>
-                              <p> - </p>
-                              <dt>{historyRow.score_34}</dt>
+                              <p>{historyRow.score_12} - {historyRow.score_34}</p>
                             </div>
                             <div>
                               <p>{historyRow.player_3}</p>

@@ -109,7 +109,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                       key={index}
                       className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                     >
-                      <div className="w-2/3 justify-between">
+                      <div className="w-11/12 flex items-center justify-between">
                         <div>
                           <p>{doublesRecord?.player_1}</p>
                           <p>{doublesRecord?.player_2}</p>
@@ -124,7 +124,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                           <p>{doublesRecord?.player_4}</p>
                         </div>
                       </div>
-                      <div className="w-1/3 justify-items-end">
+                      <div className="w-1/12 items-center justify-end">
                         { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
                           <button
                             className="border rounded p-2 hover:bg-slate-400 transition-all"
