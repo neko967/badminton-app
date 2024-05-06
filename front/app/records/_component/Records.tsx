@@ -83,7 +83,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                           <p>{singlesRecord?.player_2}</p>
                         </div>
                       </div>
-                      <div className="w-1/6 items-center justify-end">
+                      <div className="w-1/6 flex items-center justify-end">
                         { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
                           <button
                             className="border rounded p-2 hover:bg-slate-400 transition-all"
@@ -130,7 +130,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                           <p>{doublesRecord?.player_4}</p>
                         </div>
                       </div>
-                      <div className="w-1/6 items-center justify-end">
+                      <div className="w-1/6 flex items-center justify-end">
                         { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
                           <button
                             className="border rounded p-2 hover:bg-slate-400 transition-all"
