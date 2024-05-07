@@ -12,37 +12,37 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 24 * 24,
-    updateAge: 24 * 60 * 60,
+    maxAge: 60 * 24 * 24
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      if (account && account.access_token && user) {
+      if (user && account) {
         token.id = user.id;
         token.accessToken = account.access_token;
         token.name = user.name;
+        token.user = user;
         token.image = user.image;
+        const u = user as any;
+        token.role = u.role;
       }
-      console.log("JWT Callback - token:", token);
       return token;
     },
     async session({ session, token }) {
-      if (token.accessToken && token.id) {
-        session.accessToken = token.accessToken as string;
-        session.user = {
+      token.accessToken;
+      return {
+        ...session,
+        user: {
           ...session.user,
+          role: token.role,
           id: token.id as string,
-        };
-      }
-      console.log("Session Callback - session:", session);
-      return session;
+        },
+      };
     },
   	async signIn({ user, account }) {
   	  const provider = account?.provider;
   	  const uid = user?.id;
   	  const name = user?.name;
   	  const email = user?.email;
-      console.log("Sign In Callback - user:", user);
 
   	  try {
         const response =  await fetch(`${apiUrl}/auth/${provider}/callback`, {
@@ -63,7 +63,7 @@ const handler = NextAuth({
   	  	  return false;
   	  	}
   	  } catch (error) {
-        console.log('Sign In Callback - Error:', error);
+        console.log('エラーです', error);
         return false;
       }
   	},
