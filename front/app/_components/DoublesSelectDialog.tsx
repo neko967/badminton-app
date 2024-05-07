@@ -96,25 +96,23 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel id="demo-multiple-checkbox-label">ダブルス</InputLabel>
-              {members.length > 0 &&
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={players}
-                  onChange={handleChange}
-                  input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(', ')}
-                  MenuProps={MenuProps}
-                >
-                  {members.map((member: Member) => (
-                    <MenuItem key={member.name} value={member.name}>
-                      <Checkbox checked={players.indexOf(member.name) > -1} />
-                      <ListItemText primary={member.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              }
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={players}
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+              >
+                {members.map((member: Member) => (
+                  <MenuItem key={member.name} value={member.name}>
+                    <Checkbox checked={players.indexOf(member.name) > -1} />
+                    <ListItemText primary={member.name} />
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl> 
           </Box>
         </DialogContent>

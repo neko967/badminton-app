@@ -97,7 +97,6 @@ export default function SinglesSelectDialog({ members, singlesOpen, handleSingle
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel id="demo-multiple-checkbox-label">シングルス</InputLabel>
-              {members.length > 0 &&
                 <Select
                   labelId="demo-multiple-checkbox-label"
                   id="demo-multiple-checkbox"
@@ -115,7 +114,6 @@ export default function SinglesSelectDialog({ members, singlesOpen, handleSingle
                     </MenuItem>
                   ))}
                 </Select>
-              }
             </FormControl>
           </Box>
         </DialogContent>
