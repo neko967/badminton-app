@@ -144,28 +144,29 @@ export default function Member({members, handleDelete}:
 
   return (
     <>
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>名前</TableCell>
-            <TableCell align="right">シングルスパワー</TableCell>
-            <TableCell align="right">ダブルスパワー</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {members.map((member: Member) => (
-            <Row key={member.name} member={member} handleDelete={handleDelete}/>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    {members.length === 0 &&
-      <div className="text-start px-6 mt-6">
-        <p>メンバーが登録されていません</p>
-      </div>
-    }
+      {members.length > 0 ?
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>名前</TableCell>
+                <TableCell align="right">シングルスパワー</TableCell>
+                <TableCell align="right">ダブルスパワー</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {members.map((member: Member) => (
+                <Row key={member.name} member={member} handleDelete={handleDelete}/>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      :
+        <div className="text-start px-6 mt-6">
+          <p>メンバーが登録されていません</p>
+        </div>
+      }
     </>
   );
 }
