@@ -15,29 +15,24 @@ const handler = NextAuth({
     maxAge: 60 * 24 * 24
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-
-      if (user) {
+    async jwt({ token, account, user }) {
+      if (account && account.access_token && user) {
         token.id = user.id;
-        token.user = user;
-        const u = user as any;
-        token.role = u.role;
-      }
-      if (account) {
         token.accessToken = account.access_token;
+        token.name = user.name;
+        token.image = user.image;
       }
       return token;
     },
     async session({ session, token }) {
-      token.accessToken;
-      return {
-        ...session,
-        user: {
+      if (token.accessToken && token.id) {
+        session.accessToken = token.accessToken as string;
+        session.user = {
           ...session.user,
-          role: token.role,
           id: token.id as string,
-        },
-      };
+        };
+      }
+      return session;
     },
   	async signIn({ user, account }) {
   	  const provider = account?.provider;
