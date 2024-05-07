@@ -83,9 +83,9 @@ function Row({ member, handleDelete }: {
               <Table size="small" aria-label="purchases">
                 <TableBody>
                   {member.history.map((historyRow, index: number) => (
-                    <>
+                    <React.Fragment key={historyRow.id || index}>
                       {"score_1" in historyRow && 
-                        <TableRow key={index}>
+                        <TableRow key={`single-${historyRow.id}`}>
                           <TableCell>
                             <div className="w-full flex items-center">
                               <div className="w-5/12 flex justify-start">
@@ -102,7 +102,7 @@ function Row({ member, handleDelete }: {
                         </TableRow>
                       }
                       {"score_12" in historyRow &&
-                        <TableRow key={index}>
+                        <TableRow key={`double-${historyRow.id}`}>
                           <TableCell>
                           <div className="w-full flex items-center">
                             <div className="w-5/12 flex justify-start">
@@ -124,7 +124,7 @@ function Row({ member, handleDelete }: {
                           </TableCell>
                         </TableRow>
                       }
-                    </>
+                    </React.Fragment>
                   ))}
                 </TableBody>
               </Table>   
