@@ -66,6 +66,7 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
         await fetch(API_URL, {
           method: "POST",
           headers: {
+            'uid': `${session?.user?.id}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -73,7 +74,6 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
             member_2_id: member2.id,
             member_3_id: member3.id,
             member_4_id: member4.id,
-            email: session.user?.email,
           }),
         })
       }

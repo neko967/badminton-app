@@ -68,7 +68,6 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
       target: { value },
     } = event;
     setPlayers(
-      // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };

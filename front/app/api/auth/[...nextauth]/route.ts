@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const apiUrl = process.env.NEXT_PUBLIC_DOCKER_API_URL;
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET || '',
@@ -12,36 +12,37 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 24 * 24
+    maxAge: 60 * 24 * 24,
+    updateAge: 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user, account, profile }) {
-
-      if (user) {
-        token.user = user;
-        const u = user as any;
-        token.role = u.role;
-      }
-      if (account) {
+    async jwt({ token, user, account }) {
+      if (account && account.access_token && user) {
+        token.id = user.id;
         token.accessToken = account.access_token;
+        token.name = user.name;
+        token.image = user.image;
       }
+      console.log("JWT Callback - token:", token);
       return token;
     },
     async session({ session, token }) {
-      token.accessToken;
-      return {
-        ...session,
-        user: {
+      if (token.accessToken && token.id) {
+        session.accessToken = token.accessToken as string;
+        session.user = {
           ...session.user,
-          role: token.role,
-        },
-      };
+          id: token.id as string,
+        };
+      }
+      console.log("Session Callback - session:", session);
+      return session;
     },
   	async signIn({ user, account }) {
   	  const provider = account?.provider;
   	  const uid = user?.id;
   	  const name = user?.name;
   	  const email = user?.email;
+      console.log("Sign In Callback - user:", user);
 
   	  try {
         const response =  await fetch(`${apiUrl}/auth/${provider}/callback`, {
@@ -62,7 +63,7 @@ const handler = NextAuth({
   	  	  return false;
   	  	}
   	  } catch (error) {
-        console.log('エラーです', error);
+        console.log('Sign In Callback - Error:', error);
         return false;
       }
   	},

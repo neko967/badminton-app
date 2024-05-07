@@ -50,11 +50,11 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetc
       await fetch(API_URL, {
         method: "POST",
         headers: {
+          'uid': `${session?.user?.id}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: member.name,
-          email: session.user?.email,
         }),
       }).then(() => {
         fetchData();

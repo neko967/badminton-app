@@ -26,9 +26,5 @@ class Api::V1::MembersController < ApplicationController
   def member_params
     params.permit(:name)
   end
-
-  def set_current_user
-    @current_user = User.find_by(email: params[:email]) 
-  end
 end
   

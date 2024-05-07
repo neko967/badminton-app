@@ -69,7 +69,6 @@ export default function SinglesSelectDialog({ members, singlesOpen, handleSingle
       target: { value },
     } = event;
     setPlayers(
-      // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };

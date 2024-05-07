@@ -60,12 +60,12 @@ export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen,
         await fetch(API_URL, {
           method: "POST",
           headers: {
+            'uid': `${session?.user?.id}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             member_1_id: member1.id,
             member_2_id: member2.id,
-            email: session.user?.email,
           }),
         })
       }

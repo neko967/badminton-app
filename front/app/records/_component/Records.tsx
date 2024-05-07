@@ -66,38 +66,36 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
               <p>記録がありません</p>
             ) : (
               <dl className="flex flex-col w-full">
-                {singlesRecords.map((singlesRecord: any, index: number) => (
-                  <>
-                    <div
-                      key={index}
-                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
-                    >
-                      <div className="w-5/6 flex items-center justify-between">
-                        <div className="w-2/5 flex justify-start">
-                          <p>{singlesRecord?.player_1}</p>
-                        </div>
-                        <div className="w-1/5 flex justify-center">
-                          <p>{singlesRecord?.score_1} - {singlesRecord?.score_2}</p>
-                        </div>
-                        <div className="w-2/5 flex justify-end">
-                          <p>{singlesRecord?.player_2}</p>
-                        </div>
+                {singlesRecords.map((singlesRecord: any) => (
+                  <div
+                    key={singlesRecord.id}
+                    className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
+                  >
+                    <div className="w-5/6 flex items-center justify-between">
+                      <div className="w-2/5 flex justify-start">
+                        <p>{singlesRecord?.player_1}</p>
                       </div>
-                      <div className="w-1/6 flex items-center justify-end">
-                        { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
-                          <button
-                            className="border rounded p-2 hover:bg-slate-400 transition-all"
-                            onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
-                            type="button"
-                          >
-                            <EditIcon />
-                          </button>
-                        :
-                          <div className="w-1/6 h-12"></div>
-                        }
+                      <div className="w-1/5 flex justify-center">
+                        <p>{singlesRecord?.score_1} - {singlesRecord?.score_2}</p>
+                      </div>
+                      <div className="w-2/5 flex justify-end">
+                        <p>{singlesRecord?.player_2}</p>
                       </div>
                     </div>
-                  </>
+                    <div className="w-1/6 flex items-center justify-end">
+                      { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
+                        <button
+                          className="border rounded p-2 hover:bg-slate-400 transition-all"
+                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
+                          type="button"
+                        >
+                          <EditIcon />
+                        </button>
+                      :
+                        <div className="w-1/6 h-12"></div>
+                      }
+                    </div>
+                  </div>
                 ))}
               </dl>
             )}
@@ -111,44 +109,42 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
               <p>記録がありません</p>
             ) : (
               <dl className="flex flex-col w-full">
-                {doublesRecords.map((doublesRecord: any, index: number) => (
-                  <>
-                    <div
-                      key={index}
-                      className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
-                    >
-                      <div className="w-5/6 flex items-center">
-                        <div className="w-2/5 flex justify-start">
-                          <div>
-                            <p>{doublesRecord?.player_1}</p>
-                            <p>{doublesRecord?.player_2}</p>
-                          </div>
-                        </div>
-                        <div className="w-1/5 flex justify-center">
-                          <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
-                        </div>
-                        <div className="w-2/5 flex justify-end">
-                          <div>
-                            <p>{doublesRecord?.player_3}</p>
-                            <p>{doublesRecord?.player_4}</p>
-                          </div>
+                {doublesRecords.map((doublesRecord: any) => (
+                  <div
+                    key={doublesRecord.id}
+                    className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
+                  >
+                    <div className="w-5/6 flex items-center">
+                      <div className="w-2/5 flex justify-start">
+                        <div>
+                          <p>{doublesRecord?.player_1}</p>
+                          <p>{doublesRecord?.player_2}</p>
                         </div>
                       </div>
-                      <div className="w-1/6 flex items-center justify-end">
-                        { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
-                          <button
-                            className="border rounded p-2 hover:bg-slate-400 transition-all"
-                            onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
-                            type="button"
-                          >
-                            <EditIcon />
-                          </button>
-                        :
-                          <div className="w-1/6 h-12"></div>
-                        }
+                      <div className="w-1/5 flex justify-center">
+                        <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
+                      </div>
+                      <div className="w-2/5 flex justify-end">
+                        <div>
+                          <p>{doublesRecord?.player_3}</p>
+                          <p>{doublesRecord?.player_4}</p>
+                        </div>
                       </div>
                     </div>
-                  </>
+                    <div className="w-1/6 flex items-center justify-end">
+                      { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
+                        <button
+                          className="border rounded p-2 hover:bg-slate-400 transition-all"
+                          onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
+                          type="button"
+                        >
+                          <EditIcon />
+                        </button>
+                      :
+                        <div className="w-1/6 h-12"></div>
+                      }
+                    </div>
+                  </div>
                 ))}
               </dl>
             )}
@@ -165,18 +161,24 @@ export default function Records() {
   const [singlesRecords, setSinglesRecords] = useState([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const fetchSinglesData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL_SINGLES_RECORD}?email=${query}`);
-      const data = await response.json();
-      setSinglesRecords(data);
-    }
+    const headers = {
+      'uid': `${session?.user?.id}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
+    setSinglesRecords(data);
   }, [session]);
+
   useEffect(() => {
     if (session) {
       fetchSinglesData();
     }
   }, [session, fetchSinglesData]);
+
   const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
   const handleSinglesRecordEditDialogOpen = (id: number) => {
@@ -192,18 +194,24 @@ export default function Records() {
   const [doublesRecords, setDoublesRecords] = useState([]);
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL_DOUBLES_RECORD}?email=${query}`);
-      const data = await response.json();
-      setDoublesRecords(data);
-    }
+    const headers = {
+      'uid': `${session?.user?.id}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
+    setDoublesRecords(data);
   }, [session]);
+
   useEffect(() => {
     if (session) {
       fetchDoublesData();
     }
   }, [session, fetchDoublesData]);
+
   const [doublesRecord_id, setDoublesRecord_id] = useState<number>(0);
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
   const handleDoublesRecordEditDialogOpen = (id: number) => {

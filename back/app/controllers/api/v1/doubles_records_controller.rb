@@ -61,10 +61,4 @@ class Api::V1::DoublesRecordsController < ApplicationController
       player_4.update(doubles_win_game: player_4.doubles_win_game + 1)
     end
   end
-
-  private
-
-  def set_current_user
-    @current_user = User.find_by(email: params[:email]) 
-  end
 end

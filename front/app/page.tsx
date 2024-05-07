@@ -47,12 +47,16 @@ export default function Home() {
   const { data: session, status } = useSession();
 
   const fetchData = useCallback(async () => {
-    if (session) {
-      const query = session.user?.email;
-      const response = await fetch (`${API_URL}?email=${query}`);
-      const data = await response.json();
+    const headers = {
+      'uid': `${session?.user?.id}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
       setMembers(data);
-    }
   }, [session]);
 
   useEffect(() => {
