@@ -57,10 +57,6 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
       const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
       const member3 = playersWithStatus.find((item: Member) => item.name === makedPare[i][2]);
       const member4 = playersWithStatus.find((item: Member) => item.name === makedPare[i][3]);
-      console.log("member1", member1);
-      console.log("member2", member2);
-      console.log("member3", member3);
-      console.log("member4", member4);
 
       if (session) {
         await fetch(API_URL, {

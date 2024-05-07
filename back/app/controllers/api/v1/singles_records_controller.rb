@@ -7,7 +7,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
 
   def create
     singles_record = @current_user.singles_records.create!(player_1: Member.find(params[:member_1_id]).name, player_2: Member.find(params[:member_2_id]).name)
-    singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id]) 
+    singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id])
     singles_player_2 = singles_record.singles_players.create(member_id: params[:member_2_id])
     if singles_player_1 && singles_player_2
       render json: singles_player_1, status: :created
@@ -20,9 +20,9 @@ class Api::V1::SinglesRecordsController < ApplicationController
     singles_record = SinglesRecord.find(params[:id])
     singles_record.update(score_1: params[:score_1], score_2: params[:score_2])
 
-    player_1 = singles_record.singles_recorded_players.find_by(name: params[:player_1])
+    player_1 = singles_record.singles_recorded_players.find(params[:player_1_id])
     score_1 = params[:score_1]
-    player_2 = singles_record.singles_recorded_players.find_by(name: params[:player_2])
+    player_2 = singles_record.singles_recorded_players.find(params[:player_2_id])
     score_2 = params[:score_2]
     total_score = score_1 + score_2
     total_strength = (player_1.singles_strength - 50) + (player_2.singles_strength - 50)

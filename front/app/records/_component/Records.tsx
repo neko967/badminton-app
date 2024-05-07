@@ -9,6 +9,42 @@ import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
 import DoublesRecordEditDialog from './DoublesRecordEditDialog';
 
+interface Member {
+  id: number;
+  name: string;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
+  history: (SinglesRecord | DoublesRecord)[];
+}
+
+interface SinglesRecord {
+  id: number;
+  player_1: string;
+  score_1: number;
+  player_2: string;
+  score_2: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface DoublesRecord {
+  id: number;
+  player_1: string;
+  player_2: string;
+  score_12: number;
+  player_3: string;
+  player_4: string;
+  score_34: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -179,6 +215,28 @@ export default function Records() {
     }
   }, [session, fetchSinglesData]);
 
+  const [members, setMembers] = useState([] as Member[]);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+
+  const fetchData = useCallback(async () => {
+    const headers = {
+      'uid': `${session?.user?.id}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
+      setMembers(data);
+  }, [session]);
+
+  useEffect(() => {
+    if (session) {
+      fetchData();
+    }
+  }, [session, fetchData]);
+
   const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
   const handleSinglesRecordEditDialogOpen = (id: number) => {
@@ -241,6 +299,7 @@ export default function Records() {
         fetchSinglesData={fetchSinglesData}
         singlesRecords={singlesRecords}
         singlesRecord_id={singlesRecord_id}
+        members={members}
       />
       <DoublesRecordEditDialog 
         doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
@@ -248,6 +307,7 @@ export default function Records() {
         fetchDoublesData={fetchDoublesData}
         doublesRecords={doublesRecords}
         doublesRecord_id={doublesRecord_id}
+        members={members}
       />
     </>
   );

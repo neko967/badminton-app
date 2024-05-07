@@ -10,15 +10,51 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+
+interface Member {
+  id: number;
+  name: string;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
+  history: (SinglesRecord | DoublesRecord)[];
+}
+
+interface SinglesRecord {
+  id: number;
+  player_1: string;
+  score_1: number;
+  player_2: string;
+  score_2: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface DoublesRecord {
+  id: number;
+  player_1: string;
+  player_2: string;
+  score_12: number;
+  player_3: string;
+  player_4: string;
+  score_34: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export default function DoublesRecordEditDialog({doublesRecordEditDialogOpen, 
                                                  handleDoublesRecordEditDialogClose, 
-                                                 fetchDoublesData, doublesRecords, doublesRecord_id}: {
+                                                 fetchDoublesData, doublesRecords, doublesRecord_id, members}: {
                                                  doublesRecordEditDialogOpen: any; 
                                                  handleDoublesRecordEditDialogClose: any;
-                                                 fetchDoublesData: any, doublesRecords: any, doublesRecord_id: number}) {
+                                                 fetchDoublesData: any, doublesRecords: any, doublesRecord_id: number, members: Member[]}) {
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const { data: session, status } = useSession();
 
@@ -47,11 +83,11 @@ export default function DoublesRecordEditDialog({doublesRecordEditDialogOpen,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          player_1: player_1NameInDialog,
-          player_2: player_2NameInDialog,
+          player_1_id: player_1_id,
+          player_2_id: player_2_id,
           score_12: score_12,
-          player_3: player_3NameInDialog,
-          player_4: player_4NameInDialog,
+          player_3_id: player_3_id,
+          player_4_id: player_4_id,
           score_34: score_34,
         }),
       }).then(() => {
@@ -77,6 +113,24 @@ export default function DoublesRecordEditDialog({doublesRecordEditDialogOpen,
       setPlayer_4NameInDialog(doublesRecords.find( ({ id }: any) => id == doublesRecord_id ).player_4);
     }
   }, [doublesRecord_id]);
+
+  const [player_1_id, setPlayer_1_id] = useState<number>();
+  const [player_2_id, setPlayer_2_id] = useState<number>();
+  const [player_3_id, setPlayer_3_id] = useState<number>();
+  const [player_4_id, setPlayer_4_id] = useState<number>();
+  useEffect(() => {
+    if (player_1NameInDialog && player_2NameInDialog) {
+      const player1 = members.find(member => member.name === player_1NameInDialog);
+      const player2 = members.find(member => member.name === player_2NameInDialog);
+      const player3 = members.find(member => member.name === player_3NameInDialog);
+      const player4 = members.find(member => member.name === player_4NameInDialog);
+      
+      setPlayer_1_id(player1 ? player1.id : undefined);
+      setPlayer_2_id(player2 ? player2.id : undefined);
+      setPlayer_3_id(player3 ? player3.id : undefined);
+      setPlayer_4_id(player4 ? player4.id : undefined);
+    }
+  }, [doublesRecord_id, player_1NameInDialog, player_2NameInDialog, player_3NameInDialog, player_4NameInDialog, members]);
 
   return (
     <div>

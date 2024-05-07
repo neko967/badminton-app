@@ -1,9 +1,5 @@
 class Api::V1::UsersController < ApplicationController
 
-  def index
-    render json: User.all, status: :ok
-  end
-
   def create
     user = User.find_or_create_by(provider: params[:provider], uid: params[:uid])                      
     if user

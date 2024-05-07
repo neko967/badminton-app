@@ -10,15 +10,51 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+
+interface Member {
+  id: number;
+  name: string;
+  singles_total_game: number;
+  singles_win_game: number;
+  singles_strength: number;
+  doubles_total_game: number;
+  doubles_win_game: number;
+  doubles_strength: number;
+  history: (SinglesRecord | DoublesRecord)[];
+}
+
+interface SinglesRecord {
+  id: number;
+  player_1: string;
+  score_1: number;
+  player_2: string;
+  score_2: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface DoublesRecord {
+  id: number;
+  player_1: string;
+  player_2: string;
+  score_12: number;
+  player_3: string;
+  player_4: string;
+  score_34: number;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen, 
                                                  handleSinglesRecordEditDialogClose, 
-                                                 fetchSinglesData, singlesRecords, singlesRecord_id}: {
+                                                 fetchSinglesData, singlesRecords, singlesRecord_id, members}: {
                                                  singlesRecordEditDialogOpen: any; 
                                                  handleSinglesRecordEditDialogClose: any;
-                                                 fetchSinglesData: any, singlesRecords: any, singlesRecord_id: number}) {
+                                                 fetchSinglesData: any, singlesRecords: any, singlesRecord_id: number, members: Member[]}) {
   const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
 
@@ -47,9 +83,9 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          player_1: player_1NameInDialog,
+          player_1_id: player_1_id,
           score_1: score_1,
-          player_2: player_2NameInDialog,
+          player_2_id: player_2_id,
           score_2: score_2,
         }),
       }).then(() => {
@@ -71,6 +107,18 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
       setPlayer_2NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
     }
   }, [singlesRecord_id]);
+
+  const [player_1_id, setPlayer_1_id] = useState<number>();
+  const [player_2_id, setPlayer_2_id] = useState<number>();
+  useEffect(() => {
+    if (player_1NameInDialog && player_2NameInDialog) {
+      const player1 = members.find(member => member.name === player_1NameInDialog);
+      const player2 = members.find(member => member.name === player_2NameInDialog);
+      
+      setPlayer_1_id(player1 ? player1.id : undefined);
+      setPlayer_2_id(player2 ? player2.id : undefined);
+    }
+  }, [singlesRecord_id, player_1NameInDialog, player_2NameInDialog, members]);
 
   return (
     <div>

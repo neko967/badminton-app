@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -333,7 +333,7 @@ export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handl
         <DialogContent>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <InputLabel id="demo-simple-select-label">組み方</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"

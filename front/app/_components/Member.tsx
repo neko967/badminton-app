@@ -83,9 +83,9 @@ function Row({ member, handleDelete }: {
               <Table size="small" aria-label="purchases">
                 <TableBody>
                   {member.history.map((historyRow, index: number) => (
-                    <React.Fragment key={historyRow.id || index}>
+                    <React.Fragment key={`fragment-${historyRow.id}-${index}`}>
                       {"score_1" in historyRow && 
-                        <TableRow key={`single-${historyRow.id}`}>
+                        <TableRow key={`single-${historyRow.id}-${index}`}>
                           <TableCell>
                             <div className="w-full flex items-center">
                               <div className="w-5/12 flex justify-start">
@@ -102,7 +102,7 @@ function Row({ member, handleDelete }: {
                         </TableRow>
                       }
                       {"score_12" in historyRow &&
-                        <TableRow key={`double-${historyRow.id}`}>
+                        <TableRow key={`double-${historyRow.id}-${index}`}>
                           <TableCell>
                           <div className="w-full flex items-center">
                             <div className="w-5/12 flex justify-start">
@@ -157,7 +157,7 @@ export default function Member({members, handleDelete}:
             </TableHead>
             <TableBody>
               {members.map((member: Member) => (
-                <Row key={member.name} member={member} handleDelete={handleDelete}/>
+                <Row key={member.id} member={member} handleDelete={handleDelete}/>
               ))}
             </TableBody>
           </Table>
