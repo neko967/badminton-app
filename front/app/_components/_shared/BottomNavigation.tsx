@@ -16,7 +16,7 @@ export default function Menu() {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1, display: { sm: 'none', xs: 'block' } }} className="mt-36">
+      <Box sx={{ flexGrow: 1 }} className="mt-36">
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
           <BottomNavigation
             showLabels
