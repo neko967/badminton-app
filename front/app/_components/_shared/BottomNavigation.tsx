@@ -25,8 +25,8 @@ export default function Menu() {
               setValue(newValue);
             }}
           >
-            <BottomNavigationAction icon={<HomeIcon />} onClick={() => router.push('/')}/>
-            <BottomNavigationAction icon={<RestoreIcon />} onClick={() => router.push('/records')}/>
+            <BottomNavigationAction label="ホーム" icon={<HomeIcon />} onClick={() => router.push('/')}/>
+            <BottomNavigationAction label="試合記録" icon={<RestoreIcon />} onClick={() => router.push('/records')}/>
           </BottomNavigation>
         </Paper>
       </Box>
