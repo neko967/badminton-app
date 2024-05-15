@@ -65,7 +65,7 @@ export default function SinglesBeforeSendPareDialog({
             <p>ペアがありません</p>
           ) : (
             <div className="flex flex-col w-full">
-              {makedPare.map((pare: any, index: number) => (
+              {makedPare.map((pare, index) => (
                 <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-1">
                   <div className="w-5/12 flex justify-start">
                     <p>{pare[0]}</p>
