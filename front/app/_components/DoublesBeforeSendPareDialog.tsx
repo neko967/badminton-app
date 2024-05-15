@@ -8,10 +8,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import type { Member } from '@/app/types/index';
 
-export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen, 
-                                                     handleBeforeSendPareDialogClose, 
-                                                     makedPare, handleMakePare, 
-                                                     playersWithStatus}: any) {
+interface DoublesBeforeSendPareDialogProps {
+  beforeSendPareDialogOpen: boolean;
+  handleBeforeSendPareDialogClose: () => void;
+  makedPare: string[][];
+  handleMakePare: () => void;
+  playersWithStatus: Member[];
+}
+
+export default function DoublesBeforeSendPareDialog({
+  beforeSendPareDialogOpen,
+  handleBeforeSendPareDialogClose,
+  makedPare,
+  handleMakePare,
+  playersWithStatus,
+}: DoublesBeforeSendPareDialogProps) {
+
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -31,10 +43,10 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            member_1_id: member1.id,
-            member_2_id: member2.id,
-            member_3_id: member3.id,
-            member_4_id: member4.id,
+            member_1_id: member1?.id,
+            member_2_id: member2?.id,
+            member_3_id: member3?.id,
+            member_4_id: member4?.id,
           }),
         })
       }
@@ -58,7 +70,7 @@ export default function DoublesBeforeSendPareDialog({beforeSendPareDialogOpen,
             <p>ペアがありません</p>
           ) : (
             <div className="flex flex-col w-full">
-              {makedPare.map((pare: any, index: number) => (
+              {makedPare.map((pare, index) => (
                 <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45">
                   <div className="w-5/12 flex justify-start">
                     <div className="w-full">

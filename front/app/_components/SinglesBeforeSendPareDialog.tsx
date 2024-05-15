@@ -8,10 +8,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import type { Member } from '@/app/types/index';
 
-export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen, 
-                                                     handleBeforeSendPareDialogClose, 
-                                                     makedPare, handleMakePare, 
-                                                     playersWithStatus}: any) {
+interface SinglesBeforeSendPareDialogProps {
+  beforeSendPareDialogOpen: boolean;
+  handleBeforeSendPareDialogClose: () => void;
+  makedPare: [string, string][];
+  handleMakePare: () => void;
+  playersWithStatus: Member[];
+}
+
+export default function SinglesBeforeSendPareDialog({
+  beforeSendPareDialogOpen,
+  handleBeforeSendPareDialogClose,
+  makedPare,
+  handleMakePare,
+  playersWithStatus,
+}: SinglesBeforeSendPareDialogProps) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -29,8 +40,8 @@ export default function SinglesBeforeSendPareDialog({beforeSendPareDialogOpen,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            member_1_id: member1.id,
-            member_2_id: member2.id,
+            member_1_id: member1?.id,
+            member_2_id: member2?.id,
           }),
         })
       }
