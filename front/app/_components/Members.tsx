@@ -71,18 +71,26 @@ function Row({ member, handleDelete }: {
                           <TableCell>
                           <div className="w-full flex items-center">
                             <div className="w-5/12 flex justify-start">
-                              <div>
-                                <p>{historyRow.player_1}</p>
-                                <p>{historyRow.player_2}</p>
+                              <div className="w-full">
+                                <div className="flex justify-start">
+                                  <p>{historyRow.player_1}</p>
+                                </div>
+                                <div className="flex justify-start">
+                                  <p>{historyRow.player_2}</p>
+                                </div>
                               </div>
                             </div>
                             <div className="w-1/6 flex justify-center">
                               <p>{historyRow.score_12} - {historyRow.score_34}</p>
                             </div>
                             <div className="w-5/12 flex justify-end">
-                              <div>
-                                <p>{historyRow.player_3}</p>
-                                <p>{historyRow.player_4}</p>
+                              <div className="w-full">
+                                <div className="flex justify-end">
+                                  <p>{historyRow.player_3}</p>
+                                </div>
+                                <div className="flex justify-end">
+                                  <p>{historyRow.player_4}</p>
+                                </div>
                               </div>
                             </div>
                           </div>

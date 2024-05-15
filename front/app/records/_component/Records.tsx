@@ -117,18 +117,26 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
                   >
                     <div className="w-5/6 flex items-center">
                       <div className="w-2/5 flex justify-start">
-                        <div>
-                          <p>{doublesRecord?.player_1}</p>
-                          <p>{doublesRecord?.player_2}</p>
+                        <div className="w-full">
+                          <div className="flex justify-start">
+                            <p>{doublesRecord?.player_1}</p>
+                          </div>
+                          <div className="flex justify-start">
+                            <p>{doublesRecord?.player_2}</p>
+                          </div>
                         </div>
                       </div>
                       <div className="w-1/5 flex justify-center">
                         <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
                       </div>
                       <div className="w-2/5 flex justify-end">
-                        <div>
-                          <p>{doublesRecord?.player_3}</p>
-                          <p>{doublesRecord?.player_4}</p>
+                        <div className="w-full">
+                          <div className="flex justify-end">
+                            <p>{doublesRecord?.player_3}</p>
+                          </div>
+                          <div className="flex justify-end">
+                            <p>{doublesRecord?.player_4}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
