@@ -10,47 +10,49 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SinglesSelectDialog from './SinglesSelectDialog';
 import DoublesSelectDialog from './DoublesSelectDialog';
 import AddPersonDialog from './AddPersonDialog';
+import type { Member } from '@/app/types/index';
 
-export default function SpeedDialTooltipOpen({members, fetchData}: any) {
+type FetchDataType = () => Promise<void>;
+
+interface SpeedDialTooltipOpenProps {
+  members: Member[];
+  fetchData: FetchDataType;
+}
+
+export default function SpeedDialTooltipOpen({members, fetchData}: SpeedDialTooltipOpenProps) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
-
-  const actions = [
-    { icon: <PeopleIcon onClick={() => {handleDoublesClickOpen();}} />, name: 'ダブルス' },
-    { icon: <PersonIcon onClick={() => {handleSinglesClickOpen();}}/>, name: 'シングルス' },
-    { icon: <PersonAddIcon onClick={() => {handleAddPersonClickOpen();}} />, name: 'メンバーを追加' },
-  ];
 
   const [singlesOpen, setSinglesOpen] = React.useState(false);
   const handleSinglesClickOpen = () => {
     setSinglesOpen(true);
   };
-  const handleSinglesClose = (event: any, reason: any) => {
-    if (reason !== 'backdropClick') {
-      setSinglesOpen(false);
-    }
+  const handleSinglesClose = () => {
+    setSinglesOpen(false);
   };
 
   const [doublesOpen, setDoublesOpen] = React.useState(false);
   const handleDoublesClickOpen = () => {
     setDoublesOpen(true);
   };
-  const handleDoublesClose = (event: any, reason: any) => {
-    if (reason !== 'backdropClick') {
-      setDoublesOpen(false);
-    }
+  const handleDoublesClose = () => {
+    setDoublesOpen(false);
   };
 
   const [addPersonOpen, setAddPersonOpen] = React.useState(false);
   const handleAddPersonClickOpen = () => {
     setAddPersonOpen(true);
   };
-  const handleAddPersonClose = (event: any, reason: any) => {
-    if (reason !== 'backdropClick') {
-      setAddPersonOpen(false);
-    }
+  const handleAddPersonClose = () => {
+    setAddPersonOpen(false);
   };
+
+  const actions = [
+    { icon: <PeopleIcon onClick={handleDoublesClickOpen} />, name: 'ダブルス' },
+    { icon: <PersonIcon onClick={handleSinglesClickOpen}/>, name: 'シングルス' },
+    { icon: <PersonAddIcon onClick={handleAddPersonClickOpen} />, name: 'メンバーを追加' },
+  ];
 
   return (
     <>

@@ -9,7 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import SinglesMakePareDialog from './SinglesMakePareDialog';
@@ -27,19 +27,27 @@ const MenuProps = {
   },
 };
 
-export default function SinglesSelectDialog({ members, singlesOpen, handleSinglesClose }: any) {
-  const [players, setPlayers]: any = useState([]);
-  const handleChange = (event: any) => {
+interface SinglesSelectDialogProps {
+  members: Member[];
+  singlesOpen: boolean;
+  handleSinglesClose: () => void;
+}
+
+export default function SinglesSelectDialog({
+  members,
+  singlesOpen,
+  handleSinglesClose,
+}: SinglesSelectDialogProps) {
+  const [players, setPlayers] = useState<string[]>([]);
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
-    setPlayers(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setPlayers(typeof value === 'string' ? value.split(',') : value as string[]);
   };
 
   const [pareOpen, setPareOpen] = React.useState(false);
-  const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
+  const [playersWithStatus, setPlayersWithStatus] = useState<Member[]>([]);
   const handlePareOpen = () => {
     if (players.length < 2) {
       return;
@@ -48,10 +56,8 @@ export default function SinglesSelectDialog({ members, singlesOpen, handleSingle
     setPlayersWithStatus(result);
     setPareOpen(true);
   };
-  const handlePareClose = (event: any, reason: any) => {
-    if (reason !== 'backdropClick') {
-      setPareOpen(false);
-    }
+  const handlePareClose = () => {
+    setPareOpen(false);
   };
 
   return (
@@ -69,7 +75,7 @@ export default function SinglesSelectDialog({ members, singlesOpen, handleSingle
                   value={players}
                   onChange={handleChange}
                   input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(', ')}
+                  renderValue={(selected) => (selected as string[]).join(', ')}
                   MenuProps={MenuProps}
                 >
                   {members.map((member: Member) => (

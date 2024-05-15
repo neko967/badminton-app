@@ -9,7 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import DoublesMakePareDialog from './DoublesMakePareDialog';
@@ -26,31 +26,31 @@ const MenuProps = {
   },
 };
 
-export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose }: any) {
-  const [players, setPlayers]: any = useState([]);
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setPlayers(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+interface DoublesSelectDialogProps {
+  members: Member[];
+  doublesOpen: boolean;
+  handleDoublesClose: () => void;
+}
+
+export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose }: DoublesSelectDialogProps) {
+  const [players, setPlayers] = useState<string[]>([]);
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const { target: { value } } = event;
+    setPlayers(typeof value === 'string' ? value.split(',') : value);
   };
 
-  const [doublesMakePareDialogOpen, setDoublesMakePareDialogOpenOpen] = React.useState(false);
-  const [playersWithStatus, setPlayersWithStatus]: any = useState([]);
+  const [doublesMakePareDialogOpen, setDoublesMakePareDialogOpen] = useState(false);
+  const [playersWithStatus, setPlayersWithStatus] = useState<Member[]>([]);
   const handlePareOpen = () => {
     if (players.length < 4) {
       return;
     }
     const result = members.filter((item: Member) => players.includes(item.name));
     setPlayersWithStatus(result);
-    setDoublesMakePareDialogOpenOpen(true);
+    setDoublesMakePareDialogOpen(true);
   };
-  const handleDoublesMakePareDialogClose = (event: any, reason: any) => {
-    if (reason !== 'backdropClick') {
-      setDoublesMakePareDialogOpenOpen(false);
-    }
+  const handleDoublesMakePareDialogClose = () => {
+    setDoublesMakePareDialogOpen(false);
   };
 
   return (
@@ -68,7 +68,7 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
                 value={players}
                 onChange={handleChange}
                 input={<OutlinedInput label="Tag" />}
-                renderValue={(selected) => selected.join(', ')}
+                renderValue={(selected) => (selected as string[]).join(', ')}
                 MenuProps={MenuProps}
               >
                 {members.map((member: Member) => (
