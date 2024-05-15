@@ -14,22 +14,34 @@ import { useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 import type { Member } from '@/app/types/index';
 
-export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen, 
-                                                 handleSinglesRecordEditDialogClose, 
-                                                 fetchSinglesData, singlesRecords, singlesRecord_id, members}: {
-                                                 singlesRecordEditDialogOpen: any; 
-                                                 handleSinglesRecordEditDialogClose: any;
-                                                 fetchSinglesData: any, singlesRecords: any, singlesRecord_id: number, members: Member[]}) {
+interface SinglesRecordEditDialogProps {
+  singlesRecordEditDialogOpen: boolean;
+  handleSinglesRecordEditDialogClose: () => void;
+  fetchSinglesData: () => void;
+  singlesRecords: any[];
+  singlesRecord_id: number;
+  members: Member[];
+}
+
+export default function SinglesRecordEditDialog({
+  singlesRecordEditDialogOpen,
+  handleSinglesRecordEditDialogClose,
+  fetchSinglesData,
+  singlesRecords,
+  singlesRecord_id,
+  members,
+}: SinglesRecordEditDialogProps) {
+
   const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
 
   const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
-  const handleScoreOneChange = (event: SelectChangeEvent<typeof score_1_plus_100_with_none>) => {
+  const handleScoreOneChange = (event: SelectChangeEvent<number | string>) => {
     setScore_1_plus_100_with_none(Number(event.target.value) || '');
   };
 
   const [score_2_plus_100_with_none, setScore_2_plus_100_with_none] = useState<number | string>('');
-  const handleScoreTwoChange = (event: SelectChangeEvent<typeof score_2_plus_100_with_none>) => {
+  const handleScoreTwoChange = (event: SelectChangeEvent<number | string>) => {
     setScore_2_plus_100_with_none(Number(event.target.value) || '');
   };
 
@@ -68,10 +80,10 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
   const [player_2NameInDialog, setPlayer_2NameInDialog] = useState<string>('');
   useEffect(() => {
     if (singlesRecord_id) {
-      setPlayer_1NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_1);
-      setPlayer_2NameInDialog(singlesRecords.find( ({ id }: any) => id == singlesRecord_id ).player_2)
+      setPlayer_1NameInDialog(singlesRecords.find( ({ id }) => id == singlesRecord_id ).player_1);
+      setPlayer_2NameInDialog(singlesRecords.find( ({ id }) => id == singlesRecord_id ).player_2)
     }
-  }, [singlesRecord_id]);
+  }, [singlesRecord_id, singlesRecords]);
 
   const [player_1_id, setPlayer_1_id] = useState<number>();
   const [player_2_id, setPlayer_2_id] = useState<number>();
@@ -100,37 +112,9 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
                 onChange={handleScoreOneChange}
                 input={<OutlinedInput label="Point" />}
               >
-                <MenuItem value={100}>0</MenuItem>
-                <MenuItem value={101}>1</MenuItem>
-                <MenuItem value={102}>2</MenuItem>
-                <MenuItem value={103}>3</MenuItem>
-                <MenuItem value={104}>4</MenuItem>
-                <MenuItem value={105}>5</MenuItem>
-                <MenuItem value={106}>6</MenuItem>
-                <MenuItem value={107}>7</MenuItem>
-                <MenuItem value={108}>8</MenuItem>
-                <MenuItem value={109}>9</MenuItem>
-                <MenuItem value={110}>10</MenuItem>
-                <MenuItem value={111}>11</MenuItem>
-                <MenuItem value={112}>12</MenuItem>
-                <MenuItem value={113}>13</MenuItem>
-                <MenuItem value={114}>14</MenuItem>
-                <MenuItem value={115}>15</MenuItem>
-                <MenuItem value={116}>16</MenuItem>
-                <MenuItem value={117}>17</MenuItem>
-                <MenuItem value={118}>18</MenuItem>
-                <MenuItem value={119}>19</MenuItem>
-                <MenuItem value={120}>20</MenuItem>
-                <MenuItem value={121}>21</MenuItem>
-                <MenuItem value={122}>22</MenuItem>
-                <MenuItem value={123}>23</MenuItem>
-                <MenuItem value={124}>24</MenuItem>
-                <MenuItem value={125}>25</MenuItem>
-                <MenuItem value={126}>26</MenuItem>
-                <MenuItem value={127}>27</MenuItem>
-                <MenuItem value={128}>28</MenuItem>
-                <MenuItem value={129}>29</MenuItem>
-                <MenuItem value={130}>30</MenuItem>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <MenuItem key={i} value={100 + i}>{i}</MenuItem>
+                ))}
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -142,37 +126,9 @@ export default function SinglesRecordEditDialog({singlesRecordEditDialogOpen,
                 onChange={handleScoreTwoChange}
                 input={<OutlinedInput label="Point" />}
               >
-                <MenuItem value={100}>0</MenuItem>
-                <MenuItem value={101}>1</MenuItem>
-                <MenuItem value={102}>2</MenuItem>
-                <MenuItem value={103}>3</MenuItem>
-                <MenuItem value={104}>4</MenuItem>
-                <MenuItem value={105}>5</MenuItem>
-                <MenuItem value={106}>6</MenuItem>
-                <MenuItem value={107}>7</MenuItem>
-                <MenuItem value={108}>8</MenuItem>
-                <MenuItem value={109}>9</MenuItem>
-                <MenuItem value={110}>10</MenuItem>
-                <MenuItem value={111}>11</MenuItem>
-                <MenuItem value={112}>12</MenuItem>
-                <MenuItem value={113}>13</MenuItem>
-                <MenuItem value={114}>14</MenuItem>
-                <MenuItem value={115}>15</MenuItem>
-                <MenuItem value={116}>16</MenuItem>
-                <MenuItem value={117}>17</MenuItem>
-                <MenuItem value={118}>18</MenuItem>
-                <MenuItem value={119}>19</MenuItem>
-                <MenuItem value={120}>20</MenuItem>
-                <MenuItem value={121}>21</MenuItem>
-                <MenuItem value={122}>22</MenuItem>
-                <MenuItem value={123}>23</MenuItem>
-                <MenuItem value={124}>24</MenuItem>
-                <MenuItem value={125}>25</MenuItem>
-                <MenuItem value={126}>26</MenuItem>
-                <MenuItem value={127}>27</MenuItem>
-                <MenuItem value={128}>28</MenuItem>
-                <MenuItem value={129}>29</MenuItem>
-                <MenuItem value={130}>30</MenuItem>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <MenuItem key={i} value={100 + i}>{i}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>

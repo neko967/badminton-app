@@ -38,6 +38,7 @@ export default function SinglesSelectDialog({
   singlesOpen,
   handleSinglesClose,
 }: SinglesSelectDialogProps) {
+
   const [players, setPlayers] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {

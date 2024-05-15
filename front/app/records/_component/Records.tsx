@@ -43,8 +43,20 @@ function a11yProps(index: number) {
   };
 }
 
-function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen, 
-                       doublesRecords, handleDoublesRecordEditDialogOpen}: any) {
+interface TabComponentProps {
+  singlesRecords: any[];
+  doublesRecords: any[];
+  handleSinglesRecordEditDialogOpen: (id: number) => void;
+  handleDoublesRecordEditDialogOpen: (id: number) => void;
+}
+
+function TabComponent({
+  singlesRecords,
+  handleSinglesRecordEditDialogOpen,
+  doublesRecords,
+  handleDoublesRecordEditDialogOpen,
+}: TabComponentProps) {
+
   const searchParams = useSearchParams();
   const set_value = searchParams.get('set_value');
   const defaultValue = set_value ? Number(set_value) : 0;
@@ -67,7 +79,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
               <p>記録がありません</p>
             ) : (
               <dl className="flex flex-col w-full">
-                {singlesRecords.map((singlesRecord: any) => (
+                {singlesRecords.map((singlesRecord) => (
                   <div
                     key={singlesRecord.id}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
@@ -110,7 +122,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
               <p>記録がありません</p>
             ) : (
               <dl className="flex flex-col w-full">
-                {doublesRecords.map((doublesRecord: any) => (
+                {doublesRecords.map((doublesRecord) => (
                   <div
                     key={doublesRecord.id}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
@@ -167,7 +179,7 @@ function TabComponent({singlesRecords, handleSinglesRecordEditDialogOpen,
 export default function Records() {
   const { data: session, status } = useSession();
 
-  const [singlesRecords, setSinglesRecords] = useState([]);
+  const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const fetchSinglesData = useCallback(async () => {
     const headers = {
@@ -188,7 +200,7 @@ export default function Records() {
     }
   }, [session, fetchSinglesData]);
 
-  const [members, setMembers] = useState([] as Member[]);
+  const [members, setMembers] = useState<Member[]>([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
 
   const fetchData = useCallback(async () => {
@@ -216,10 +228,8 @@ export default function Records() {
     setSinglesRecord_id(id);
     setSinglesRecordEditDialogOpen(true);
   };
-  const handleSinglesRecordEditDialogClose: any = (event: React.SyntheticEvent<unknown>, reason?: string) => {
-    if (reason !== 'backdropClick') {
-      setSinglesRecordEditDialogOpen(false);
-    }
+  const handleSinglesRecordEditDialogClose = () => {
+    setSinglesRecordEditDialogOpen(false);
   };
 
   const [doublesRecords, setDoublesRecords] = useState([]);
@@ -249,10 +259,8 @@ export default function Records() {
     setDoublesRecord_id(id);
     setDoublesRecordEditDialogOpen(true);
   };
-  const handleDoublesRecordEditDialogClose: any = (event: React.SyntheticEvent<unknown>, reason?: string) => {
-    if (reason !== 'backdropClick') {
-      setDoublesRecordEditDialogOpen(false);
-    }
+  const handleDoublesRecordEditDialogClose = () => {
+    setDoublesRecordEditDialogOpen(false);
   };
 
   return (
