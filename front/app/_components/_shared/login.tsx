@@ -13,7 +13,7 @@ export default function Login({ provider }: { provider: string }) {
   	return (
   	  <div>
   	  	<button onClick={() => {
-          signIn(provider, { callbackUrl: "/select-mode" }).catch(() => {
+          signIn(provider, { callbackUrl: "/" }).catch(() => {
             console.error(error);
           });
         }}>
