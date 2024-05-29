@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSession, signIn } from 'next-auth/react';
+import error from "next/error";
 
-export default function Login() {
+export default function Login({ provider }: { provider: string }) {
   const { data: session, status } = useSession();
 
   if (status === 'loading') {
@@ -11,7 +12,11 @@ export default function Login() {
   if (status !== 'authenticated') {
   	return (
   	  <div>
-  	  	<button onClick={() => signIn('google', {}, { prompt: 'login' })}>
+  	  	<button onClick={() => {
+          signIn(provider, { callbackUrl: "/" }).catch(() => {
+            console.error(error);
+          });
+        }}>
   	  	  Googleでログイン
   	  	</button>
   	  </div>

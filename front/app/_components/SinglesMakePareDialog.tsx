@@ -12,19 +12,29 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import type { Member } from '@/app/types/index';
 
-export default function SinglesMakePareDialog({ pareOpen, handlePareClose, playersWithStatus}: any) {
+interface SinglesMakePareDialogProps {
+  pareOpen: boolean;
+  handlePareClose: () => void;
+  playersWithStatus: Member[];
+}
+
+export default function SinglesMakePareDialog({
+  pareOpen,
+  handlePareClose,
+  playersWithStatus,
+}: SinglesMakePareDialogProps) {
   const [howToPare, setHowToPare] = useState<string>('random');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
   };
 
-  const [makedPare, setMakedPare] = useState<(string[])[]>([]);
+  const [makedPare, setMakedPare] = useState<[string, string][]>([]);
 
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
   }
 
-  function shuffleArray(array: any) {
+  function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -32,7 +42,7 @@ export default function SinglesMakePareDialog({ pareOpen, handlePareClose, playe
   }
 
   const handleMakePare = () => {
-    const newPares = [];
+    const newPares: [string, string][] = [];
     playersWithStatus.sort((a: Member, b: Member) => b.singles_strength - a.singles_strength);
 
     switch (howToPare) {
@@ -135,7 +145,6 @@ export default function SinglesMakePareDialog({ pareOpen, handlePareClose, playe
           beforeSendPareDialogOpen={beforeSendPareDialogOpen}
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
-          howToPare={howToPare}
           handleMakePare={handleMakePare}
           playersWithStatus={playersWithStatus}
         />

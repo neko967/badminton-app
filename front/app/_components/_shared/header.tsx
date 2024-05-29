@@ -33,7 +33,7 @@ const Header = () => {
             </li>
           </>
         ) : (
-          <Login />
+          <Login provider="google" />
         )}
       </ul>
     </header>

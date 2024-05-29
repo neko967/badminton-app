@@ -12,33 +12,44 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import type { Member } from '@/app/types/index';
 
-export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handleDoublesMakePareDialogClose, playersWithStatus}: any) {
+interface DoublesMakePareDialogProps {
+  doublesMakePareDialogOpen: boolean;
+  handleDoublesMakePareDialogClose: () => void;
+  playersWithStatus: Member[];
+}
+
+export default function DoublesMakePareDialog({
+  doublesMakePareDialogOpen,
+  handleDoublesMakePareDialogClose,
+  playersWithStatus,
+}: DoublesMakePareDialogProps) {
+
   const [howToPare, setHowToPare] = useState<string>('random');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
   };
 
-  const [makedPare, setMakedPare] = useState<(string[])[]>([]);
+  const [makedPare, setMakedPare] = useState<string[][]>([]);
 
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
   }
 
-  function shuffleArray(array: any) {
+  function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
-  function getRandomThreeAndRestShuffle(array: any) {
+  function getRandomThreeAndRestShuffle(array: any[]) {
     const shuffled = array.sort(() => 0.5 - Math.random());
     const randomThree = shuffled.slice(0, 3);
     const rest = shuffled.slice(3);
     return [randomThree, rest];
   }
 
-  function getRandomTwoAndRestShuffle(data: any) {
+  function getRandomTwoAndRestShuffle(data: any[]) {
     const shuffled = data.sort(() => 0.5 - Math.random());
     const randomTwo = shuffled.slice(0, 2);
     const rest = shuffled.slice(2);
@@ -46,7 +57,7 @@ export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handl
   }
 
   const handleMakePare = () => {
-    const newPares = [];
+    const newPares: string[][] = [];
     playersWithStatus.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
 
     switch (howToPare) {
@@ -323,7 +334,6 @@ export default function DoublesMakePareDialog({ doublesMakePareDialogOpen, handl
           beforeSendPareDialogOpen={beforeSendPareDialogOpen}
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
-          howToPare={howToPare}
           handleMakePare={handleMakePare}
           playersWithStatus={playersWithStatus}
         />

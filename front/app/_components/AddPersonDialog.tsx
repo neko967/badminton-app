@@ -4,7 +4,15 @@ import { useState } from "react";
 import { useSession } from 'next-auth/react';
 import type { Member } from '@/app/types/index';
 
-export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchData }: any) {
+type FetchDataType = () => Promise<void>;
+
+interface DialogSelectProps {
+  addPersonOpen: boolean;
+  handleAddPersonClose: () => void;
+  fetchData: FetchDataType;
+}
+
+export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchData }: DialogSelectProps) {
   const [member, setMember] = useState({} as Member);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
   const { data: session, status } = useSession();
@@ -46,14 +54,14 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetc
                 />
               </div>
               <div className="w-full m-auto mt-4 text-center">
-                <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all"
+                <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all" type="submit"
                         onClick={() => {handleAddPersonClose();}}>
                   追加
                 </button>
               </div>
             </form>
             <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all"
-                    onClick={() => {handleAddPersonClose();}}>
+                    onClick={handleAddPersonClose}>
               キャンセル
             </button>
           </section>
