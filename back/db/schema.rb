@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_29_185041) do
   create_table "doubles_players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "member_id", null: false
     t.bigint "doubles_record_id", null: false
@@ -33,6 +33,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
     t.index ["user_id"], name: "index_doubles_records_on_user_id"
   end
 
+  create_table "groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.integer "singles_total_game", default: 0, null: false
@@ -41,10 +48,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
     t.integer "doubles_total_game", default: 0, null: false
     t.integer "doubles_win_game", default: 0, null: false
     t.integer "doubles_strength", default: 100, null: false
-    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_members_on_user_id"
+    t.index ["group_id"], name: "index_members_on_group_id"
   end
 
   create_table "singles_players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -61,10 +68,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
     t.integer "score_1"
     t.string "player_2", null: false
     t.integer "score_2"
-    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_singles_records_on_user_id"
+    t.index ["group_id"], name: "index_singles_records_on_group_id"
+  end
+
+  create_table "user_groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_user_groups_on_group_id"
+    t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -78,8 +94,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_060006) do
   add_foreign_key "doubles_players", "doubles_records"
   add_foreign_key "doubles_players", "members"
   add_foreign_key "doubles_records", "users"
-  add_foreign_key "members", "users"
+  add_foreign_key "members", "groups"
   add_foreign_key "singles_players", "members"
   add_foreign_key "singles_players", "singles_records"
-  add_foreign_key "singles_records", "users"
+  add_foreign_key "singles_records", "groups"
+  add_foreign_key "user_groups", "groups"
+  add_foreign_key "user_groups", "users"
 end

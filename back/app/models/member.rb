@@ -1,7 +1,7 @@
 class Member < ApplicationRecord
   encrypts :name
 
-  belongs_to :user
+  belongs_to :group
   has_many :singles_players, dependent: :destroy
   has_many :singles_played_records, through: :singles_players, source: :singles_record
   has_many :doubles_players, dependent: :destroy
