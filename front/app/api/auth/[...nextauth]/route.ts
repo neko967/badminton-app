@@ -1,5 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { getServerSession } from 'next-auth/next';
+
 const apiUrl = process.env.NEXT_PUBLIC_DOCKER_API_URL;
 
 const handler = NextAuth({
@@ -13,6 +15,9 @@ const handler = NextAuth({
   session: {
     strategy: "jwt",
     maxAge: 60 * 24 * 24
+  },
+  pages: {
+    signIn: '/auth/signin',
   },
   callbacks: {
     async jwt({ token, account, user }) {
