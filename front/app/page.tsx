@@ -10,6 +10,9 @@ interface Group {
   name: string;
   slug: string;
   admin_uid: string;
+  number_of_people: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export default function Home() {
