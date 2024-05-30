@@ -5,7 +5,7 @@ class CreateSinglesRecords < ActiveRecord::Migration[7.1]
       t.integer :score_1
       t.string :player_2, null: false
       t.integer :score_2
-      t.references :user, null: false, foreign_key: true
+      t.references :group, null: false, foreign_key: true
 
       t.timestamps
     end

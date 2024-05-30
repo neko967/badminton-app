@@ -176,14 +176,13 @@ function TabComponent({
   );
 }
 
-export default function Records() {
+export default function Records({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
-
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const fetchSinglesData = useCallback(async () => {
     const headers = {
-      'uid': `${session?.user?.id}`,
+      'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
     const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
@@ -200,28 +199,6 @@ export default function Records() {
     }
   }, [session, fetchSinglesData]);
 
-  const [members, setMembers] = useState<Member[]>([]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-
-  const fetchData = useCallback(async () => {
-    const headers = {
-      'uid': `${session?.user?.id}`,
-      'Content-Type': 'application/json',
-    };
-    const response = await fetch(`${API_URL}`, {
-      method: 'GET',
-      headers: headers,
-    });
-    const data = await response.json();
-      setMembers(data);
-  }, [session]);
-
-  useEffect(() => {
-    if (session) {
-      fetchData();
-    }
-  }, [session, fetchData]);
-
   const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
   const handleSinglesRecordEditDialogOpen = (id: number) => {
@@ -236,7 +213,7 @@ export default function Records() {
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
     const headers = {
-      'uid': `${session?.user?.id}`,
+      'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
     const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
@@ -262,6 +239,28 @@ export default function Records() {
   const handleDoublesRecordEditDialogClose = () => {
     setDoublesRecordEditDialogOpen(false);
   };
+
+  const [members, setMembers] = useState<Member[]>([]);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+
+  const fetchMemberData = useCallback(async () => {
+    const headers = {
+      'slug': `${params.slug}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
+      setMembers(data);
+  }, [session]);
+
+  useEffect(() => {
+    if (session) {
+      fetchMemberData();
+    }
+  }, [session, fetchMemberData]);
 
   return (
     <>

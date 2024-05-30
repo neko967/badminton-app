@@ -8,4 +8,9 @@ class ApplicationController < ActionController::API
       @current_user = User.find_by(uid: uid)
     end
   end
+
+  def set_current_group
+    slug = request.headers['slug']
+    @current_group = Group.find_by(slug: slug)
+  end
 end

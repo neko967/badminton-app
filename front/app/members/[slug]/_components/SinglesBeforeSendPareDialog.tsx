@@ -14,6 +14,7 @@ interface SinglesBeforeSendPareDialogProps {
   makedPare: [string, string][];
   handleMakePare: () => void;
   playersWithStatus: Member[];
+  params: { slug: string };
 }
 
 export default function SinglesBeforeSendPareDialog({
@@ -22,6 +23,7 @@ export default function SinglesBeforeSendPareDialog({
   makedPare,
   handleMakePare,
   playersWithStatus,
+  params,
 }: SinglesBeforeSendPareDialogProps) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const { data: session, status } = useSession();
@@ -36,7 +38,7 @@ export default function SinglesBeforeSendPareDialog({
         await fetch(API_URL, {
           method: "POST",
           headers: {
-            'uid': `${session?.user?.id}`,
+            'slug': `${params.slug}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -46,7 +48,7 @@ export default function SinglesBeforeSendPareDialog({
         })
       }
     }
-    router.push('/records?set_value=0');
+    router.push(`/records/${params.slug}?set_value=0`);
   };
 
   return (

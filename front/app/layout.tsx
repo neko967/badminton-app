@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
-
 import { getServerSession } from "next-auth/next";
 import NextAuthProvider from '@/providers/NextAuth';
-
-import Header from "@/app/_components/_shared/header";
-import BottomNavigation from '@/app/_components/_shared/BottomNavigation';
+import Header from "@/app/_components/_shared/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +25,6 @@ export default async function RootLayout({
         <NextAuthProvider>
           <Header />
           {children}
-          <BottomNavigation />
         </NextAuthProvider>
       </body>
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GA_ID}`}/>
