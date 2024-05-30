@@ -16,12 +16,14 @@ interface DoublesMakePareDialogProps {
   doublesMakePareDialogOpen: boolean;
   handleDoublesMakePareDialogClose: () => void;
   playersWithStatus: Member[];
+  params: { slug: string };
 }
 
 export default function DoublesMakePareDialog({
   doublesMakePareDialogOpen,
   handleDoublesMakePareDialogClose,
   playersWithStatus,
+  params,
 }: DoublesMakePareDialogProps) {
 
   const [howToPare, setHowToPare] = useState<string>('random');
@@ -336,6 +338,7 @@ export default function DoublesMakePareDialog({
           makedPare={makedPare}
           handleMakePare={handleMakePare}
           playersWithStatus={playersWithStatus}
+          params={params}
         />
       </React.Fragment>
     </div>

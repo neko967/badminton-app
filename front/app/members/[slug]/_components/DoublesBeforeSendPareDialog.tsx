@@ -14,6 +14,7 @@ interface DoublesBeforeSendPareDialogProps {
   makedPare: string[][];
   handleMakePare: () => void;
   playersWithStatus: Member[];
+  params: { slug: string };
 }
 
 export default function DoublesBeforeSendPareDialog({
@@ -22,6 +23,7 @@ export default function DoublesBeforeSendPareDialog({
   makedPare,
   handleMakePare,
   playersWithStatus,
+  params,
 }: DoublesBeforeSendPareDialogProps) {
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
@@ -39,7 +41,7 @@ export default function DoublesBeforeSendPareDialog({
         await fetch(API_URL, {
           method: "POST",
           headers: {
-            'uid': `${session?.user?.id}`,
+            'slug': `${params.slug}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -51,7 +53,7 @@ export default function DoublesBeforeSendPareDialog({
         })
       }
     }
-    router.push('/records?set_value=1');
+    router.push(`/records/${params.slug}?set_value=1`);
   };
 
   return (

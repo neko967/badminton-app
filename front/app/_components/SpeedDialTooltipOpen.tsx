@@ -4,54 +4,38 @@ import Backdrop from '@mui/material/Backdrop';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import PersonIcon from '@mui/icons-material/Person';
-import PeopleIcon from '@mui/icons-material/People';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SinglesSelectDialog from './SinglesSelectDialog';
-import DoublesSelectDialog from './DoublesSelectDialog';
-import AddPersonDialog from './AddPersonDialog';
-import type { Member } from '@/app/types/index';
+import AddGroupDialog from './AddGroupDialog';
 
 type FetchDataType = () => Promise<void>;
 
-interface SpeedDialTooltipOpenProps {
-  members: Member[];
-  fetchData: FetchDataType;
+interface Group {
+  id: number;
+  name: string;
+  slug: string;
+  admin_uid: string;
 }
 
-export default function SpeedDialTooltipOpen({members, fetchData}: SpeedDialTooltipOpenProps) {
+interface SpeedDialTooltipOpenProps {
+  groups: Group[];
+  fetchGroupsData: FetchDataType;
+}
+
+export default function SpeedDialTooltipOpen({groups, fetchGroupsData}: SpeedDialTooltipOpenProps) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
 
-  const [singlesOpen, setSinglesOpen] = React.useState(false);
-  const handleSinglesClickOpen = () => {
-    setSinglesOpen(true);
+  const [addGroupOpen, setAddGroupOpen] = React.useState(false);
+  const handleAddGroupClickOpen = () => {
+    setAddGroupOpen(true);
   };
-  const handleSinglesClose = () => {
-    setSinglesOpen(false);
-  };
-
-  const [doublesOpen, setDoublesOpen] = React.useState(false);
-  const handleDoublesClickOpen = () => {
-    setDoublesOpen(true);
-  };
-  const handleDoublesClose = () => {
-    setDoublesOpen(false);
-  };
-
-  const [addPersonOpen, setAddPersonOpen] = React.useState(false);
-  const handleAddPersonClickOpen = () => {
-    setAddPersonOpen(true);
-  };
-  const handleAddPersonClose = () => {
-    setAddPersonOpen(false);
+  const handleAddGroupClose = () => {
+    setAddGroupOpen(false);
   };
 
   const actions = [
-    { icon: <PeopleIcon onClick={handleDoublesClickOpen} />, name: 'ダブルス' },
-    { icon: <PersonIcon onClick={handleSinglesClickOpen}/>, name: 'シングルス' },
-    { icon: <PersonAddIcon onClick={handleAddPersonClickOpen} />, name: 'メンバーを追加' },
+    { icon: <PersonAddIcon onClick={handleAddGroupClickOpen} />, name: 'グループを追加' },
   ];
 
   return (
@@ -76,20 +60,10 @@ export default function SpeedDialTooltipOpen({members, fetchData}: SpeedDialTool
             />
           ))}
         </SpeedDial>
-        <SinglesSelectDialog
-          members={members}
-          singlesOpen={singlesOpen}
-          handleSinglesClose={handleSinglesClose}
-        />
-        <DoublesSelectDialog
-          members={members}
-          doublesOpen={doublesOpen}
-          handleDoublesClose={handleDoublesClose}
-        />
-        <AddPersonDialog
-          addPersonOpen={addPersonOpen}
-          handleAddPersonClose={handleAddPersonClose}
-          fetchData={fetchData}
+        <AddGroupDialog
+          addGroupOpen={addGroupOpen}
+          handleAddGroupClose={handleAddGroupClose}
+          fetchGroupsData={fetchGroupsData}
         />
       </Box>
     </>

@@ -9,7 +9,7 @@ export interface Member {
   doubles_strength: number;
   history: (SinglesRecord | DoublesRecord)[];
 }
-  
+
 interface SinglesRecord {
   id: number;
   player_1: string;
@@ -20,7 +20,7 @@ interface SinglesRecord {
   created_at: Date;
   updated_at: Date;
 }
-  
+
 interface DoublesRecord {
   id: number;
   player_1: string;

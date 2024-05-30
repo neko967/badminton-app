@@ -27,15 +27,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_185041) do
     t.string "player_3", null: false
     t.string "player_4", null: false
     t.integer "score_34"
-    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_doubles_records_on_user_id"
+    t.index ["group_id"], name: "index_doubles_records_on_group_id"
   end
 
   create_table "groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "slug", null: false
+    t.string "admin_uid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_groups_on_slug", unique: true
@@ -94,7 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_185041) do
 
   add_foreign_key "doubles_players", "doubles_records"
   add_foreign_key "doubles_players", "members"
-  add_foreign_key "doubles_records", "users"
+  add_foreign_key "doubles_records", "groups"
   add_foreign_key "members", "groups"
   add_foreign_key "singles_players", "members"
   add_foreign_key "singles_players", "singles_records"
