@@ -65,10 +65,12 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                           </Typography>
                         </CardContent>
                         {group.admin_uid == session?.user?.id ?
-                          <CardActions>
-                            <Button size="small" onClick={() => handleGroupEditDialogOpen(group.id)}>グループ名を変更</Button>
-                            <Button size="small" onClick={() => handleGroupDelete(group.id)}>グループを削除</Button>
-                          </CardActions>
+                          <div className="flex justify-end">
+                            <CardActions>
+                              <Button size="small" onClick={() => handleGroupEditDialogOpen(group.id)}>グループ名を変更</Button>
+                              <Button size="small" onClick={() => handleGroupDelete(group.id)}>グループを削除</Button>
+                            </CardActions>
+                          </div>
                         :
                           undefined
                         }
