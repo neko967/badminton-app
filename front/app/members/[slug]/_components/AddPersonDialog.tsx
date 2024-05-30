@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useState } from "react";
-import { useSession } from 'next-auth/react';
 import type { Member } from '@/app/types/index';
 
 type FetchDataType = () => Promise<void>;
@@ -16,24 +15,21 @@ interface DialogSelectProps {
 export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchMemberData, params }: DialogSelectProps) {
   const [member, setMember] = useState({} as Member);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-  const { data: session, status } = useSession();
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (session) {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          'slug': `${params.slug}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: member.name,
-        }),
-      }).then(() => {
-        fetchMemberData();
-      });
-    }
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        'slug': `${params.slug}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: member.name,
+      }),
+    }).then(() => {
+      fetchMemberData();
+    });
   };
 
   return (

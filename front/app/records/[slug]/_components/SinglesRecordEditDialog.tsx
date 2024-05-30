@@ -11,7 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
-import { useSession } from 'next-auth/react';
 import type { Member } from '@/app/types/index';
 
 interface SinglesRecordEditDialogProps {
@@ -33,7 +32,6 @@ export default function SinglesRecordEditDialog({
 }: SinglesRecordEditDialogProps) {
 
   const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
-  const { data: session, status } = useSession();
 
   const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
   const handleScoreOneChange = (event: SelectChangeEvent<number | string>) => {
@@ -53,22 +51,20 @@ export default function SinglesRecordEditDialog({
     const score_1 = Number(score_1_plus_100_with_none) - 100;
     const score_2 = Number(score_2_plus_100_with_none) - 100;
 
-    if (session) {
-      await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          player_1_id: player_1_id,
-          score_1: score_1,
-          player_2_id: player_2_id,
-          score_2: score_2,
-        }),
-      }).then(() => {
-        fetchSinglesData();
-      });
-    }
+    await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        player_1_id: player_1_id,
+        score_1: score_1,
+        player_2_id: player_2_id,
+        score_2: score_2,
+      }),
+    }).then(() => {
+      fetchSinglesData();
+    });
   };
 
   const handleScoreReset = () => {
