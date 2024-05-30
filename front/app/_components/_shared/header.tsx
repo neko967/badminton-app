@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import Login from './Login';
 import Logout from './Logout';
 
-const Header = () => {
+export default function Header() {
   const { data: session, status } = useSession();
 
   return (
@@ -39,5 +39,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;
