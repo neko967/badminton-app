@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 import Groups from './_components/Groups';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
+import Image from 'next/image';
+import top1Gif from '../public/top1.gif';
+import top2Gif from '../public/top2.gif';
+import top3Gif from '../public/top3.gif';
 
 interface Group {
   id: number;
@@ -50,6 +54,10 @@ export default function Home() {
     }
   };
 
+  if (status === 'loading') {
+  	return <div>Loading...</div>;
+  }
+
   return (
     <>
       {session ?
@@ -65,9 +73,20 @@ export default function Home() {
           />
         </>
       :
-        <div className="text-start px-6 mt-6">
-          <p>ログインをしてください</p>
-        </div>
+        <>
+          <div className="text-start px-6 mt-6">
+            <p>①ログイン状態でグループを作成する</p>
+            <Image src={top1Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+          <div className="text-start px-6 mt-6">
+            <p>②グループをクリックして、メンバーを追加する</p>
+            <Image src={top2Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+          <div className="text-start px-6 mt-6">
+            <p>③メンバーの画面で右上のアイコンをクリックして開くサイドバーからコピーできるリンクを使うと、他の人も同じデータにアクセスできます。</p>
+            <Image src={top3Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+        </>
       }
     </>
   );
