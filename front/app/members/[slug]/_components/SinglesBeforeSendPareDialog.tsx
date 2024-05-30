@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +13,7 @@ interface SinglesBeforeSendPareDialogProps {
   makedPare: [string, string][];
   handleMakePare: () => void;
   playersWithStatus: Member[];
+  params: { slug: string };
 }
 
 export default function SinglesBeforeSendPareDialog({
@@ -22,9 +22,9 @@ export default function SinglesBeforeSendPareDialog({
   makedPare,
   handleMakePare,
   playersWithStatus,
+  params,
 }: SinglesBeforeSendPareDialogProps) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
-  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handlePareSubmit = async () => {
@@ -32,21 +32,19 @@ export default function SinglesBeforeSendPareDialog({
       const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
       const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
 
-      if (session) {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            'uid': `${session?.user?.id}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            member_1_id: member1?.id,
-            member_2_id: member2?.id,
-          }),
-        })
-      }
+      await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          'slug': `${params.slug}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          member_1_id: member1?.id,
+          member_2_id: member2?.id,
+        }),
+      })
     }
-    router.push('/records?set_value=0');
+    router.push(`/records/${params.slug}?set_value=0`);
   };
 
   return (

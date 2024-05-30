@@ -3,7 +3,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState, Suspense } from "react";
-import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
@@ -176,14 +175,12 @@ function TabComponent({
   );
 }
 
-export default function Records() {
-  const { data: session, status } = useSession();
-
+export default function Records({ params }: { params: { slug: string } }) {
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const fetchSinglesData = useCallback(async () => {
     const headers = {
-      'uid': `${session?.user?.id}`,
+      'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
     const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
@@ -192,35 +189,11 @@ export default function Records() {
     });
     const data = await response.json();
     setSinglesRecords(data);
-  }, [session]);
+  }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchSinglesData();
-    }
-  }, [session, fetchSinglesData]);
-
-  const [members, setMembers] = useState<Member[]>([]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-
-  const fetchData = useCallback(async () => {
-    const headers = {
-      'uid': `${session?.user?.id}`,
-      'Content-Type': 'application/json',
-    };
-    const response = await fetch(`${API_URL}`, {
-      method: 'GET',
-      headers: headers,
-    });
-    const data = await response.json();
-      setMembers(data);
-  }, [session]);
-
-  useEffect(() => {
-    if (session) {
-      fetchData();
-    }
-  }, [session, fetchData]);
+    fetchSinglesData();
+  }, [fetchSinglesData]);
 
   const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
@@ -236,7 +209,7 @@ export default function Records() {
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
     const headers = {
-      'uid': `${session?.user?.id}`,
+      'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
     const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
@@ -245,13 +218,11 @@ export default function Records() {
     });
     const data = await response.json();
     setDoublesRecords(data);
-  }, [session]);
+  }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchDoublesData();
-    }
-  }, [session, fetchDoublesData]);
+    fetchDoublesData();
+  }, [fetchDoublesData]);
 
   const [doublesRecord_id, setDoublesRecord_id] = useState<number>(0);
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
@@ -262,6 +233,26 @@ export default function Records() {
   const handleDoublesRecordEditDialogClose = () => {
     setDoublesRecordEditDialogOpen(false);
   };
+
+  const [members, setMembers] = useState<Member[]>([]);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+
+  const fetchMemberData = useCallback(async () => {
+    const headers = {
+      'slug': `${params.slug}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
+      setMembers(data);
+  }, []);
+
+  useEffect(() => {
+    fetchMemberData();
+  }, [fetchMemberData]);
 
   return (
     <>

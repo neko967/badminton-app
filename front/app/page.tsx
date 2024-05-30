@@ -2,16 +2,22 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
-import Members from './_components/Members';
+import Groups from './_components/Groups';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
-import type { Member } from '@/app/types/index';
+
+interface Group {
+  id: number;
+  name: string;
+  slug: string;
+  admin_uid: string;
+}
 
 export default function Home() {
-  const [members, setMembers] = useState([] as Member[]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+  const [groups, setGroups] = useState([] as Group[]);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/groups`;
   const { data: session, status } = useSession();
 
-  const fetchData = useCallback(async () => {
+  const fetchGroupsData = useCallback(async () => {
     const headers = {
       'uid': `${session?.user?.id}`,
       'Content-Type': 'application/json',
@@ -21,20 +27,20 @@ export default function Home() {
       headers: headers,
     });
     const data = await response.json();
-      setMembers(data);
+    setGroups(data);
   }, [session]);
 
   useEffect(() => {
     if (session) {
-      fetchData();
+      fetchGroupsData();
     }
-  }, [session, fetchData]);
+  }, [session, fetchGroupsData]);
   
-  const handleDelete = async (id: number) => {
+  const handleGroupDelete = async (id: number) => {
     await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
     }).then(() => {
-      fetchData();
+      fetchGroupsData();
     });
   };
 
@@ -42,13 +48,14 @@ export default function Home() {
     <>
       {session ?
         <>
-          <Members
-            members={members}
-            handleDelete={handleDelete}
+          <Groups
+            groups={groups}
+            handleGroupDelete={handleGroupDelete}
+            fetchGroupsData={fetchGroupsData}
           />
           <SpeedDialTooltipOpen
-            members={members}
-            fetchData={fetchData}
+            groups={groups}
+            fetchGroupsData={fetchGroupsData}
           />
         </>
       :

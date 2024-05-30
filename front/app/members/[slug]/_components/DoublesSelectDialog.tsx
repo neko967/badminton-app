@@ -30,9 +30,10 @@ interface DoublesSelectDialogProps {
   members: Member[];
   doublesOpen: boolean;
   handleDoublesClose: () => void;
+  params: { slug: string };
 }
 
-export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose }: DoublesSelectDialogProps) {
+export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose, params }: DoublesSelectDialogProps) {
   const [players, setPlayers] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const { target: { value } } = event;
@@ -90,6 +91,7 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
         doublesMakePareDialogOpen={doublesMakePareDialogOpen} 
         handleDoublesMakePareDialogClose={handleDoublesMakePareDialogClose} 
         playersWithStatus={playersWithStatus}
+        params={params}
       />
     </div>
   );

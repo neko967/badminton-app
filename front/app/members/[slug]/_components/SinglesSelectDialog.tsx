@@ -31,12 +31,14 @@ interface SinglesSelectDialogProps {
   members: Member[];
   singlesOpen: boolean;
   handleSinglesClose: () => void;
+  params: { slug: string };
 }
 
 export default function SinglesSelectDialog({
   members,
   singlesOpen,
   handleSinglesClose,
+  params,
 }: SinglesSelectDialogProps) {
 
   const [players, setPlayers] = useState<string[]>([]);
@@ -98,6 +100,7 @@ export default function SinglesSelectDialog({
         pareOpen={pareOpen} 
         handlePareClose={handlePareClose} 
         playersWithStatus={playersWithStatus}
+        params={params}
       />
     </div>
   );

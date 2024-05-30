@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +13,7 @@ interface DoublesBeforeSendPareDialogProps {
   makedPare: string[][];
   handleMakePare: () => void;
   playersWithStatus: Member[];
+  params: { slug: string };
 }
 
 export default function DoublesBeforeSendPareDialog({
@@ -22,10 +22,10 @@ export default function DoublesBeforeSendPareDialog({
   makedPare,
   handleMakePare,
   playersWithStatus,
+  params,
 }: DoublesBeforeSendPareDialogProps) {
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
-  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handlePareSubmit = async () => {
@@ -35,23 +35,21 @@ export default function DoublesBeforeSendPareDialog({
       const member3 = playersWithStatus.find((item: Member) => item.name === makedPare[i][2]);
       const member4 = playersWithStatus.find((item: Member) => item.name === makedPare[i][3]);
 
-      if (session) {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            'uid': `${session?.user?.id}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            member_1_id: member1?.id,
-            member_2_id: member2?.id,
-            member_3_id: member3?.id,
-            member_4_id: member4?.id,
-          }),
-        })
-      }
+      await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          'slug': `${params.slug}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          member_1_id: member1?.id,
+          member_2_id: member2?.id,
+          member_3_id: member3?.id,
+          member_4_id: member4?.id,
+        }),
+      })
     }
-    router.push('/records?set_value=1');
+    router.push(`/records/${params.slug}?set_value=1`);
   };
 
   return (

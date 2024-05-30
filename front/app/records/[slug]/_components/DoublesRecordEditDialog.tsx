@@ -11,7 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
-import { useSession } from 'next-auth/react';
 import type { Member } from '@/app/types/index';
 
 interface DoublesRecordEditDialogProps {
@@ -33,7 +32,6 @@ export default function DoublesRecordEditDialog({
 }: DoublesRecordEditDialogProps) {
 
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
-  const { data: session, status } = useSession();
 
   const [score_12_plus_100_with_none, setScore_12_plus_100_with_none] = useState<number | string>('');
   const handleScoreOneTwoChange = (event: SelectChangeEvent<number | string>) => {
@@ -53,24 +51,22 @@ export default function DoublesRecordEditDialog({
     const score_12 = Number(score_12_plus_100_with_none) - 100;
     const score_34 = Number(score_34_plus_100_with_none) - 100;
 
-    if (session) {
-      await fetch(`${API_URL_DOUBLES_RECORD}/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          player_1_id: player_1_id,
-          player_2_id: player_2_id,
-          score_12: score_12,
-          player_3_id: player_3_id,
-          player_4_id: player_4_id,
-          score_34: score_34,
-        }),
-      }).then(() => {
-        fetchDoublesData();
-      });
-    }
+    await fetch(`${API_URL_DOUBLES_RECORD}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        player_1_id: player_1_id,
+        player_2_id: player_2_id,
+        score_12: score_12,
+        player_3_id: player_3_id,
+        player_4_id: player_4_id,
+        score_34: score_34,
+      }),
+    }).then(() => {
+      fetchDoublesData();
+    });
   };
 
   const handleScoreReset = () => {

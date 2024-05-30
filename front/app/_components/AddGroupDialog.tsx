@@ -2,19 +2,25 @@ import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
-import type { Member } from '@/app/types/index';
 
 type FetchDataType = () => Promise<void>;
 
-interface DialogSelectProps {
-  addPersonOpen: boolean;
-  handleAddPersonClose: () => void;
-  fetchData: FetchDataType;
+interface Group {
+  id: number;
+  name: string;
+  slug: string;
+  admin_uid: string;
 }
 
-export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetchData }: DialogSelectProps) {
-  const [member, setMember] = useState({} as Member);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
+interface DialogSelectProps {
+  addGroupOpen: boolean;
+  handleAddGroupClose: () => void;
+  fetchGroupsData: FetchDataType;
+}
+
+export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchGroupsData }: DialogSelectProps) {
+  const [group, setGroup] = useState({} as Group);
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/groups`;
   const { data: session, status } = useSession();
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,41 +33,41 @@ export default function DialogSelect({ addPersonOpen, handleAddPersonClose, fetc
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: member.name,
+          name: group.name,
         }),
       }).then(() => {
-        fetchData();
+        fetchGroupsData();
       });
     }
   };
 
   return (
     <div>
-      <Dialog disableEscapeKeyDown open={addPersonOpen} onClose={handleAddPersonClose}>
+      <Dialog disableEscapeKeyDown open={addGroupOpen} onClose={handleAddGroupClose}>
         <main className="mx-auto w-full flex justify-start items-center flex-col">
           <section className="w-80 border-2 p-4">
-            <h2 className="text-lg mb-4 text-center">新しいメンバーを追加</h2>
+            <h2 className="text-lg mb-4 text-center">新しいグループを追加</h2>
             <form className="flex flex-col gap-2" onSubmit={handleOnSubmit}>
               <div className="flex justify-between">
-                <label htmlFor="name">メンバー名</label>
+                <label htmlFor="name">グループ名</label>
                 <input
                   id="name"
                   name="name"
                   type="text"
                   required
                   className="bg-slate-200"
-                  onChange={(e) => setMember({ ...member, name: e.target.value })}
+                  onChange={(e) => setGroup({ ...group, name: e.target.value })}
                 />
               </div>
               <div className="w-full m-auto mt-4 text-center">
                 <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all" type="submit"
-                        onClick={() => {handleAddPersonClose();}}>
+                        onClick={() => {handleAddGroupClose();}}>
                   追加
                 </button>
               </div>
             </form>
             <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all"
-                    onClick={handleAddPersonClose}>
+                    onClick={handleAddGroupClose}>
               キャンセル
             </button>
           </section>
