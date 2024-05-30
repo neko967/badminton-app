@@ -3,7 +3,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState, Suspense } from "react";
-import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
@@ -177,7 +176,6 @@ function TabComponent({
 }
 
 export default function Records({ params }: { params: { slug: string } }) {
-  const { data: session, status } = useSession();
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
   const fetchSinglesData = useCallback(async () => {
@@ -191,13 +189,11 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
     setSinglesRecords(data);
-  }, [session]);
+  }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchSinglesData();
-    }
-  }, [session, fetchSinglesData]);
+    fetchSinglesData();
+  }, [fetchSinglesData]);
 
   const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
@@ -222,13 +218,11 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
     setDoublesRecords(data);
-  }, [session]);
+  }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchDoublesData();
-    }
-  }, [session, fetchDoublesData]);
+    fetchDoublesData();
+  }, [fetchDoublesData]);
 
   const [doublesRecord_id, setDoublesRecord_id] = useState<number>(0);
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
@@ -254,13 +248,11 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
       setMembers(data);
-  }, [session]);
+  }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchMemberData();
-    }
-  }, [session, fetchMemberData]);
+    fetchMemberData();
+  }, [fetchMemberData]);
 
   return (
     <>
