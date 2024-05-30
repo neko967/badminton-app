@@ -1,6 +1,6 @@
 class Api::V1::MembersController < ApplicationController
   wrap_parameters false
-  before_action :set_current_group, only: %i[index create]
+  before_action :set_current_group, only: %i[index create destroy]
 
   def index
     render json: @current_group.members, methods: :history, status: :ok
@@ -9,6 +9,7 @@ class Api::V1::MembersController < ApplicationController
   def create
     member = @current_group.members.build(member_params)
     if member.save
+      @current_group.update(number_of_people:  @current_group.number_of_people + 1)
       render json: member, status: :created
     else
       render json: member.errors, status: :unprocessable_entity
@@ -16,8 +17,9 @@ class Api::V1::MembersController < ApplicationController
   end
 
   def destroy
-    member = Member.find(params[:id])
+    member = @current_group.members.find(params[:id])
     member.destroy
+    @current_group.update(number_of_people: @current_group.number_of_people - 1)
     head :no_content
   end
 

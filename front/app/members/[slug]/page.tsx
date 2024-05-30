@@ -28,8 +28,13 @@ export default function Home({ params }: { params: { slug: string } }) {
   }, [fetchMemberData]);
   
   const handleDelete = async (id: number) => {
+    const headers = {
+      'slug': `${params.slug}`,
+      'Content-Type': 'application/json',
+    };
     await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
+      headers: headers,
     }).then(() => {
       fetchMemberData();
     });
