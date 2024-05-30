@@ -38,13 +38,16 @@ export default function Home() {
       fetchGroupsData();
     }
   }, [session, fetchGroupsData]);
-  
+
   const handleGroupDelete = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      fetchGroupsData();
-    });
+    const name = prompt(`グループを削除すると、今までのメンバーと試合記録が失われます。グループを削除する場合は、下の記入欄に"${groups.find(group => group.id === id)?.name}"と入力してください。`);
+    if (name == groups.find(group => group.id === id)?.name) {
+      await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      }).then(() => {
+        fetchGroupsData();
+      });
+    }
   };
 
   return (
