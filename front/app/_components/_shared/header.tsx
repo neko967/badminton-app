@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
-import Login from './Login';
-import Logout from './Logout';
+import Login from './login';
+import Logout from './logout';
 
-export default function Header() {
+const Header = () => {
   const { data: session, status } = useSession();
 
   return (
@@ -39,3 +39,5 @@ export default function Header() {
     </header>
   );
 };
+
+export default Header;
