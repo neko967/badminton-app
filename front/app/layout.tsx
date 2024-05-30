@@ -4,7 +4,7 @@ import "./globals.css";
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 import { getServerSession } from "next-auth/next";
 import NextAuthProvider from '@/providers/NextAuth';
-import Header from "./_components/_shared/Header";
+import Header from "@/app/_components/_shared/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
