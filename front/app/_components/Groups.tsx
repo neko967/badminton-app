@@ -16,15 +16,17 @@ interface Group {
   name: string;
   slug: string;
   admin_uid: string;
+  number_of_people: number;
+  created_at: Date;
+  updated_at: Date;
 }
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${month}/${day}`;
+};
 
 export default function Members({groups, handleGroupDelete, fetchGroupsData}: 
                                 {groups: Group[]; handleGroupDelete: (id: number) => void; fetchGroupsData: () => void; }) {
@@ -54,15 +56,12 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                       <Card sx={{ minWidth: 275 }} variant="outlined">
                         <CardContent onClick={() => router.push(`/members/${group.slug}`)}>
                           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Word of the Day
+                            {`最終更新日: ${formatDate(group.updated_at.toString())}`}
                           </Typography>
                           <Typography variant="h5" component="div">
-                            <button >
-                              <p>{group.name}</p>
+                            <button>
+                              <p>{`${group.name} (${group.number_of_people})`}</p>
                             </button>
-                          </Typography>
-                          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                            メンバー数：{'"a benevolent smile"'}
                           </Typography>
                         </CardContent>
                         {group.admin_uid == session?.user?.id ?
