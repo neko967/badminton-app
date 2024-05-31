@@ -32,8 +32,8 @@ export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchG
       await fetch(API_URL, {
         method: "POST",
         headers: {
-          'uid': `${session?.user?.id}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
         },
         body: JSON.stringify({
           name: group.name,

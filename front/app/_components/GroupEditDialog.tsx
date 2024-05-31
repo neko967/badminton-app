@@ -39,8 +39,8 @@ export default function GroupEditDialog({
 
     if (session) {
       const headers = {
-        'uid': `${session?.user?.id}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
       };
       await fetch(`${API_URL_GROUP}/${id}`, {
         method: "PATCH",
