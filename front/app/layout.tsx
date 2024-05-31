@@ -26,6 +26,9 @@ export default async function RootLayout({
         <meta name="description" content="バドミントンの試合を組むアプリ" />
         <link rel="icon" href="/favicon.ico" />
 
+        {/*セキュリティの確認*/}
+        <meta name="google-site-verification" content="petThx0QzEMbItpCzT_5-l-4mArZyRgX6k9ssRHYMbY" />
+
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="試合決めるくん" />
         <meta property="og:description" content="バドミントンの試合を組むアプリ" />
