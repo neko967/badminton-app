@@ -8,6 +8,9 @@ import Image from 'next/image';
 import top1Gif from '../public/top1.gif';
 import top2Gif from '../public/top2.gif';
 import top3Gif from '../public/top3.gif';
+import top4Gif from '../public/top4.gif';
+import top5Gif from '../public/top5.gif';
+import top6Gif from '../public/top6.gif';
 
 interface Group {
   id: number;
@@ -75,16 +78,28 @@ export default function Home() {
       :
         <>
           <div className="text-start px-6 mt-6">
-            <p>①ログイン状態でグループを作成する</p>
+            <p>①ログイン状態でグループを作成します。</p>
             <Image src={top1Gif} alt="Example GIF" width={250} height={200} />
           </div>
           <div className="text-start px-6 mt-6">
-            <p>②グループをクリックして、メンバーを追加する</p>
+            <p>②グループをクリックして、メンバーを追加します。</p>
             <Image src={top2Gif} alt="Example GIF" width={250} height={200} />
           </div>
           <div className="text-start px-6 mt-6">
             <p>③メンバーの画面で右上のアイコンをクリックして開くサイドバーからコピーできるリンクを使うと、他の人も同じデータにアクセスできます。</p>
             <Image src={top3Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+          <div className="text-start px-6 mt-6">
+            <p>④シングルスの試合作成の様子。プレイヤーと組み方を選びます。</p>
+            <Image src={top4Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+          <div className="text-start px-6 mt-6">
+            <p>⑤ダブルスの試合作成の様子。プレイヤーと組み方を選びます。</p>
+            <Image src={top5Gif} alt="Example GIF" width={250} height={200} />
+          </div>
+          <div className="text-start px-6 mt-6">
+            <p>⑥シングルス・ダブルスの試合に点数を記録すると、プレイヤーの試合履歴と試合結果に応じた個人のパワーが更新されます。</p>
+            <Image src={top6Gif} alt="Example GIF" width={250} height={200} />
           </div>
         </>
       }
