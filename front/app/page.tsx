@@ -98,7 +98,7 @@ export default function Home() {
             <Image src={top5Gif} alt="Example GIF" width={250} height={200} />
           </div>
           <div className="text-start px-6 mt-6">
-            <p>⑥シングルス・ダブルスの試合に点数を記録すると、プレイヤーの試合履歴が更新されます。</p>
+            <p>⑥シングルス・ダブルスの試合に点数を記録すると、プレイヤーの試合履歴と試合結果に応じた個人のパワーが更新されます。</p>
             <Image src={top6Gif} alt="Example GIF" width={250} height={200} />
           </div>
         </>
