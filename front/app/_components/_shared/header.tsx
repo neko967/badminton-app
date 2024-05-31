@@ -130,8 +130,8 @@ const Header = () => {
                 <Image
                   src={session.user?.image ?? ""}
                   alt={session.user?.name ?? ""}
-                  width={40}
-                  height={40}
+                  width={35}
+                  height={35}
                   className="rounded-full"
                   onClick={toggleDrawer('right', true)}
                 />
