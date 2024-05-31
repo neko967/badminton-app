@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
   def create
-    user = User.find_or_create_by(provider: params[:provider], uid: params[:uid])                      
+    user = User.find_or_create_by(provider: params[:provider], uid: params[:uid])                   
     if user
       head :ok
     else
