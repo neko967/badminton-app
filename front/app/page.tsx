@@ -29,8 +29,8 @@ export default function Home() {
 
   const fetchGroupsData = useCallback(async () => {
     const headers = {
-      'uid': `${session?.user?.id}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.accessToken}`,
     };
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
