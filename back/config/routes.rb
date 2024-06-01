@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :groups, only: %i[index create destroy update]
+      resources :user_groups, only: %i[create destroy]
       resources :members, only: %i[index create destroy update]
       resources :singles_records, only: %i[index create update]
       resources :doubles_records, only: %i[index create update]
