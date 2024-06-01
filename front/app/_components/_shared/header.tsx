@@ -128,7 +128,7 @@ const Header = () => {
             <li>
               <React.Fragment>
                 <Image
-                  src={session.user?.image ?? ""}
+                  src={session.user?.picture ?? ""}
                   alt={session.user?.name ?? ""}
                   width={35}
                   height={35}
