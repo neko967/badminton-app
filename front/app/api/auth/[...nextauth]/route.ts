@@ -44,7 +44,7 @@ const handler = NextAuth({
         });
   	  	if (response.status === 200) {
           const data = await response.json();
-          user.userId = data.user.id;
+          user.uid = data.user.uid;
           user.accessToken = data.accessToken;
   	  	  return true;
   	  	} else {
@@ -57,7 +57,7 @@ const handler = NextAuth({
   	},
     async jwt({ token, account, user }) {
       if (account && user) {
-        token.userId = user.userId;
+        token.uid = user.uid;
         token.accessToken = user.accessToken;
         token.provider = account.provider;
       }
