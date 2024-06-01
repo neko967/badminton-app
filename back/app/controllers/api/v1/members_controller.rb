@@ -4,9 +4,6 @@ class Api::V1::MembersController < ApplicationController
   before_action :set_current_group, only: %i[index create destroy]
 
   def index
-    if @current_user
-      @current_user.join(@current_group) unless @current_user.joined?(@current_group)
-    end
     render json: @current_group.members, methods: :history, status: :ok
   end
 
