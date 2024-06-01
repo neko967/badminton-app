@@ -196,6 +196,7 @@ export default function Records({ params }: { params: { slug: string } }) {
   }, [token, params.slug]);
 
   const fetchSinglesData = useCallback(async () => {
+    console.log("シングルスの試合記録を取得");
     const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
       method: 'GET',
       headers: headers as HeadersInit,
@@ -221,6 +222,7 @@ export default function Records({ params }: { params: { slug: string } }) {
   const [doublesRecords, setDoublesRecords] = useState([]);
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
+    console.log("ダブルスの試合記録を取得");
     const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
       method: 'GET',
       headers: headers as HeadersInit,
@@ -247,6 +249,7 @@ export default function Records({ params }: { params: { slug: string } }) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
 
   const fetchMemberData = useCallback(async () => {
+    console.log("メンバーを取得");
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
       headers: headers as HeadersInit,

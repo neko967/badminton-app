@@ -28,6 +28,7 @@ export default function Home() {
   const { data: session, status } = useSession();
 
   const fetchGroupsData = useCallback(async () => {
+    console.log("グループを取得");
     if (!session?.user.accessToken) {
       console.error("Access token is missing");
       return;

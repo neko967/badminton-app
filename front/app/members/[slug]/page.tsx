@@ -29,6 +29,7 @@ export default function Home({ params }: { params: { slug: string } }) {
   console.log(token);
 
   const fetchMemberData = useCallback(async () => {
+    console.log("メンバーを取得");
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
       headers: headers
