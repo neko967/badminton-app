@@ -27,6 +27,7 @@ export default function Home({ params }: { params: { slug: string } }) {
   }, [token, params.slug]);
   console.log(session);
   console.log(token);
+  console.log(headers);
 
   const fetchMemberData = useCallback(async () => {
     console.log("メンバーを取得");
