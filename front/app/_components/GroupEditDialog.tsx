@@ -40,7 +40,7 @@ export default function GroupEditDialog({
     if (session) {
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${session?.user.accessToken}`,
       };
       await fetch(`${API_URL_GROUP}/${id}`, {
         method: "PATCH",
@@ -49,6 +49,7 @@ export default function GroupEditDialog({
           group_id : group_id,
           name: group.name,
         }),
+        next: { revalidate: 3600 },
       }).then(() => {
         fetchGroupsData();
       });

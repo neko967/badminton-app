@@ -64,7 +64,7 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                             </button>
                           </Typography>
                         </CardContent>
-                        {group.admin_uid == session?.user?.id ?
+                        {group.admin_uid == session?.user?.userId ?
                           <div className="flex justify-end">
                             <CardActions>
                               <Button size="small" onClick={() => handleGroupEditDialogOpen(group.id)}>グループ名を変更</Button>
