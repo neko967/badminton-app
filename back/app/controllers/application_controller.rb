@@ -1,35 +1,20 @@
 class ApplicationController < ActionController::API
-  require 'net/http'
-  require 'uri'
-  require 'json'
+
+  def encode_jwt(payload)
+    JWT.encode(payload, Rails.application.credentials.secret_key_base, 'HS256')
+  end
+
+  attr_reader :current_user
 
   private
 
-def set_current_user
-  if request.headers['Authorization'].present?
-    received_access_token = request.headers['Authorization'].split(' ').last
-    uri = URI.parse("https://www.googleapis.com/oauth2/v1/userinfo?access_token=#{received_access_token}")
-    response = Net::HTTP.get_response(uri)
+  def set_current_user
+    encoded_token = request.headers['Authorization']&.split&.last
+    @current_user = User.find_with_jwt(encoded_token) if encoded_token
+    return if @current_user
 
-    if response.code.to_i != 200
-      Rails.logger.error "Google API request failed: #{response.body}"
-      return render json: { error: 'Invalid token' }, status: :unauthorized
-    end
-
-    user_info = JSON.parse(response.body)
-    Rails.logger.info "User Info: #{user_info}"
-
-    if user_info['id']
-      @current_user = User.find_by(uid: user_info['id'])
-    else
-      Rails.logger.error "Invalid user info: #{user_info}"
-      render json: { error: 'Invalid token' }, status: :unauthorized
-    end
-  else
-    Rails.logger.error "Authorization header is missing"
-    render json: { error: 'Authorization header is missing' }, status: :unauthorized
+    render json: { error: '認証に失敗しました' }, status: :unauthorized
   end
-end
 
   def set_current_group
     slug = request.headers['slug']
