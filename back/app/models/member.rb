@@ -6,6 +6,7 @@ class Member < ApplicationRecord
   has_many :singles_played_records, through: :singles_players, source: :singles_record
   has_many :doubles_players, dependent: :destroy
   has_many :doubles_played_records, through: :doubles_players, source: :doubles_record
+  validates :name, length: { maximum: 255 }, presence: true
 
   def history
     singles_records = self.singles_played_records.where.not(score_1: nil, score_2: nil).limit(5)
