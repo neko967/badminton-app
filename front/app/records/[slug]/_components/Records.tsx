@@ -69,8 +69,8 @@ function TabComponent({
   return (
     <>
       <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
-        <Tab label="シングルス" {...a11yProps(0)} />
-        <Tab label="ダブルス" {...a11yProps(1)} />
+        <Tab label="シングルス" {...a11yProps(0)} sx={{ width: '50%' }}/>
+        <Tab label="ダブルス" {...a11yProps(1)} sx={{ width: '50%' }}/>
       </Tabs>
       <CustomTabPanel value={value} index={0}>
         <div className="mx-auto w-full flex justify-start items-center flex-col">
@@ -221,7 +221,6 @@ export default function Records({ params }: { params: { slug: string } }) {
 
   const [doublesRecords, setDoublesRecords] = useState([]);
   const fetchDoublesData = useCallback(async () => {
-    console.log("ダブルスの試合記録を取得");
     const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
       headers: headers as HeadersInit,
@@ -246,7 +245,6 @@ export default function Records({ params }: { params: { slug: string } }) {
 
   const [members, setMembers] = useState<Member[]>([]);
   const fetchMemberData = useCallback(async () => {
-    console.log("メンバーを取得");
     const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
       headers: headers as HeadersInit,
@@ -260,7 +258,6 @@ export default function Records({ params }: { params: { slug: string } }) {
   }, [fetchMemberData]);
 
   const addGroupToUser = useCallback(async () => {
-    console.log("グループをユーザーに追加");
     await fetch(`${API_URL}/user_groups`, {
       method: "POST",
       headers: headers,
@@ -275,25 +272,25 @@ export default function Records({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', overflow: 'hidden' }}>
         <Suspense fallback={<div>Loading...</div>}>
-          <TabComponent 
-            singlesRecords={singlesRecords} 
+          <TabComponent
+            singlesRecords={singlesRecords}
             doublesRecords={doublesRecords}
             handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
             handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
         </Suspense>
       </Box>
-      <SinglesRecordEditDialog 
-        singlesRecordEditDialogOpen={singlesRecordEditDialogOpen} 
+      <SinglesRecordEditDialog
+        singlesRecordEditDialogOpen={singlesRecordEditDialogOpen}
         handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
         fetchSinglesData={fetchSinglesData}
         singlesRecords={singlesRecords}
         singlesRecord_id={singlesRecord_id}
         members={members}
       />
-      <DoublesRecordEditDialog 
-        doublesRecordEditDialogOpen={doublesRecordEditDialogOpen} 
+      <DoublesRecordEditDialog
+        doublesRecordEditDialogOpen={doublesRecordEditDialogOpen}
         handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
         fetchDoublesData={fetchDoublesData}
         doublesRecords={doublesRecords}
