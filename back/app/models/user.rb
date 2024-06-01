@@ -20,4 +20,8 @@ class User < ApplicationRecord
   def leave(group)
     groups_joined_by_user.destroy(group)
   end
+
+  def joined?(group)
+    groups_joined_by_user.include?(group)
+  end
 end
