@@ -33,11 +33,12 @@ export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchG
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.user.accessToken}`,
         },
         body: JSON.stringify({
           name: group.name,
         }),
+        next: { revalidate: 3600 },
       }).then(() => {
         fetchGroupsData();
       });

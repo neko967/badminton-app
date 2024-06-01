@@ -28,14 +28,25 @@ export default function Home() {
   const { data: session, status } = useSession();
 
   const fetchGroupsData = useCallback(async () => {
+    console.log("Session:", session);
+    console.log("Access Token:", session?.user.accessToken);
+    if (!session?.user.accessToken) {
+      console.error("Access token is missing");
+      return;
+    }
     const headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${session?.user.accessToken}`,
     };
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
       headers: headers,
+      next: { revalidate: 3600 },
     });
+    if (!response.ok) {
+      console.error("Failed to fetch groups data");
+      return;
+    }
     const data = await response.json();
     setGroups(data);
   }, [session]);
