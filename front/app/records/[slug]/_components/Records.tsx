@@ -179,7 +179,7 @@ function TabComponent({
 export default function Records({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
-  const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const token = session?.user.accessToken;
   const headers = useMemo(() => {
     const baseHeaders = {
@@ -197,7 +197,7 @@ export default function Records({ params }: { params: { slug: string } }) {
 
   const fetchSinglesData = useCallback(async () => {
     console.log("シングルスの試合記録を取得");
-    const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
+    const response = await fetch(`${API_URL}/singles_records`, {
       method: 'GET',
       headers: headers as HeadersInit,
     });
@@ -220,10 +220,9 @@ export default function Records({ params }: { params: { slug: string } }) {
   };
 
   const [doublesRecords, setDoublesRecords] = useState([]);
-  const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
     console.log("ダブルスの試合記録を取得");
-    const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
+    const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
       headers: headers as HeadersInit,
     });
@@ -246,11 +245,9 @@ export default function Records({ params }: { params: { slug: string } }) {
   };
 
   const [members, setMembers] = useState<Member[]>([]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-
   const fetchMemberData = useCallback(async () => {
     console.log("メンバーを取得");
-    const response = await fetch(`${API_URL}`, {
+    const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
       headers: headers as HeadersInit,
     });
@@ -261,6 +258,20 @@ export default function Records({ params }: { params: { slug: string } }) {
   useEffect(() => {
     fetchMemberData();
   }, [fetchMemberData]);
+
+  const addGroupToUser = useCallback(async () => {
+    console.log("グループをユーザーに追加");
+    await fetch(`${API_URL}/user_groups`, {
+      method: "POST",
+      headers: headers,
+    });
+  }, [headers, API_URL]);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      addGroupToUser();
+    }
+  }, [status, addGroupToUser]);
 
   return (
     <>
