@@ -2,7 +2,8 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useCallback, useEffect, useState, Suspense } from "react";
+import { useCallback, useEffect, useState, Suspense, useMemo } from "react";
+import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
@@ -176,16 +177,28 @@ function TabComponent({
 }
 
 export default function Records({ params }: { params: { slug: string } }) {
+  const { data: session, status } = useSession();
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL_SINGLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
-  const fetchSinglesData = useCallback(async () => {
-    const headers = {
+  const token = session?.user.accessToken;
+  const headers = useMemo(() => {
+    const baseHeaders = {
       'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
+    if (token) {
+      return {
+        ...baseHeaders,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    return baseHeaders;
+  }, [token, params.slug]);
+
+  const fetchSinglesData = useCallback(async () => {
     const response = await fetch(`${API_URL_SINGLES_RECORD}`, {
       method: 'GET',
-      headers: headers,
+      headers: headers as HeadersInit,
     });
     const data = await response.json();
     setSinglesRecords(data);
@@ -208,13 +221,9 @@ export default function Records({ params }: { params: { slug: string } }) {
   const [doublesRecords, setDoublesRecords] = useState([]);
   const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
   const fetchDoublesData = useCallback(async () => {
-    const headers = {
-      'slug': `${params.slug}`,
-      'Content-Type': 'application/json',
-    };
     const response = await fetch(`${API_URL_DOUBLES_RECORD}`, {
       method: 'GET',
-      headers: headers,
+      headers: headers as HeadersInit,
     });
     const data = await response.json();
     setDoublesRecords(data);
@@ -238,13 +247,9 @@ export default function Records({ params }: { params: { slug: string } }) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
 
   const fetchMemberData = useCallback(async () => {
-    const headers = {
-      'slug': `${params.slug}`,
-      'Content-Type': 'application/json',
-    };
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
-      headers: headers,
+      headers: headers as HeadersInit,
     });
     const data = await response.json();
       setMembers(data);
