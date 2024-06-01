@@ -9,6 +9,7 @@ class ApplicationController < ActionController::API
   private
 
   def set_current_user
+    return unless request.headers['Authorization']
     encoded_token = request.headers['Authorization']&.split&.last
     @current_user = User.find_with_jwt(encoded_token) if encoded_token
     return if @current_user
@@ -17,6 +18,7 @@ class ApplicationController < ActionController::API
   end
 
   def set_current_group
+    return unless request.headers['slug']
     slug = request.headers['slug']
     @current_group = Group.find_by(slug: slug)
   end

@@ -1,7 +1,11 @@
 class Api::V1::SinglesRecordsController < ApplicationController
+  before_action :set_current_user, only: %i[index]
   before_action :set_current_group, only: %i[index create]
 
   def index
+    if @current_user
+      @current_user.join(@current_group) unless @current_user.joined?(@current_group)
+    end
     render json: @current_group.singles_records.order(created_at: :desc), status: :ok
   end
 

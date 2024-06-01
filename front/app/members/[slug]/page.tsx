@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useSession } from 'next-auth/react';
 import Members from './_components/Members';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
@@ -11,15 +11,25 @@ export default function Home({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [members, setMembers] = useState([] as Member[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/members`;
-
-  const fetchMemberData = useCallback(async () => {
-    const headers = {
+  const token = session?.user.accessToken;
+  const headers = useMemo(() => {
+    const baseHeaders = {
       'slug': `${params.slug}`,
       'Content-Type': 'application/json',
     };
+    if (token) {
+      return {
+        ...baseHeaders,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    return baseHeaders;
+  }, [token, params.slug]);
+
+  const fetchMemberData = useCallback(async () => {
     const response = await fetch(`${API_URL}`, {
       method: 'GET',
-      headers: headers,
+      headers: headers as HeadersInit,
     });
     const data = await response.json();
       setMembers(data);
