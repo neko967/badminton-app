@@ -1,5 +1,5 @@
 class Api::V1::DoublesRecordsController < ApplicationController
-  before_action :set_current_group, only: %i[index create]
+  before_action :set_current_group, only: %i[index create update]
 
   def index
     render json: @current_group.doubles_records.order(created_at: :desc), status: :ok
@@ -15,6 +15,7 @@ class Api::V1::DoublesRecordsController < ApplicationController
     doubles_player_3 = doubles_record.doubles_players.create(member_id: params[:member_3_id])
     doubles_player_4 = doubles_record.doubles_players.create(member_id: params[:member_4_id])
     if doubles_player_1 && doubles_player_2 && doubles_player_3 && doubles_player_4
+      @current_group.touch # グループの最終更新日を更新
       render json: doubles_player_1, status: :created
     else
       render json: doubles_player_1.errors, status: :unprocessable_entity
@@ -22,6 +23,7 @@ class Api::V1::DoublesRecordsController < ApplicationController
   end
 
   def update
+    @current_group.touch # グループの最終更新日を更新
     doubles_record = DoublesRecord.find(params[:id])
     doubles_record.update(score_12: params[:score_12], score_34: params[:score_34])
 

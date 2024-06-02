@@ -20,6 +20,7 @@ interface SinglesRecordEditDialogProps {
   singlesRecords: any[];
   singlesRecord_id: number;
   members: Member[];
+  params: { slug: string };
 }
 
 export default function SinglesRecordEditDialog({
@@ -29,9 +30,10 @@ export default function SinglesRecordEditDialog({
   singlesRecords,
   singlesRecord_id,
   members,
+  params,
 }: SinglesRecordEditDialogProps) {
 
-  const API_URL_SINGLESRECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
 
   const [score_1_plus_100_with_none, setScore_1_plus_100_with_none] = useState<number | string>('');
   const handleScoreOneChange = (event: SelectChangeEvent<number | string>) => {
@@ -51,10 +53,11 @@ export default function SinglesRecordEditDialog({
     const score_1 = Number(score_1_plus_100_with_none) - 100;
     const score_2 = Number(score_2_plus_100_with_none) - 100;
 
-    await fetch(`${API_URL_SINGLESRECORD}/${id}`, {
+    await fetch(`${API_URL}/singles_records/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        'slug': `${params.slug}`,
       },
       body: JSON.stringify({
         player_1_id: player_1_id,
