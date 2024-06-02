@@ -15,14 +15,14 @@ import type { Member } from '@/app/types/index';
 interface DoublesMakePareDialogProps {
   doublesMakePareDialogOpen: boolean;
   handleDoublesMakePareDialogClose: () => void;
-  playersWithStatus: Member[];
+  selectedMembers: Member[];
   params: { slug: string };
 }
 
 export default function DoublesMakePareDialog({
   doublesMakePareDialogOpen,
   handleDoublesMakePareDialogClose,
-  playersWithStatus,
+  selectedMembers,
   params,
 }: DoublesMakePareDialogProps) {
 
@@ -31,7 +31,7 @@ export default function DoublesMakePareDialog({
     setHowToPare(event.target.value as string);
   };
 
-  const [makedPare, setMakedPare] = useState<string[][]>([]);
+  const [makedPare, setMakedPare] = useState<Member[][]>([]);
 
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
@@ -59,104 +59,104 @@ export default function DoublesMakePareDialog({
   }
 
   const handleMakePare = () => {
-    const newPares: string[][] = [];
-    playersWithStatus.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
+    const newPares: Member[][] = [];
+    selectedMembers.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
 
     switch (howToPare) {
       case "random":
-        if (playersWithStatus.length % 4 === 0) {
-          shuffleArray(playersWithStatus); 
-          for (let i = 0; i < playersWithStatus.length; i += 4) {
-            newPares.push([playersWithStatus[i].name,
-                           playersWithStatus[i + 1].name,
-                           playersWithStatus[i + 2].name,
-                           playersWithStatus[i + 3].name]);
+        if (selectedMembers.length % 4 === 0) {
+          shuffleArray(selectedMembers); 
+          for (let i = 0; i < selectedMembers.length; i += 4) {
+            newPares.push([selectedMembers[i],
+                           selectedMembers[i + 1],
+                           selectedMembers[i + 2],
+                           selectedMembers[i + 3]]);
           }
-        } else if (playersWithStatus.length % 4 === 1) {
-          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 1) {
+          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(selectedMembers);
           const opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
-          newPares.push([three_twice_players_array[0].name,
-                         three_twice_players_array[1].name,
-                         three_twice_players_array[2].name,
-                         opponent_to_twice_player.name]);
-          const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
+          newPares.push([three_twice_players_array[0],
+                         three_twice_players_array[1],
+                         three_twice_players_array[2],
+                         opponent_to_twice_player]);
+          const players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name,
-                           players_except_opponent_to_twice_player[i + 1].name,
-                           players_except_opponent_to_twice_player[i + 2].name,
-                           players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i],
+                           players_except_opponent_to_twice_player[i + 1],
+                           players_except_opponent_to_twice_player[i + 2],
+                           players_except_opponent_to_twice_player[i + 3]]);
           }
-        } else if (playersWithStatus.length % 4 === 2) {
-          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 2) {
+          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(selectedMembers);
           const [two_opponent_to_twice_player, normal_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
-          newPares.push([two_twice_players_array[0].name,
-                         two_twice_players_array[1].name,
-                         two_opponent_to_twice_player[0].name,
-                         two_opponent_to_twice_player[1].name]);
+          newPares.push([two_twice_players_array[0],
+                         two_twice_players_array[1],
+                         two_opponent_to_twice_player[0],
+                         two_opponent_to_twice_player[1]]);
           const players_except_opponent_to_twice_player: Member[] = [two_twice_players_array, normal_players_array].flat();
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name,
-                           players_except_opponent_to_twice_player[i + 1].name,
-                           players_except_opponent_to_twice_player[i + 2].name,
-                           players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i],
+                           players_except_opponent_to_twice_player[i + 1],
+                           players_except_opponent_to_twice_player[i + 2],
+                           players_except_opponent_to_twice_player[i + 3]]);
           }
-        } else if (playersWithStatus.length % 4 === 3) {
-          const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+        } else if (selectedMembers.length % 4 === 3) {
+          const twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          const players_array_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           const [three_opponent_to_twice_players_array, normal_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
-          newPares.push([twice_player.name,
-                         three_opponent_to_twice_players_array[0].name,
-                         three_opponent_to_twice_players_array[1].name,
-                         three_opponent_to_twice_players_array[2].name]);
+          newPares.push([twice_player,
+                         three_opponent_to_twice_players_array[0],
+                         three_opponent_to_twice_players_array[1],
+                         three_opponent_to_twice_players_array[2]]);
           const players_except_opponent_to_twice_player: Member[] = [twice_player, normal_players_array].flat();
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name,
-                           players_except_opponent_to_twice_player[i + 1].name,
-                           players_except_opponent_to_twice_player[i + 2].name,
-                           players_except_opponent_to_twice_player[i + 3].name]);
+            newPares.push([players_except_opponent_to_twice_player[i],
+                           players_except_opponent_to_twice_player[i + 1],
+                           players_except_opponent_to_twice_player[i + 2],
+                           players_except_opponent_to_twice_player[i + 3]]);
           }
         }
         break;
       case "even":
-        if (playersWithStatus.length % 4 === 0) {
-          for (let i = 0; i < playersWithStatus.length; i += 4) {
-            const set_game_players = [playersWithStatus[i], playersWithStatus[i + 1], playersWithStatus[i + 2], playersWithStatus[i + 3]]
+        if (selectedMembers.length % 4 === 0) {
+          for (let i = 0; i < selectedMembers.length; i += 4) {
+            const set_game_players = [selectedMembers[i], selectedMembers[i + 1], selectedMembers[i + 2], selectedMembers[i + 3]]
             shuffleArray(set_game_players);
-            newPares.push([set_game_players[0].name, 
-                           set_game_players[1].name,
-                           set_game_players[2].name,
-                           set_game_players[3].name]);
+            newPares.push([set_game_players[0], 
+                           set_game_players[1],
+                           set_game_players[2],
+                           set_game_players[3]]);
           }
-        } else if (playersWithStatus.length % 4 === 1) {
-          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 1) {
+          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(selectedMembers);
           const one_opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
-          newPares.push([three_twice_players_array[0].name,
-                         three_twice_players_array[1].name,
-                         three_twice_players_array[2].name,
-                         one_opponent_to_twice_player.name]);
-          const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== one_opponent_to_twice_player.id);
+          newPares.push([three_twice_players_array[0],
+                         three_twice_players_array[1],
+                         three_twice_players_array[2],
+                         one_opponent_to_twice_player]);
+          const players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== one_opponent_to_twice_player.id);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 4 ) {
             const set_game_players = [players_except_opponent_to_twice_player[i],
                                       players_except_opponent_to_twice_player[i + 1],
                                       players_except_opponent_to_twice_player[i + 2],
                                       players_except_opponent_to_twice_player[i + 3]]
             shuffleArray(set_game_players);
-            newPares.push([set_game_players[0].name, 
-                           set_game_players[1].name,
-                           set_game_players[2].name,
-                           set_game_players[3].name]);
+            newPares.push([set_game_players[0], 
+                           set_game_players[1],
+                           set_game_players[2],
+                           set_game_players[3]]);
           }
-        } else if (playersWithStatus.length % 4 === 2) {
-          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 2) {
+          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(selectedMembers);
           const [two_opponent_to_twice_player, once_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
-          newPares.push([two_twice_players_array[0].name,
-                         two_twice_players_array[1].name,
-                         two_opponent_to_twice_player[0].name,
-                         two_opponent_to_twice_player[1].name]);
-          const players_except_two_pponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== two_opponent_to_twice_player[0].id
+          newPares.push([two_twice_players_array[0],
+                         two_twice_players_array[1],
+                         two_opponent_to_twice_player[0],
+                         two_opponent_to_twice_player[1]]);
+          const players_except_two_pponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== two_opponent_to_twice_player[0].id
                                                                                                                 && item.id !== two_opponent_to_twice_player[1].id);
           for (let i = 0; i < players_except_two_pponent_to_twice_player.length ; i += 4 ) {
             const set_game_players = [players_except_two_pponent_to_twice_player[i],
@@ -164,20 +164,20 @@ export default function DoublesMakePareDialog({
                                       players_except_two_pponent_to_twice_player[i + 2],
                                       players_except_two_pponent_to_twice_player[i + 3]]
             shuffleArray(set_game_players);
-            newPares.push([set_game_players[0].name, 
-                           set_game_players[1].name,
-                           set_game_players[2].name,
-                           set_game_players[3].name]);
+            newPares.push([set_game_players[0], 
+                           set_game_players[1],
+                           set_game_players[2],
+                           set_game_players[3]]);
           }
-        } else if (playersWithStatus.length % 4 === 3) {
-          const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+        } else if (selectedMembers.length % 4 === 3) {
+          const twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          const players_array_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           const [three_players_opponent_to_twice_player_array, once_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
-          newPares.push([twice_player.name, 
-                         three_players_opponent_to_twice_player_array[0].name,
-                         three_players_opponent_to_twice_player_array[1].name,
-                         three_players_opponent_to_twice_player_array[2].name]);
-          const players_except_three_opponent_to_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== three_players_opponent_to_twice_player_array[0].id
+          newPares.push([twice_player,
+                         three_players_opponent_to_twice_player_array[0],
+                         three_players_opponent_to_twice_player_array[1],
+                         three_players_opponent_to_twice_player_array[2]]);
+          const players_except_three_opponent_to_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== three_players_opponent_to_twice_player_array[0].id
                                                                                                                   && item.id !== three_players_opponent_to_twice_player_array[1].id
                                                                                                                   && item.id !== three_players_opponent_to_twice_player_array[2].id);
           for (let i = 0; i < players_except_three_opponent_to_twice_player.length ; i += 4 ) {
@@ -186,29 +186,29 @@ export default function DoublesMakePareDialog({
                                       players_except_three_opponent_to_twice_player[i + 2],
                                       players_except_three_opponent_to_twice_player[i + 3]]
             shuffleArray(set_game_players);
-            newPares.push([set_game_players[0].name, 
-                           set_game_players[1].name,
-                           set_game_players[2].name,
-                           set_game_players[3].name]);
+            newPares.push([set_game_players[0], 
+                           set_game_players[1],
+                           set_game_players[2],
+                           set_game_players[3]]);
           }
         }
         break;
       case "little_diff":
-        if (playersWithStatus.length % 4 === 0) {
-          const firstHalf = playersWithStatus.slice(0, playersWithStatus.length / 2);
-          const secondHalf = playersWithStatus.slice(playersWithStatus.length / 2);
+        if (selectedMembers.length % 4 === 0) {
+          const firstHalf = selectedMembers.slice(0, selectedMembers.length / 2);
+          const secondHalf = selectedMembers.slice(selectedMembers.length / 2);
           for (let i = 0; i < firstHalf.length; i += 2) {
             const set_game_players_from_firstHalf = [firstHalf[i], firstHalf[i + 1]];
             const set_game_players_from_secondHalf = [secondHalf[i], secondHalf[i + 1]]
             shuffleArray(set_game_players_from_firstHalf);
             shuffleArray(set_game_players_from_secondHalf);
-            newPares.push([set_game_players_from_firstHalf[0].name,
-                           set_game_players_from_secondHalf[0].name,
-                           set_game_players_from_firstHalf[1].name,
-                           set_game_players_from_secondHalf[1].name]);
+            newPares.push([set_game_players_from_firstHalf[0],
+                           set_game_players_from_secondHalf[0],
+                           set_game_players_from_firstHalf[1],
+                           set_game_players_from_secondHalf[1]]);
           }
-        } else if (playersWithStatus.length % 4 === 1) {
-          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 1) {
+          const [three_twice_players_array, rest_players_array]: Member[][] = getRandomThreeAndRestShuffle(selectedMembers);
           const one_opponent_to_twice_player: Member = rest_players_array[getRandomInt(rest_players_array.length)];
           const first_set_game_players = [one_opponent_to_twice_player, three_twice_players_array].flat();
           first_set_game_players.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
@@ -216,11 +216,11 @@ export default function DoublesMakePareDialog({
           const first_game_secondHalf = first_set_game_players.slice(2);
           shuffleArray(first_game_firstHalf);
           shuffleArray(first_game_secondHalf);
-          newPares.push([first_game_firstHalf[0].name, 
-                         first_game_secondHalf[0].name,
-                         first_game_firstHalf[1].name,
-                         first_game_secondHalf[1].name]);
-          const players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== one_opponent_to_twice_player.id);
+          newPares.push([first_game_firstHalf[0], 
+                         first_game_secondHalf[0],
+                         first_game_firstHalf[1],
+                         first_game_secondHalf[1]]);
+          const players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== one_opponent_to_twice_player.id);
           const firstHalf = players_except_opponent_to_twice_player.slice(0, players_except_opponent_to_twice_player.length / 2);
           const secondHalf = players_except_opponent_to_twice_player.slice(players_except_opponent_to_twice_player.length / 2);
           for (let i = 0; i < firstHalf.length; i += 2) {
@@ -228,13 +228,13 @@ export default function DoublesMakePareDialog({
             const set_game_players_from_secondHalf = [secondHalf[i], secondHalf[i + 1]]
             shuffleArray(set_game_players_from_firstHalf);
             shuffleArray(set_game_players_from_secondHalf);
-            newPares.push([set_game_players_from_firstHalf[0].name,
-                           set_game_players_from_secondHalf[0].name,
-                           set_game_players_from_firstHalf[1].name,
-                           set_game_players_from_secondHalf[1].name]);
+            newPares.push([set_game_players_from_firstHalf[0],
+                           set_game_players_from_secondHalf[0],
+                           set_game_players_from_firstHalf[1],
+                           set_game_players_from_secondHalf[1]]);
           }
-        } else if (playersWithStatus.length % 4 === 2) {
-          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(playersWithStatus);
+        } else if (selectedMembers.length % 4 === 2) {
+          const [two_twice_players_array, rest_players_array]: Member[][] = getRandomTwoAndRestShuffle(selectedMembers);
           const [two_opponent_to_twice_player, once_players_array]: Member[][] = getRandomTwoAndRestShuffle(rest_players_array);
           const first_set_game_players = [two_twice_players_array, two_opponent_to_twice_player].flat();
           first_set_game_players.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
@@ -242,11 +242,11 @@ export default function DoublesMakePareDialog({
           const first_game_secondHalf = first_set_game_players.slice(2);
           shuffleArray(first_game_firstHalf);
           shuffleArray(first_game_secondHalf);
-          newPares.push([first_game_firstHalf[0].name, 
-                         first_game_secondHalf[0].name,
-                         first_game_firstHalf[1].name,
-                         first_game_secondHalf[1].name]);
-          const players_except_two_pponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== two_opponent_to_twice_player[0].id
+          newPares.push([first_game_firstHalf[0], 
+                         first_game_secondHalf[0],
+                         first_game_firstHalf[1],
+                         first_game_secondHalf[1]]);
+          const players_except_two_pponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== two_opponent_to_twice_player[0].id
                                                                                                                 && item.id !== two_opponent_to_twice_player[1].id);
           const firstHalf = players_except_two_pponent_to_twice_player.slice(0, players_except_two_pponent_to_twice_player.length / 2);
           const secondHalf = players_except_two_pponent_to_twice_player.slice(players_except_two_pponent_to_twice_player.length / 2);
@@ -255,14 +255,14 @@ export default function DoublesMakePareDialog({
             const set_game_players_from_secondHalf = [secondHalf[i], secondHalf[i + 1]]
             shuffleArray(set_game_players_from_firstHalf);
             shuffleArray(set_game_players_from_secondHalf);
-            newPares.push([set_game_players_from_firstHalf[0].name,
-                           set_game_players_from_secondHalf[0].name,
-                           set_game_players_from_firstHalf[1].name,
-                           set_game_players_from_secondHalf[1].name]);
+            newPares.push([set_game_players_from_firstHalf[0],
+                           set_game_players_from_secondHalf[0],
+                           set_game_players_from_firstHalf[1],
+                           set_game_players_from_secondHalf[1]]);
           }
-        } else if (playersWithStatus.length % 4 === 3) {
-          const twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          const players_array_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+        } else if (selectedMembers.length % 4 === 3) {
+          const twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          const players_array_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           const [three_players_opponent_to_twice_player_array, once_players_array]: Member[][] = getRandomThreeAndRestShuffle(players_array_except_twice_player);
           const first_set_game_players = [twice_player, three_players_opponent_to_twice_player_array].flat();
           first_set_game_players.sort((a: Member, b: Member) => b.doubles_strength - a.doubles_strength);
@@ -270,11 +270,11 @@ export default function DoublesMakePareDialog({
           const first_game_secondHalf = first_set_game_players.slice(2);
           shuffleArray(first_game_firstHalf);
           shuffleArray(first_game_secondHalf);
-          newPares.push([first_game_firstHalf[0].name, 
-                         first_game_secondHalf[0].name,
-                         first_game_firstHalf[1].name,
-                         first_game_secondHalf[1].name]);
-          const players_except_three_opponent_to_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== three_players_opponent_to_twice_player_array[0].id
+          newPares.push([first_game_firstHalf[0], 
+                         first_game_secondHalf[0],
+                         first_game_firstHalf[1],
+                         first_game_secondHalf[1]]);
+          const players_except_three_opponent_to_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== three_players_opponent_to_twice_player_array[0].id
                                                                                                                   && item.id !== three_players_opponent_to_twice_player_array[1].id
                                                                                                                   && item.id !== three_players_opponent_to_twice_player_array[2].id);
           const firstHalf = players_except_three_opponent_to_twice_player.slice(0, players_except_three_opponent_to_twice_player.length / 2);
@@ -284,10 +284,10 @@ export default function DoublesMakePareDialog({
             const set_game_players_from_secondHalf = [secondHalf[i], secondHalf[i + 1]]
             shuffleArray(set_game_players_from_firstHalf);
             shuffleArray(set_game_players_from_secondHalf);
-            newPares.push([set_game_players_from_firstHalf[0].name,
-                           set_game_players_from_secondHalf[0].name,
-                           set_game_players_from_firstHalf[1].name,
-                           set_game_players_from_secondHalf[1].name]);
+            newPares.push([set_game_players_from_firstHalf[0],
+                           set_game_players_from_secondHalf[0],
+                           set_game_players_from_firstHalf[1],
+                           set_game_players_from_secondHalf[1]]);
           }
         }
         break;
@@ -337,7 +337,7 @@ export default function DoublesMakePareDialog({
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
           handleMakePare={handleMakePare}
-          playersWithStatus={playersWithStatus}
+          selectedMembers={selectedMembers}
           params={params}
         />
       </React.Fragment>

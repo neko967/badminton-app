@@ -41,22 +41,21 @@ export default function SinglesSelectDialog({
   params,
 }: SinglesSelectDialogProps) {
 
-  const [players, setPlayers] = useState<string[]>([]);
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
-    const {
-      target: { value },
-    } = event;
-    setPlayers(typeof value === 'string' ? value.split(',') : value as string[]);
+  const [selectedMembersID, setSelectedMembersID] = useState<number[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
+  const handleChange = (event: SelectChangeEvent<number[]>) => {
+    const { target: { value }, } = event;
+    setSelectedMembersID(value as number[]);
   };
 
   const [pareOpen, setPareOpen] = React.useState(false);
-  const [playersWithStatus, setPlayersWithStatus] = useState<Member[]>([]);
+  
   const handlePareOpen = () => {
-    if (players.length < 2) {
+    if (selectedMembersID.length < 2) {
       return;
     }
-    const result = members.filter((item: Member) => players.includes(item.name));
-    setPlayersWithStatus(result);
+    const result = members.filter((item: Member) => selectedMembersID.includes(item.id));
+    setSelectedMembers(result);
     setPareOpen(true);
   };
   const handlePareClose = () => {
@@ -72,34 +71,34 @@ export default function SinglesSelectDialog({
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel id="demo-multiple-checkbox-label">シングルス</InputLabel>
                 <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={players}
-                  onChange={handleChange}
-                  input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => (selected as string[]).join(', ')}
-                  MenuProps={MenuProps}
-                >
-                  {members.map((member: Member) => (
-                    <MenuItem key={member.name} value={member.name}>
-                      <Checkbox checked={players.indexOf(member.name) > -1} />
-                      <ListItemText primary={member.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={selectedMembersID}
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => (selected as number[]).map(id => members.find(member => member.id === id)?.name).join(', ')}
+                MenuProps={MenuProps}
+              >
+                {members.map((member: Member) => (
+                  <MenuItem key={member.id} value={member.id}>
+                    <Checkbox checked={selectedMembersID.indexOf(member.id) > -1} />
+                    <ListItemText primary={member.name} />
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleSinglesClose(); setPlayers([]);}}>Cancel</Button>
+          <Button onClick={() => {handleSinglesClose(); setSelectedMembersID([]);}}>Cancel</Button>
           <Button onClick={() => {handleSinglesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
-      <SinglesMakePareDialog 
-        pareOpen={pareOpen} 
-        handlePareClose={handlePareClose} 
-        playersWithStatus={playersWithStatus}
+      <SinglesMakePareDialog
+        pareOpen={pareOpen}
+        handlePareClose={handlePareClose}
+        selectedMembers={selectedMembers}
         params={params}
       />
     </div>

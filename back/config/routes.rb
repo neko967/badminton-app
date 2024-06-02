@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       resources :user_groups, only: %i[create destroy]
       resources :members, only: %i[index create destroy update]
       resources :singles_records, only: %i[index create update]
+      resources :singles_players, only: %i[index]
       resources :doubles_records, only: %i[index create update]
+      resources :doubles_players, only: %i[index]
     end
   end
 end

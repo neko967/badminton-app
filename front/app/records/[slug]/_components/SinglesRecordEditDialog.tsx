@@ -12,13 +12,14 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
 import type { Member } from '@/app/types/index';
+import type { SinglesPlayer } from '@/app/types/index';
 
 interface SinglesRecordEditDialogProps {
   singlesRecordEditDialogOpen: boolean;
   handleSinglesRecordEditDialogClose: () => void;
-  fetchSinglesData: () => void;
-  singlesRecords: any[];
-  singlesRecord_id: number;
+  fetchSinglesRecordData: () => void;
+  singlesPlayers: SinglesPlayer[];
+  singlesRecordID: number;
   members: Member[];
   params: { slug: string };
 }
@@ -26,9 +27,9 @@ interface SinglesRecordEditDialogProps {
 export default function SinglesRecordEditDialog({
   singlesRecordEditDialogOpen,
   handleSinglesRecordEditDialogClose,
-  fetchSinglesData,
-  singlesRecords,
-  singlesRecord_id,
+  fetchSinglesRecordData,
+  singlesPlayers,
+  singlesRecordID,
   members,
   params,
 }: SinglesRecordEditDialogProps) {
@@ -60,13 +61,13 @@ export default function SinglesRecordEditDialog({
         'slug': `${params.slug}`,
       },
       body: JSON.stringify({
-        player_1_id: player_1_id,
+        player_1_id: player_1?.id,
         score_1: score_1,
-        player_2_id: player_2_id,
+        player_2_id: player_2?.id,
         score_2: score_2,
       }),
     }).then(() => {
-      fetchSinglesData();
+      fetchSinglesRecordData();
     });
   };
 
@@ -74,27 +75,16 @@ export default function SinglesRecordEditDialog({
     setScore_1_plus_100_with_none(''); 
     setScore_2_plus_100_with_none('');
   };
-
-  const [player_1NameInDialog, setPlayer_1NameInDialog] = useState<string>('');
-  const [player_2NameInDialog, setPlayer_2NameInDialog] = useState<string>('');
+  const [player_1, setPlayer_1] = useState<Member>();
+  const [player_2, setPlayer_2] = useState<Member>();
   useEffect(() => {
-    if (singlesRecord_id) {
-      setPlayer_1NameInDialog(singlesRecords.find( ({ id }) => id == singlesRecord_id ).player_1);
-      setPlayer_2NameInDialog(singlesRecords.find( ({ id }) => id == singlesRecord_id ).player_2)
+    if (singlesRecordID) {
+      const firstPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[0].member_id;
+      const secondPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[1].member_id;
+      setPlayer_1(members.find( ({ id }) => id == firstPlayersMemberID ));
+      setPlayer_2(members.find( ({ id }) => id == secondPlayersMemberID ));
     }
-  }, [singlesRecord_id, singlesRecords]);
-
-  const [player_1_id, setPlayer_1_id] = useState<number>();
-  const [player_2_id, setPlayer_2_id] = useState<number>();
-  useEffect(() => {
-    if (player_1NameInDialog && player_2NameInDialog) {
-      const player1 = members.find(member => member.name === player_1NameInDialog);
-      const player2 = members.find(member => member.name === player_2NameInDialog);
-      
-      setPlayer_1_id(player1 ? player1.id : undefined);
-      setPlayer_2_id(player2 ? player2.id : undefined);
-    }
-  }, [singlesRecord_id, player_1NameInDialog, player_2NameInDialog, members]);
+  }, [singlesRecordID, singlesPlayers, members]);
 
   return (
     <div>
@@ -103,7 +93,7 @@ export default function SinglesRecordEditDialog({
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1NameInDialog}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
                 id="demo-dialog-select-1"
@@ -117,7 +107,7 @@ export default function SinglesRecordEditDialog({
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label-2">{player_2NameInDialog}</InputLabel>
+              <InputLabel id="demo-dialog-select-label-2">{player_2?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
                 id="demo-dialog-select-2"
@@ -134,7 +124,7 @@ export default function SinglesRecordEditDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecord_id);}}>Ok</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecordID);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
