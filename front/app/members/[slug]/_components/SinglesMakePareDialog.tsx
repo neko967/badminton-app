@@ -15,14 +15,14 @@ import type { Member } from '@/app/types/index';
 interface SinglesMakePareDialogProps {
   pareOpen: boolean;
   handlePareClose: () => void;
-  playersWithStatus: Member[];
+  selectedMembers: Member[];
   params: { slug: string };
 }
 
 export default function SinglesMakePareDialog({
   pareOpen,
   handlePareClose,
-  playersWithStatus,
+  selectedMembers,
   params,
 }: SinglesMakePareDialogProps) {
   const [howToPare, setHowToPare] = useState<string>('random');
@@ -30,7 +30,7 @@ export default function SinglesMakePareDialog({
     setHowToPare(event.target.value as string);
   };
 
-  const [makedPare, setMakedPare] = useState<[string, string][]>([]);
+  const [makedPare, setMakedPare] = useState<Member[][]>([]);
 
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
@@ -44,61 +44,61 @@ export default function SinglesMakePareDialog({
   }
 
   const handleMakePare = () => {
-    const newPares: [string, string][] = [];
-    playersWithStatus.sort((a: Member, b: Member) => b.singles_strength - a.singles_strength);
+    const newPares: Member[][] = [];
+    selectedMembers.sort((a: Member, b: Member) => b.singles_strength - a.singles_strength);
 
     switch (howToPare) {
       case "random":
-        if (playersWithStatus.length % 2 === 0) {
-          shuffleArray(playersWithStatus); 
-          for (let i = 0; i < playersWithStatus.length; i += 2) {
-            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
+        if (selectedMembers.length % 2 === 0) {
+          shuffleArray(selectedMembers); 
+          for (let i = 0; i < selectedMembers.length; i += 2) {
+            newPares.push([selectedMembers[i], selectedMembers[i + 1]]);
           }
         } else {
-          let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+          let twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          let players_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
+          newPares.push([twice_player, opponent_to_twice_player]);
+          let players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           shuffleArray(players_except_opponent_to_twice_player);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
+            newPares.push([players_except_opponent_to_twice_player[i], players_except_opponent_to_twice_player[i + 1]]);
           }
         }
         break;
       case "even":
-        if (playersWithStatus.length % 2 === 0) {
-          for (let i = 0; i < playersWithStatus.length; i += 2) {
-            newPares.push([playersWithStatus[i].name, playersWithStatus[i + 1].name]);
+        if (selectedMembers.length % 2 === 0) {
+          for (let i = 0; i < selectedMembers.length; i += 2) {
+            newPares.push([selectedMembers[i], selectedMembers[i + 1]]);
           }
         } else {
-          let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+          let twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          let players_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
-          newPares.push([twice_player.name, opponent_to_twice_player.name]);
+          let players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== opponent_to_twice_player.id);
+          newPares.push([twice_player, opponent_to_twice_player]);
           for (let i = 0; i < players_except_opponent_to_twice_player.length ; i += 2 ) {
-            newPares.push([players_except_opponent_to_twice_player[i].name, players_except_opponent_to_twice_player[i + 1].name]);
+            newPares.push([players_except_opponent_to_twice_player[i], players_except_opponent_to_twice_player[i + 1]]);
           }
         }
         break;
       case "little_diff":
-        if (playersWithStatus.length % 2 === 0) {
-          const firstHalf = playersWithStatus.slice(0, playersWithStatus.length / 2);
-          const secondHalf = playersWithStatus.slice(playersWithStatus.length / 2);
+        if (selectedMembers.length % 2 === 0) {
+          const firstHalf = selectedMembers.slice(0, selectedMembers.length / 2);
+          const secondHalf = selectedMembers.slice(selectedMembers.length / 2);
           for (let i = 0; i < firstHalf.length; i += 1) {
-            newPares.push([firstHalf[i].name, secondHalf[i].name]);
+            newPares.push([firstHalf[i], secondHalf[i]]);
           }
         } else {
-          let twice_player: Member = playersWithStatus[getRandomInt(playersWithStatus.length)];
-          let players_except_twice_player: Member[] = playersWithStatus.filter((item: Member) => item.id !== twice_player.id);
+          let twice_player: Member = selectedMembers[getRandomInt(selectedMembers.length)];
+          let players_except_twice_player: Member[] = selectedMembers.filter((item: Member) => item.id !== twice_player.id);
           let opponent_to_twice_player: Member = players_except_twice_player[getRandomInt(players_except_twice_player.length)]
-          newPares.push([twice_player.name, opponent_to_twice_player.name]);
-          let players_except_opponent_to_twice_player : Member[] = playersWithStatus.filter((item: Member) => item.id !== opponent_to_twice_player.id);
+          newPares.push([twice_player, opponent_to_twice_player]);
+          let players_except_opponent_to_twice_player : Member[] = selectedMembers.filter((item: Member) => item.id !== opponent_to_twice_player.id);
           const firstHalf = players_except_opponent_to_twice_player.slice(0, players_except_opponent_to_twice_player.length / 2);
           const secondHalf = players_except_opponent_to_twice_player.slice(players_except_opponent_to_twice_player.length / 2);
           for (let i = 0; i < firstHalf.length ; i += 1 ) {
-            newPares.push([firstHalf[i].name, secondHalf[i].name]);
+            newPares.push([firstHalf[i], secondHalf[i]]);
           }
         }
         break;
@@ -148,7 +148,7 @@ export default function SinglesMakePareDialog({
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
           handleMakePare={handleMakePare}
-          playersWithStatus={playersWithStatus}
+          selectedMembers={selectedMembers}
           params={params}
         />
       </React.Fragment>

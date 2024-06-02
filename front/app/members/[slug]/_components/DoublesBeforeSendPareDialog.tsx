@@ -10,9 +10,9 @@ import type { Member } from '@/app/types/index';
 interface DoublesBeforeSendPareDialogProps {
   beforeSendPareDialogOpen: boolean;
   handleBeforeSendPareDialogClose: () => void;
-  makedPare: string[][];
+  makedPare: Member[][];
   handleMakePare: () => void;
-  playersWithStatus: Member[];
+  selectedMembers: Member[];
   params: { slug: string };
 }
 
@@ -21,7 +21,7 @@ export default function DoublesBeforeSendPareDialog({
   handleBeforeSendPareDialogClose,
   makedPare,
   handleMakePare,
-  playersWithStatus,
+  selectedMembers,
   params,
 }: DoublesBeforeSendPareDialogProps) {
 
@@ -30,10 +30,10 @@ export default function DoublesBeforeSendPareDialog({
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length; i ++) {
-      const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
-      const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
-      const member3 = playersWithStatus.find((item: Member) => item.name === makedPare[i][2]);
-      const member4 = playersWithStatus.find((item: Member) => item.name === makedPare[i][3]);
+      const member1 = makedPare[i][0];
+      const member2 = makedPare[i][1];
+      const member3 = makedPare[i][2];
+      const member4 = makedPare[i][3];
 
       await fetch(API_URL, {
         method: "POST",
@@ -42,10 +42,10 @@ export default function DoublesBeforeSendPareDialog({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          member_1_id: member1?.id,
-          member_2_id: member2?.id,
-          member_3_id: member3?.id,
-          member_4_id: member4?.id,
+          member_1_id: member1.id,
+          member_2_id: member2.id,
+          member_3_id: member3.id,
+          member_4_id: member4.id,
         }),
       })
     }
@@ -73,10 +73,10 @@ export default function DoublesBeforeSendPareDialog({
                   <div className="w-5/12 flex justify-start">
                     <div className="w-full">
                       <div className="flex justify-start">
-                        <p>{pare[0]}</p>
+                        <p>{pare[0].name}</p>
                       </div>
                       <div className="flex justify-start">
-                        <p>{pare[1]}</p>
+                        <p>{pare[1].name}</p>
                       </div>
                     </div>
                   </div>
@@ -86,10 +86,10 @@ export default function DoublesBeforeSendPareDialog({
                   <div className="w-5/12 flex justify-end">
                     <div className="w-full">
                       <div className="flex justify-end">
-                        <p>{pare[2]}</p>
+                        <p>{pare[2].name}</p>
                       </div>
                       <div className="flex justify-end">
-                        <p>{pare[3]}</p>
+                        <p>{pare[3].name}</p>
                       </div>
                     </div>
                   </div>
