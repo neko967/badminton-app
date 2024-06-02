@@ -28,16 +28,19 @@ export default function Home({ params }: { params: { slug: string } }) {
     fetchMemberData();
   }, [fetchMemberData]);
 
-  const handleDelete = async (id: number) => {
-    const response = await fetch(`${API_URL}/`, {
-      method: 'GET',
-      headers: {
-        'slug': `${params.slug}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await response.json();
-    setMembers(data);
+  const handleMemberDelete = async (id: number) => {
+    const name = prompt(`このメンバーを削除する場合は、下の記入欄に"${members.find(member => member.id === id)?.name}"と入力してください。`);
+    if (name == members.find(member => member.id === id)?.name) {
+      await fetch(`${API_URL}/members/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'slug': `${params.slug}`,
+          'Content-Type': 'application/json',
+        },
+      }).then(() => {
+        fetchMemberData();
+      });
+    }
   };
 
   useEffect(() => {
@@ -63,7 +66,7 @@ export default function Home({ params }: { params: { slug: string } }) {
       :
         <Members
           members={members}
-          handleDelete={handleDelete}
+          handleMemberDelete={handleMemberDelete}
         />
       }
       <SpeedDialTooltipOpen
