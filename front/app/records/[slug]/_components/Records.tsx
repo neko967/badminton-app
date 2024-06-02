@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useCallback, useEffect, useState, Suspense, useMemo } from "react";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
@@ -180,26 +180,14 @@ export default function Records({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
-  const token = session?.user.accessToken;
-  const headers = useMemo(() => {
-    const baseHeaders = {
-      'slug': `${params.slug}`,
-      'Content-Type': 'application/json',
-    };
-    if (token) {
-      return {
-        ...baseHeaders,
-        Authorization: `Bearer ${token}`,
-      };
-    }
-    return baseHeaders;
-  }, [token, params.slug]);
 
   const fetchSinglesData = useCallback(async () => {
-    console.log("シングルスの試合記録を取得");
     const response = await fetch(`${API_URL}/singles_records`, {
       method: 'GET',
-      headers: headers as HeadersInit,
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
     });
     const data = await response.json();
     setSinglesRecords(data);
@@ -223,7 +211,10 @@ export default function Records({ params }: { params: { slug: string } }) {
   const fetchDoublesData = useCallback(async () => {
     const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
-      headers: headers as HeadersInit,
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
     });
     const data = await response.json();
     setDoublesRecords(data);
@@ -247,7 +238,10 @@ export default function Records({ params }: { params: { slug: string } }) {
   const fetchMemberData = useCallback(async () => {
     const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
-      headers: headers as HeadersInit,
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
     });
     const data = await response.json();
       setMembers(data);
@@ -257,18 +251,21 @@ export default function Records({ params }: { params: { slug: string } }) {
     fetchMemberData();
   }, [fetchMemberData]);
 
-  const addGroupToUser = useCallback(async () => {
-    await fetch(`${API_URL}/user_groups`, {
-      method: "POST",
-      headers: headers,
-    });
-  }, [headers, API_URL]);
-
   useEffect(() => {
     if (status === 'authenticated') {
+      const addGroupToUser = async () => {
+        await fetch(`${API_URL}/user_groups`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.user.accessToken}`,
+            'slug': `${params.slug}`,
+          },
+        });
+      };
       addGroupToUser();
     }
-  }, [status, addGroupToUser]);
+  }, [status, API_URL ,params, session]);
 
   return (
     <>
