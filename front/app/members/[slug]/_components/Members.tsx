@@ -150,10 +150,10 @@ export default function Members({members, handleMemberDelete}:
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell />
-                <TableCell onClick={() => onSort('name')}>名前</TableCell>
-                <TableCell align="right" onClick={() => onSort('singles_strength')}>シングルスパワー</TableCell>
-                <TableCell align="right" onClick={() => onSort('doubles_strength')}>ダブルスパワー</TableCell>
+                <TableCell style={{ userSelect: 'none' }} />
+                <TableCell style={{ userSelect: 'none' }} onClick={() => onSort('name')}>名前</TableCell>
+                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('singles_strength')}>シングルスパワー</TableCell>
+                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('doubles_strength')}>ダブルスパワー</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
