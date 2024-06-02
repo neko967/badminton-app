@@ -1,5 +1,5 @@
 class Api::V1::SinglesRecordsController < ApplicationController
-  before_action :set_current_group, only: %i[index create]
+  before_action :set_current_group, only: %i[index create update]
 
   def index
     render json: @current_group.singles_records.order(created_at: :desc), status: :ok
@@ -10,6 +10,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
     singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id])
     singles_player_2 = singles_record.singles_players.create(member_id: params[:member_2_id])
     if singles_player_1 && singles_player_2
+      @current_group.touch # グループの最終更新日を更新
       render json: singles_player_1, status: :created
     else
       render json: singles_player_1.errors, status: :unprocessable_entity
@@ -17,6 +18,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
   end
 
   def update
+    @current_group.touch # グループの最終更新日を更新
     singles_record = SinglesRecord.find(params[:id])
     singles_record.update(score_1: params[:score_1], score_2: params[:score_2])
 

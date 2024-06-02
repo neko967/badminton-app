@@ -20,6 +20,7 @@ interface DoublesRecordEditDialogProps {
   doublesRecords: any[];
   doublesRecord_id: number;
   members: Member[];
+  params: { slug: string };
 }
 
 export default function DoublesRecordEditDialog({
@@ -29,9 +30,10 @@ export default function DoublesRecordEditDialog({
   doublesRecords,
   doublesRecord_id,
   members,
+  params,
 }: DoublesRecordEditDialogProps) {
 
-  const API_URL_DOUBLES_RECORD = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/doubles_records`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
 
   const [score_12_plus_100_with_none, setScore_12_plus_100_with_none] = useState<number | string>('');
   const handleScoreOneTwoChange = (event: SelectChangeEvent<number | string>) => {
@@ -51,10 +53,11 @@ export default function DoublesRecordEditDialog({
     const score_12 = Number(score_12_plus_100_with_none) - 100;
     const score_34 = Number(score_34_plus_100_with_none) - 100;
 
-    await fetch(`${API_URL_DOUBLES_RECORD}/${id}`, {
+    await fetch(`${API_URL}/doubles_records/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        'slug': `${params.slug}`,
       },
       body: JSON.stringify({
         player_1_id: player_1_id,

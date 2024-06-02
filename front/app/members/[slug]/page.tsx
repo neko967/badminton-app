@@ -22,7 +22,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
     setMembers(data);
-  }, []);
+  }, [API_URL, params]);
 
   useEffect(() => {
     fetchMemberData();

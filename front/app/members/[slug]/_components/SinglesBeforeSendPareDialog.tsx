@@ -24,7 +24,7 @@ export default function SinglesBeforeSendPareDialog({
   playersWithStatus,
   params,
 }: SinglesBeforeSendPareDialogProps) {
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/singles_records`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const router = useRouter();
 
   const handlePareSubmit = async () => {
@@ -32,7 +32,7 @@ export default function SinglesBeforeSendPareDialog({
       const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
       const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
 
-      await fetch(API_URL, {
+      await fetch(`${API_URL}/singles_records`, {
         method: "POST",
         headers: {
           'slug': `${params.slug}`,

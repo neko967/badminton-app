@@ -3,7 +3,7 @@ class Api::V1::GroupsController < ApplicationController
   before_action :set_current_user, only: %i[index create update]
 
   def index
-    render json: @current_user.groups_joined_by_user, status: :ok
+    render json: @current_user.groups_joined_by_user.order(updated_at: :desc), status: :ok
   end
 
   def create

@@ -47,7 +47,7 @@ export default function Home() {
     }
     const data = await response.json();
     setGroups(data);
-  }, [session]);
+  }, [session, API_URL]);
 
   useEffect(() => {
     if (session) {
