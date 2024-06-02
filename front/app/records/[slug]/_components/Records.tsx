@@ -191,7 +191,7 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
     setSinglesRecords(data);
-  }, []);
+  }, [API_URL, params]);
 
   useEffect(() => {
     fetchSinglesData();
@@ -218,7 +218,7 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
     setDoublesRecords(data);
-  }, []);
+  }, [API_URL, params]);
 
   useEffect(() => {
     fetchDoublesData();
@@ -245,7 +245,7 @@ export default function Records({ params }: { params: { slug: string } }) {
     });
     const data = await response.json();
       setMembers(data);
-  }, []);
+  }, [API_URL, params]);
 
   useEffect(() => {
     fetchMemberData();
@@ -285,6 +285,7 @@ export default function Records({ params }: { params: { slug: string } }) {
         singlesRecords={singlesRecords}
         singlesRecord_id={singlesRecord_id}
         members={members}
+        params={params}
       />
       <DoublesRecordEditDialog
         doublesRecordEditDialogOpen={doublesRecordEditDialogOpen}
@@ -293,6 +294,7 @@ export default function Records({ params }: { params: { slug: string } }) {
         doublesRecords={doublesRecords}
         doublesRecord_id={doublesRecord_id}
         members={members}
+        params={params}
       />
     </>
   );
