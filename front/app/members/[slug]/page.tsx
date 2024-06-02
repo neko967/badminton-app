@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 import Members from './_components/Members';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
@@ -11,32 +11,17 @@ export default function Home({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [members, setMembers] = useState([] as Member[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
-  const token = session?.user.accessToken;
-  const headers = useMemo(() => {
-    const baseHeaders = {
-      'slug': `${params.slug}`,
-      'Content-Type': 'application/json',
-    };
-    if (token) {
-      return {
-        ...baseHeaders,
-        Authorization: `Bearer ${token}`,
-      };
-    }
-    return baseHeaders;
-  }, [token, params.slug]);
-  console.log(session);
-  console.log(token);
-  console.log(headers);
 
   const fetchMemberData = useCallback(async () => {
-    console.log("メンバーを取得");
     const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
-      headers: headers
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
     });
     const data = await response.json();
-      setMembers(data);
+    setMembers(data);
   }, []);
 
   useEffect(() => {
@@ -44,28 +29,32 @@ export default function Home({ params }: { params: { slug: string } }) {
   }, [fetchMemberData]);
 
   const handleDelete = async (id: number) => {
-    console.log("メンバーを取得");
     const response = await fetch(`${API_URL}/`, {
       method: 'GET',
-      headers: headers
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
     });
     const data = await response.json();
-      setMembers(data);
+    setMembers(data);
   };
-
-  const addGroupToUser = useCallback(async () => {
-    console.log("グループをユーザーに追加");
-    await fetch(`${API_URL}/user_groups`, {
-      method: "POST",
-      headers: headers,
-    });
-  }, [headers, API_URL]);
 
   useEffect(() => {
     if (status === 'authenticated') {
+      const addGroupToUser = async () => {
+        await fetch(`${API_URL}/user_groups`, {
+          method: "POST",
+          headers: {
+            'slug': `${params.slug}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.user.accessToken}`,
+          },
+        });
+      };
       addGroupToUser();
     }
-  }, [status, addGroupToUser]);
+  }, [status, API_URL ,params, session]);
 
   return (
     <>

@@ -1,6 +1,5 @@
 class Api::V1::MembersController < ApplicationController
   wrap_parameters false
-  before_action :set_current_user, only: %i[index]
   before_action :set_current_group, only: %i[index create destroy]
 
   def index
