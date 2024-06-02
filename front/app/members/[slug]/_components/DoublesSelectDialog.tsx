@@ -34,20 +34,20 @@ interface DoublesSelectDialogProps {
 }
 
 export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose, params }: DoublesSelectDialogProps) {
-  const [players, setPlayers] = useState<string[]>([]);
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+  const [selectedMembersID, setSelectedMembersID] = useState<number[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
+  const handleChange = (event: SelectChangeEvent<number[]>) => {
     const { target: { value } } = event;
-    setPlayers(typeof value === 'string' ? value.split(',') : value);
+    setSelectedMembersID(value as number[]);
   };
 
   const [doublesMakePareDialogOpen, setDoublesMakePareDialogOpen] = useState(false);
-  const [playersWithStatus, setPlayersWithStatus] = useState<Member[]>([]);
   const handlePareOpen = () => {
-    if (players.length < 4) {
+    if (selectedMembersID.length < 4) {
       return;
     }
-    const result = members.filter((item: Member) => players.includes(item.name));
-    setPlayersWithStatus(result);
+    const result = members.filter((item: Member) => selectedMembersID.includes(item.id));
+    setSelectedMembers(result);
     setDoublesMakePareDialogOpen(true);
   };
   const handleDoublesMakePareDialogClose = () => {
@@ -66,15 +66,15 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
-                value={players}
+                value={selectedMembersID}
                 onChange={handleChange}
                 input={<OutlinedInput label="Tag" />}
-                renderValue={(selected) => (selected as string[]).join(', ')}
+                renderValue={(selected) => (selected as number[]).map(id => members.find(member => member.id === id)?.name).join(', ')}
                 MenuProps={MenuProps}
               >
                 {members.map((member: Member) => (
-                  <MenuItem key={member.name} value={member.name}>
-                    <Checkbox checked={players.indexOf(member.name) > -1} />
+                  <MenuItem key={member.id} value={member.id}>
+                    <Checkbox checked={selectedMembersID.indexOf(member.id) > -1} />
                     <ListItemText primary={member.name} />
                   </MenuItem>
                 ))}
@@ -83,14 +83,14 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleDoublesClose(); setPlayers([]);}}>Cancel</Button>
+          <Button onClick={() => {handleDoublesClose(); setSelectedMembersID([]);}}>Cancel</Button>
           <Button onClick={() => {handleDoublesClose(); handlePareOpen();}}>Ok</Button>
         </DialogActions>
       </Dialog>
       <DoublesMakePareDialog 
         doublesMakePareDialogOpen={doublesMakePareDialogOpen} 
         handleDoublesMakePareDialogClose={handleDoublesMakePareDialogClose} 
-        playersWithStatus={playersWithStatus}
+        selectedMembers={selectedMembers}
         params={params}
       />
     </div>

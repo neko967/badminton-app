@@ -9,6 +9,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
 import DoublesRecordEditDialog from './DoublesRecordEditDialog';
 import type { Member } from '@/app/types/index';
+import type { SinglesRecord } from '@/app/types/index';
+import type { SinglesPlayer } from '@/app/types/index';
+import type { DoublesRecord } from '@/app/types/index';
+import type { DoublesPlayer } from '@/app/types/index';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,8 +48,8 @@ function a11yProps(index: number) {
 }
 
 interface TabComponentProps {
-  singlesRecords: any[];
-  doublesRecords: any[];
+  singlesRecords: SinglesRecord[];
+  doublesRecords: DoublesRecord[];
   handleSinglesRecordEditDialogOpen: (id: number) => void;
   handleDoublesRecordEditDialogOpen: (id: number) => void;
 }
@@ -178,10 +182,14 @@ function TabComponent({
 
 export default function Records({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
-  const [singlesRecords, setSinglesRecords] = useState<any[]>([]);
+  const [singlesRecords, setSinglesRecords] = useState<SinglesRecord[]>([]);
+  const [singlesPlayers, setSinglesPlayers] = useState<SinglesPlayer[]>([]);
+  const [doublesRecords, setDoublesRecords] = useState<DoublesRecord[]>([]);
+  const [doublesPlayers, setDoublesPlayers] = useState<DoublesPlayer[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
 
-  const fetchSinglesData = useCallback(async () => {
+  const fetchSinglesRecordData = useCallback(async () => {
     const response = await fetch(`${API_URL}/singles_records`, {
       method: 'GET',
       headers: {
@@ -193,22 +201,19 @@ export default function Records({ params }: { params: { slug: string } }) {
     setSinglesRecords(data);
   }, [API_URL, params]);
 
-  useEffect(() => {
-    fetchSinglesData();
-  }, [fetchSinglesData]);
+  const fetchSinglesPlayerData = useCallback(async () => {
+    const response = await fetch(`${API_URL}/singles_players`, {
+      method: 'GET',
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    setSinglesPlayers(data);
+  }, [API_URL, params]);
 
-  const [singlesRecord_id, setSinglesRecord_id] = useState<number>(0);
-  const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
-  const handleSinglesRecordEditDialogOpen = (id: number) => {
-    setSinglesRecord_id(id);
-    setSinglesRecordEditDialogOpen(true);
-  };
-  const handleSinglesRecordEditDialogClose = () => {
-    setSinglesRecordEditDialogOpen(false);
-  };
-
-  const [doublesRecords, setDoublesRecords] = useState([]);
-  const fetchDoublesData = useCallback(async () => {
+  const fetchDoublesRecordData = useCallback(async () => {
     const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
       headers: {
@@ -220,21 +225,18 @@ export default function Records({ params }: { params: { slug: string } }) {
     setDoublesRecords(data);
   }, [API_URL, params]);
 
-  useEffect(() => {
-    fetchDoublesData();
-  }, [fetchDoublesData]);
+  const fetchDoublesPlayerData = useCallback(async () => {
+    const response = await fetch(`${API_URL}/doubles_players`, {
+      method: 'GET',
+      headers: {
+        'slug': `${params.slug}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    setDoublesPlayers(data);
+  }, [API_URL, params]);
 
-  const [doublesRecord_id, setDoublesRecord_id] = useState<number>(0);
-  const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
-  const handleDoublesRecordEditDialogOpen = (id: number) => {
-    setDoublesRecord_id(id);
-    setDoublesRecordEditDialogOpen(true);
-  };
-  const handleDoublesRecordEditDialogClose = () => {
-    setDoublesRecordEditDialogOpen(false);
-  };
-
-  const [members, setMembers] = useState<Member[]>([]);
   const fetchMemberData = useCallback(async () => {
     const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
@@ -248,8 +250,32 @@ export default function Records({ params }: { params: { slug: string } }) {
   }, [API_URL, params]);
 
   useEffect(() => {
+    fetchSinglesRecordData();
+    fetchSinglesPlayerData();
+    fetchDoublesRecordData();
+    fetchDoublesPlayerData();
     fetchMemberData();
-  }, [fetchMemberData]);
+  }, [fetchSinglesRecordData, fetchSinglesPlayerData, fetchDoublesRecordData, fetchDoublesPlayerData, fetchMemberData]);
+
+  const [singlesRecordID, setSinglesRecordID] = useState<number>(0);
+  const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
+  const handleSinglesRecordEditDialogOpen = (id: number) => {
+    setSinglesRecordID(id);
+    setSinglesRecordEditDialogOpen(true);
+  };
+  const handleSinglesRecordEditDialogClose = () => {
+    setSinglesRecordEditDialogOpen(false);
+  };
+
+  const [doublesRecordID, setDoublesRecordID] = useState<number>(0);
+  const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
+  const handleDoublesRecordEditDialogOpen = (id: number) => {
+    setDoublesRecordID(id);
+    setDoublesRecordEditDialogOpen(true);
+  };
+  const handleDoublesRecordEditDialogClose = () => {
+    setDoublesRecordEditDialogOpen(false);
+  };
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -281,18 +307,18 @@ export default function Records({ params }: { params: { slug: string } }) {
       <SinglesRecordEditDialog
         singlesRecordEditDialogOpen={singlesRecordEditDialogOpen}
         handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
-        fetchSinglesData={fetchSinglesData}
-        singlesRecords={singlesRecords}
-        singlesRecord_id={singlesRecord_id}
+        fetchSinglesRecordData={fetchSinglesRecordData}
+        singlesPlayers={singlesPlayers}
+        singlesRecordID={singlesRecordID}
         members={members}
         params={params}
       />
       <DoublesRecordEditDialog
         doublesRecordEditDialogOpen={doublesRecordEditDialogOpen}
         handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
-        fetchDoublesData={fetchDoublesData}
-        doublesRecords={doublesRecords}
-        doublesRecord_id={doublesRecord_id}
+        fetchDoublesRecordData={fetchDoublesRecordData}
+        doublesPlayers={doublesPlayers}
+        doublesRecordID={doublesRecordID}
         members={members}
         params={params}
       />

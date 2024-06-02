@@ -10,9 +10,9 @@ import type { Member } from '@/app/types/index';
 interface SinglesBeforeSendPareDialogProps {
   beforeSendPareDialogOpen: boolean;
   handleBeforeSendPareDialogClose: () => void;
-  makedPare: [string, string][];
+  makedPare: Member[][];
   handleMakePare: () => void;
-  playersWithStatus: Member[];
+  selectedMembers: Member[];
   params: { slug: string };
 }
 
@@ -21,7 +21,7 @@ export default function SinglesBeforeSendPareDialog({
   handleBeforeSendPareDialogClose,
   makedPare,
   handleMakePare,
-  playersWithStatus,
+  selectedMembers,
   params,
 }: SinglesBeforeSendPareDialogProps) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
@@ -29,8 +29,8 @@ export default function SinglesBeforeSendPareDialog({
 
   const handlePareSubmit = async () => {
     for (let i = 0; i < makedPare.length; i ++) {
-      const member1 = playersWithStatus.find((item: Member) => item.name === makedPare[i][0]);
-      const member2 = playersWithStatus.find((item: Member) => item.name === makedPare[i][1]);
+      const member1 = makedPare[i][0];
+      const member2 = makedPare[i][1];
 
       await fetch(`${API_URL}/singles_records`, {
         method: "POST",
@@ -39,8 +39,8 @@ export default function SinglesBeforeSendPareDialog({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          member_1_id: member1?.id,
-          member_2_id: member2?.id,
+          member_1_id: member1.id,
+          member_2_id: member2.id,
         }),
       })
     }
@@ -66,13 +66,13 @@ export default function SinglesBeforeSendPareDialog({
               {makedPare.map((pare, index) => (
                 <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-1">
                   <div className="w-5/12 flex justify-start">
-                    <p>{pare[0]}</p>
+                    <p>{pare[0].name}</p>
                   </div>
                   <div className="w-1/6 flex justify-center">
                     <p>-</p>
                   </div>
                   <div className="w-5/12 flex justify-end">
-                    <p>{pare[1]}</p>
+                    <p>{pare[1].name}</p>
                   </div>
                 </div>
               ))}

@@ -12,13 +12,14 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
 import type { Member } from '@/app/types/index';
+import type { DoublesPlayer } from '@/app/types/index';
 
 interface DoublesRecordEditDialogProps {
   doublesRecordEditDialogOpen: boolean;
   handleDoublesRecordEditDialogClose: () => void;
-  fetchDoublesData: () => void;
-  doublesRecords: any[];
-  doublesRecord_id: number;
+  fetchDoublesRecordData: () => void;
+  doublesPlayers: DoublesPlayer[];
+  doublesRecordID: number;
   members: Member[];
   params: { slug: string };
 }
@@ -26,9 +27,9 @@ interface DoublesRecordEditDialogProps {
 export default function DoublesRecordEditDialog({
   doublesRecordEditDialogOpen,
   handleDoublesRecordEditDialogClose,
-  fetchDoublesData,
-  doublesRecords,
-  doublesRecord_id,
+  fetchDoublesRecordData,
+  doublesPlayers,
+  doublesRecordID,
   members,
   params,
 }: DoublesRecordEditDialogProps) {
@@ -60,15 +61,15 @@ export default function DoublesRecordEditDialog({
         'slug': `${params.slug}`,
       },
       body: JSON.stringify({
-        player_1_id: player_1_id,
-        player_2_id: player_2_id,
+        player_1_id: player_1?.id,
+        player_2_id: player_2?.id,
         score_12: score_12,
-        player_3_id: player_3_id,
-        player_4_id: player_4_id,
+        player_3_id: player_3?.id,
+        player_4_id: player_4?.id,
         score_34: score_34,
       }),
     }).then(() => {
-      fetchDoublesData();
+      fetchDoublesRecordData();
     });
   };
 
@@ -77,36 +78,23 @@ export default function DoublesRecordEditDialog({
     setScore_34_plus_100_with_none('');
   };
 
-  const [player_1NameInDialog, setPlayer_1NameInDialog] = useState<string>('');
-  const [player_2NameInDialog, setPlayer_2NameInDialog] = useState<string>('');
-  const [player_3NameInDialog, setPlayer_3NameInDialog] = useState<string>('');
-  const [player_4NameInDialog, setPlayer_4NameInDialog] = useState<string>('');
-  useEffect(() => {
-    if (doublesRecord_id) {
-      setPlayer_1NameInDialog(doublesRecords.find( ({ id }) => id == doublesRecord_id ).player_1);
-      setPlayer_2NameInDialog(doublesRecords.find( ({ id }) => id == doublesRecord_id ).player_2);
-      setPlayer_3NameInDialog(doublesRecords.find( ({ id }) => id == doublesRecord_id ).player_3);
-      setPlayer_4NameInDialog(doublesRecords.find( ({ id }) => id == doublesRecord_id ).player_4);
-    }
-  }, [doublesRecord_id, doublesRecords]);
+  const [player_1, setPlayer_1] = useState<Member>();
+  const [player_2, setPlayer_2] = useState<Member>();
+  const [player_3, setPlayer_3] = useState<Member>();
+  const [player_4, setPlayer_4] = useState<Member>();
 
-  const [player_1_id, setPlayer_1_id] = useState<number>();
-  const [player_2_id, setPlayer_2_id] = useState<number>();
-  const [player_3_id, setPlayer_3_id] = useState<number>();
-  const [player_4_id, setPlayer_4_id] = useState<number>();
   useEffect(() => {
-    if (player_1NameInDialog && player_2NameInDialog) {
-      const player1 = members.find(member => member.name === player_1NameInDialog);
-      const player2 = members.find(member => member.name === player_2NameInDialog);
-      const player3 = members.find(member => member.name === player_3NameInDialog);
-      const player4 = members.find(member => member.name === player_4NameInDialog);
-      
-      setPlayer_1_id(player1 ? player1.id : undefined);
-      setPlayer_2_id(player2 ? player2.id : undefined);
-      setPlayer_3_id(player3 ? player3.id : undefined);
-      setPlayer_4_id(player4 ? player4.id : undefined);
+    if (doublesRecordID) {
+      const firstPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[0].member_id;
+      const secondPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[1].member_id;
+      const thirdPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[2].member_id;
+      const fourthPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[3].member_id;
+      setPlayer_1(members.find( ({ id }) => id == firstPlayersMemberID ));
+      setPlayer_2(members.find( ({ id }) => id == secondPlayersMemberID ));
+      setPlayer_3(members.find( ({ id }) => id == thirdPlayersMemberID ));
+      setPlayer_4(members.find( ({ id }) => id == fourthPlayersMemberID ));
     }
-  }, [doublesRecord_id, player_1NameInDialog, player_2NameInDialog, player_3NameInDialog, player_4NameInDialog, members]);
+  }, [doublesRecordID, doublesPlayers, members]);
 
   return (
     <div>
@@ -115,7 +103,7 @@ export default function DoublesRecordEditDialog({
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1NameInDialog} {player_2NameInDialog}</InputLabel>
+              <InputLabel htmlFor="demo-dialog-select-label-1">{player_1?.name} {player_2?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
                 id="demo-dialog-select-1"
@@ -129,7 +117,7 @@ export default function DoublesRecordEditDialog({
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label-2">{player_3NameInDialog} {player_4NameInDialog}</InputLabel>
+              <InputLabel id="demo-dialog-select-label-2">{player_3?.name} {player_4?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
                 id="demo-dialog-select-2"
@@ -146,7 +134,7 @@ export default function DoublesRecordEditDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
-          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset(); handleDoublesRecordUpdate(doublesRecord_id);}}>Ok</Button>
+          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset(); handleDoublesRecordUpdate(doublesRecordID);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
