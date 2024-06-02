@@ -16,8 +16,10 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { Member } from '@/app/types/index';
 
-function Row({ member, handleDelete }: {
-               member: Member; handleDelete: (id: number) => void; }) {
+type SortKey = keyof Omit<Member, 'history'>; // 'history' プロパティを除く
+
+function Row({ member, handleMemberDelete }: {
+               member: Member; handleMemberDelete: (id: number) => void; }) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -101,7 +103,7 @@ function Row({ member, handleDelete }: {
                   ))}
                 </TableBody>
               </Table>   
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDelete(member.id)} className="float-right my-2">
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleMemberDelete(member.id)} className="float-right my-2">
                 メンバーを削除
               </Button>
             </Box>
@@ -112,8 +114,34 @@ function Row({ member, handleDelete }: {
   );
 }
 
-export default function Members({members, handleDelete}: 
-                               {members: Member[]; handleDelete: (id: number) => void; }) {
+export default function Members({members, handleMemberDelete}: 
+                               {members: Member[]; handleMemberDelete: (id: number) => void; }) {
+  const [sortedMembers, setSortedMembers] = React.useState(members);
+  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'descending' });
+
+  const onSort = (key: SortKey) => {
+    let direction: 'descending' | 'ascending' = 'descending';
+    if (sortConfig.key === key && sortConfig.direction === 'descending') {
+      direction = 'ascending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  React.useEffect(() => {
+    let sortedArray = [...members];
+    if (sortConfig.key) {
+      sortedArray.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'descending' ? 1 : -1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'descending' ? -1 : 1;
+        }
+        return 0;
+      });
+    }
+    setSortedMembers(sortedArray);
+  }, [members, sortConfig]);
 
   return (
     <>
@@ -123,14 +151,14 @@ export default function Members({members, handleDelete}:
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell>名前</TableCell>
-                <TableCell align="right">シングルスパワー</TableCell>
-                <TableCell align="right">ダブルスパワー</TableCell>
+                <TableCell onClick={() => onSort('name')}>名前</TableCell>
+                <TableCell align="right" onClick={() => onSort('singles_strength')}>シングルスパワー</TableCell>
+                <TableCell align="right" onClick={() => onSort('doubles_strength')}>ダブルスパワー</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {members.map((member: Member) => (
-                <Row key={member.id} member={member} handleDelete={handleDelete}/>
+              {sortedMembers.map((member: Member) => (
+                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete}/>
               ))}
             </TableBody>
           </Table>
