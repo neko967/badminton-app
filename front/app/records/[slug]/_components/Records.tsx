@@ -49,15 +49,19 @@ function a11yProps(index: number) {
 
 interface TabComponentProps {
   singlesRecords: SinglesRecord[];
+  singlesPlayers: SinglesPlayer[];
   doublesRecords: DoublesRecord[];
+  doublesPlayers: DoublesPlayer[];
   handleSinglesRecordEditDialogOpen: (id: number) => void;
   handleDoublesRecordEditDialogOpen: (id: number) => void;
 }
 
 function TabComponent({
   singlesRecords,
+  singlesPlayers,
   handleSinglesRecordEditDialogOpen,
   doublesRecords,
+  doublesPlayers,
   handleDoublesRecordEditDialogOpen,
 }: TabComponentProps) {
 
@@ -90,17 +94,17 @@ function TabComponent({
                   >
                     <div className="w-5/6 flex items-center justify-between">
                       <div className="w-2/5 flex justify-start">
-                        <p>{singlesRecord?.player_1}</p>
+                        <p>{singlesRecord.player_1}</p>
                       </div>
                       <div className="w-1/5 flex justify-center">
-                        <p>{singlesRecord?.score_1} - {singlesRecord?.score_2}</p>
+                        <p>{singlesRecord.score_1} - {singlesRecord.score_2}</p>
                       </div>
                       <div className="w-2/5 flex justify-end">
-                        <p>{singlesRecord?.player_2}</p>
+                        <p>{singlesRecord.player_2}</p>
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { singlesRecord?.score_1 == null && singlesRecord?.score_2 == null ?
+                      { singlesRecord.score_1 == null && singlesRecord.score_2 == null && singlesPlayers.filter(item => item.singles_record_id === singlesRecord.id).length == 2 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
                           onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
@@ -135,29 +139,29 @@ function TabComponent({
                       <div className="w-2/5 flex justify-start">
                         <div className="w-full">
                           <div className="flex justify-start">
-                            <p>{doublesRecord?.player_1}</p>
+                            <p>{doublesRecord.player_1}</p>
                           </div>
                           <div className="flex justify-start">
-                            <p>{doublesRecord?.player_2}</p>
+                            <p>{doublesRecord.player_2}</p>
                           </div>
                         </div>
                       </div>
                       <div className="w-1/5 flex justify-center">
-                        <p>{doublesRecord?.score_12} - {doublesRecord?.score_34}</p>
+                        <p>{doublesRecord.score_12} - {doublesRecord.score_34}</p>
                       </div>
                       <div className="w-2/5 flex justify-end">
                         <div className="w-full">
                           <div className="flex justify-end">
-                            <p>{doublesRecord?.player_3}</p>
+                            <p>{doublesRecord.player_3}</p>
                           </div>
                           <div className="flex justify-end">
-                            <p>{doublesRecord?.player_4}</p>
+                            <p>{doublesRecord.player_4}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { doublesRecord?.score_12 == null && doublesRecord?.score_34 == null ?
+                      { doublesRecord.score_12 == null && doublesRecord.score_34 == null && doublesPlayers.filter(item => item.doubles_record_id === doublesRecord.id).length == 4 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
                           onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
@@ -299,7 +303,9 @@ export default function Records({ params }: { params: { slug: string } }) {
         <Suspense fallback={<div>Loading...</div>}>
           <TabComponent
             singlesRecords={singlesRecords}
+            singlesPlayers={singlesPlayers}
             doublesRecords={doublesRecords}
+            doublesPlayers={doublesPlayers}
             handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
             handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
         </Suspense>
