@@ -9,7 +9,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SinglesSelectDialog from './SinglesSelectDialog';
 import DoublesSelectDialog from './DoublesSelectDialog';
-import AddPersonDialog from './AddPersonDialog';
+import AddMemberDialog from './AddMemberDialog';
 import type { Member } from '@/app/types/index';
 
 type FetchDataType = () => Promise<void>;
@@ -41,18 +41,18 @@ export default function SpeedDialTooltipOpen({members, fetchMemberData, params}:
     setDoublesOpen(false);
   };
 
-  const [addPersonOpen, setAddPersonOpen] = React.useState(false);
-  const handleAddPersonClickOpen = () => {
-    setAddPersonOpen(true);
+  const [addMemberOpen, setAddMemberOpen] = React.useState(false);
+  const handleAddMemberClickOpen = () => {
+    setAddMemberOpen(true);
   };
-  const handleAddPersonClose = () => {
-    setAddPersonOpen(false);
+  const handleAddMemberClose = () => {
+    setAddMemberOpen(false);
   };
 
   const actions = [
     { icon: <PeopleIcon onClick={handleDoublesClickOpen} />, name: 'ダブルス' },
     { icon: <PersonIcon onClick={handleSinglesClickOpen}/>, name: 'シングルス' },
-    { icon: <PersonAddIcon onClick={handleAddPersonClickOpen} />, name: 'メンバーを追加' },
+    { icon: <PersonAddIcon onClick={handleAddMemberClickOpen} />, name: 'メンバーを追加' },
   ];
 
   return (
@@ -89,9 +89,10 @@ export default function SpeedDialTooltipOpen({members, fetchMemberData, params}:
           handleDoublesClose={handleDoublesClose}
           params={params}
         />
-        <AddPersonDialog
-          addPersonOpen={addPersonOpen}
-          handleAddPersonClose={handleAddPersonClose}
+        <AddMemberDialog
+          members={members}
+          addMemberOpen={addMemberOpen}
+          handleAddMemberClose={handleAddMemberClose}
           fetchMemberData={fetchMemberData}
           params={params}
         />
