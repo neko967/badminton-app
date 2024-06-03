@@ -20,8 +20,8 @@ import { useSession } from 'next-auth/react';
 
 type SortKey = keyof Omit<Member, 'history'>;
 
-function Row({ member, handleMemberDelete, group }: {
-               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined}) {
+function Row({ member, handleMemberDelete, group, truncateString }: {
+               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any}) {
   const [open, setOpen] = React.useState(false);
   const { data: session, status } = useSession();
 
@@ -37,11 +37,11 @@ function Row({ member, handleMemberDelete, group }: {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {member.name}
+        <TableCell component="th" scope="row" sx={{ minWidth: 130 }}>
+          {truncateString(member.name, 12)}
         </TableCell>
-        <TableCell align="right">{member.singles_strength}</TableCell>
-        <TableCell align="right">{member.doubles_strength}</TableCell>
+        <TableCell align="right" sx={{ minWidth: 70 }}>{member.singles_strength}</TableCell>
+        <TableCell align="right" sx={{ minWidth: 70 }}>{member.doubles_strength}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -59,13 +59,13 @@ function Row({ member, handleMemberDelete, group }: {
                           <TableCell>
                             <div className="w-full flex items-center">
                               <div className="w-5/12 flex justify-start">
-                                <p>{historyRow.player_1}</p>
+                                <p>{truncateString(historyRow.player_1, 12)}</p>
                               </div>
                               <div className="w-1/6 flex justify-center">
                                 <p>{historyRow.score_1} - {historyRow.score_2}</p>
                               </div>
                               <div className="w-5/12 flex justify-end">
-                                <p>{historyRow.player_2}</p>
+                                <p>{truncateString(historyRow.player_2, 12)}</p>
                               </div>
                             </div>
                           </TableCell>
@@ -78,10 +78,10 @@ function Row({ member, handleMemberDelete, group }: {
                             <div className="w-5/12 flex justify-start">
                               <div className="w-full">
                                 <div className="flex justify-start">
-                                  <p>{historyRow.player_1}</p>
+                                  <p>{truncateString(historyRow.player_1, 12)}</p>
                                 </div>
                                 <div className="flex justify-start">
-                                  <p>{historyRow.player_2}</p>
+                                  <p>{truncateString(historyRow.player_2, 12)}</p>
                                 </div>
                               </div>
                             </div>
@@ -91,10 +91,10 @@ function Row({ member, handleMemberDelete, group }: {
                             <div className="w-5/12 flex justify-end">
                               <div className="w-full">
                                 <div className="flex justify-end">
-                                  <p>{historyRow.player_3}</p>
+                                  <p>{truncateString(historyRow.player_3, 12)}</p>
                                 </div>
                                 <div className="flex justify-end">
-                                  <p>{historyRow.player_4}</p>
+                                  <p>{truncateString(historyRow.player_4, 12)}</p>
                                 </div>
                               </div>
                             </div>
@@ -119,8 +119,8 @@ function Row({ member, handleMemberDelete, group }: {
   );
 }
 
-export default function Members({members, handleMemberDelete, group}: {
-                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined }) {
+export default function Members({members, handleMemberDelete, group, truncateString}: {
+                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any }) {
   const [sortedMembers, setSortedMembers] = React.useState(members);
   const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'descending' });
 
@@ -156,14 +156,14 @@ export default function Members({members, handleMemberDelete, group}: {
             <TableHead>
               <TableRow>
                 <TableCell style={{ userSelect: 'none' }} />
-                <TableCell style={{ userSelect: 'none' }} onClick={() => onSort('name')}>名前</TableCell>
-                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('singles_strength')}>シングルスパワー</TableCell>
-                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('doubles_strength')}>ダブルスパワー</TableCell>
+                <TableCell style={{ userSelect: 'none' }} onClick={() => onSort('name')} sx={{ minWidth: 130 }}>名前</TableCell>
+                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('singles_strength')} sx={{ minWidth: 70 }}>シングルスパワー</TableCell>
+                <TableCell style={{ userSelect: 'none' }} align="right" onClick={() => onSort('doubles_strength')} sx={{ minWidth: 70 }}>ダブルスパワー</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {sortedMembers.map((member: Member) => (
-                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group}/>
+                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} truncateString={truncateString}/>
               ))}
             </TableBody>
           </Table>

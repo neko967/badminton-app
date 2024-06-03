@@ -23,8 +23,6 @@ export default function FormDialog({ members, addMemberOpen, handleAddMemberClos
   const [member, setMember] = useState({} as Member);
   const [error, setError] = useState(false);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
-  console.log(members);
-  console.log(member);
 
   const handleOnSubmit = async () => {
     if (members.some(m => m.name === member.name)) {

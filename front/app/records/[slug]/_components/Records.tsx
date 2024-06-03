@@ -74,6 +74,27 @@ function TabComponent({
     setValue(newValue);
   };
 
+  function isFullWidth(char: string) {
+    return char.match(/[^\x00-\xff]/);
+  }
+  
+  function truncateString(str: string, maxLength: number) {
+    let length = 0;
+    let truncated = '';
+  
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      length += isFullWidth(char) ? 2 : 1;
+      if (length > maxLength) {
+        truncated += '...';
+        break;
+      }
+      truncated += char;
+    }
+  
+    return truncated;
+  }
+
   return (
     <>
       <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
@@ -94,13 +115,13 @@ function TabComponent({
                   >
                     <div className="w-5/6 flex items-center justify-between">
                       <div className="w-2/5 flex justify-start">
-                        <p>{singlesRecord.player_1}</p>
+                        <p>{truncateString(singlesRecord.player_1, 12)}</p>
                       </div>
                       <div className="w-1/5 flex justify-center">
                         <p>{singlesRecord.score_1} - {singlesRecord.score_2}</p>
                       </div>
                       <div className="w-2/5 flex justify-end">
-                        <p>{singlesRecord.player_2}</p>
+                        <p>{truncateString(singlesRecord.player_2, 12)}</p>
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
@@ -139,10 +160,10 @@ function TabComponent({
                       <div className="w-2/5 flex justify-start">
                         <div className="w-full">
                           <div className="flex justify-start">
-                            <p>{doublesRecord.player_1}</p>
+                            <p>{truncateString(doublesRecord.player_1, 12)}</p>
                           </div>
                           <div className="flex justify-start">
-                            <p>{doublesRecord.player_2}</p>
+                            <p>{truncateString(doublesRecord.player_2, 12)}</p>
                           </div>
                         </div>
                       </div>
@@ -152,10 +173,10 @@ function TabComponent({
                       <div className="w-2/5 flex justify-end">
                         <div className="w-full">
                           <div className="flex justify-end">
-                            <p>{doublesRecord.player_3}</p>
+                            <p>{truncateString(doublesRecord.player_3, 12)}</p>
                           </div>
                           <div className="flex justify-end">
-                            <p>{doublesRecord.player_4}</p>
+                            <p>{truncateString(doublesRecord.player_4, 12)}</p>
                           </div>
                         </div>
                       </div>
@@ -197,8 +218,8 @@ export default function Records({ params }: { params: { slug: string } }) {
     const response = await fetch(`${API_URL}/singles_records`, {
       method: 'GET',
       headers: {
-        'slug': `${params.slug}`,
         'Content-Type': 'application/json',
+        'slug': `${params.slug}`,
       },
     });
     const data = await response.json();
@@ -209,8 +230,8 @@ export default function Records({ params }: { params: { slug: string } }) {
     const response = await fetch(`${API_URL}/singles_players`, {
       method: 'GET',
       headers: {
-        'slug': `${params.slug}`,
         'Content-Type': 'application/json',
+        'slug': `${params.slug}`,
       },
     });
     const data = await response.json();
@@ -221,8 +242,8 @@ export default function Records({ params }: { params: { slug: string } }) {
     const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
       headers: {
-        'slug': `${params.slug}`,
         'Content-Type': 'application/json',
+        'slug': `${params.slug}`,
       },
     });
     const data = await response.json();
@@ -233,8 +254,8 @@ export default function Records({ params }: { params: { slug: string } }) {
     const response = await fetch(`${API_URL}/doubles_players`, {
       method: 'GET',
       headers: {
-        'slug': `${params.slug}`,
         'Content-Type': 'application/json',
+        'slug': `${params.slug}`,
       },
     });
     const data = await response.json();
@@ -245,12 +266,12 @@ export default function Records({ params }: { params: { slug: string } }) {
     const response = await fetch(`${API_URL}/members`, {
       method: 'GET',
       headers: {
-        'slug': `${params.slug}`,
         'Content-Type': 'application/json',
+        'slug': `${params.slug}`,
       },
     });
     const data = await response.json();
-      setMembers(data);
+    setMembers(data.members);
   }, [API_URL, params]);
 
   useEffect(() => {
