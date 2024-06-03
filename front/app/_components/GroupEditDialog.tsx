@@ -2,16 +2,7 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { Group } from '@/app/types/index';
 
 interface GroupEditDialogProps {
   groupEditDialogOpen: boolean;
