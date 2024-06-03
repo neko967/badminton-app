@@ -2,18 +2,9 @@ import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
+import type { Group } from '@/app/types/index';
 
 type FetchDataType = () => Promise<void>;
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
 
 interface DialogSelectProps {
   addGroupOpen: boolean;

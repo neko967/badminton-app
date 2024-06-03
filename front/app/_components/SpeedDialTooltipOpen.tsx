@@ -6,18 +6,9 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddGroupDialog from './AddGroupDialog';
+import type { Group } from '@/app/types/index';
 
 type FetchDataType = () => Promise<void>;
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
 
 interface SpeedDialTooltipOpenProps {
   groups: Group[];

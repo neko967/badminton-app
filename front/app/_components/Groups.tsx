@@ -10,16 +10,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import GroupEditDialog from './GroupEditDialog';
 import Grid from '@mui/material/Grid';
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { Group } from '@/app/types/index';
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

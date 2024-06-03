@@ -5,27 +5,22 @@ import { useSession } from 'next-auth/react';
 import Groups from './_components/Groups';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
 import Image from 'next/image';
+import TopSmall from '../public/top-small.jpg';
+import TopLarge from '../public/top-large.jpg';
 import top1Gif from '../public/top1.gif';
 import top2Gif from '../public/top2.gif';
 import top3Gif from '../public/top3.gif';
 import top4Gif from '../public/top4.gif';
 import top5Gif from '../public/top5.gif';
 import top6Gif from '../public/top6.gif';
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { Group } from '@/app/types/index';
+import { useMediaQuery } from '@mui/material';
 
 export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
+  const isMdDown = useMediaQuery('(max-width: 960px)');
 
   const fetchGroupsData = useCallback(async () => {
     if (!session?.user.accessToken) {
@@ -86,6 +81,7 @@ export default function Home() {
         </>
       :
         <>
+          {isMdDown ? <Image src={TopSmall} alt="TopSmall" /> : <Image src={TopLarge} alt="TopLarge" />}
           <div className="text-start px-6 mt-6">
             <p>①ログイン状態でグループを作成します。</p>
             <Image src={top1Gif} alt="Example GIF" width={250} height={200} />
