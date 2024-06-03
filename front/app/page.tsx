@@ -11,16 +11,7 @@ import top3Gif from '../public/top3.gif';
 import top4Gif from '../public/top4.gif';
 import top5Gif from '../public/top5.gif';
 import top6Gif from '../public/top6.gif';
-
-interface Group {
-  id: number;
-  name: string;
-  slug: string;
-  admin_uid: string;
-  number_of_people: number;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { Group } from '@/app/types/index';
 
 export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
