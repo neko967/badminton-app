@@ -59,13 +59,13 @@ function Row({ member, handleMemberDelete, group, truncateString }: {
                           <TableCell>
                             <div className="w-full flex items-center">
                               <div className="w-5/12 flex justify-start">
-                                <p>{historyRow.player_1}</p>
+                                <p>{truncateString(historyRow.player_1, 12)}</p>
                               </div>
                               <div className="w-1/6 flex justify-center">
                                 <p>{historyRow.score_1} - {historyRow.score_2}</p>
                               </div>
                               <div className="w-5/12 flex justify-end">
-                                <p>{historyRow.player_2}</p>
+                                <p>{truncateString(historyRow.player_2, 12)}</p>
                               </div>
                             </div>
                           </TableCell>
@@ -78,10 +78,10 @@ function Row({ member, handleMemberDelete, group, truncateString }: {
                             <div className="w-5/12 flex justify-start">
                               <div className="w-full">
                                 <div className="flex justify-start">
-                                  <p>{historyRow.player_1}</p>
+                                  <p>{truncateString(historyRow.player_1, 12)}</p>
                                 </div>
                                 <div className="flex justify-start">
-                                  <p>{historyRow.player_2}</p>
+                                  <p>{truncateString(historyRow.player_2, 12)}</p>
                                 </div>
                               </div>
                             </div>
@@ -91,10 +91,10 @@ function Row({ member, handleMemberDelete, group, truncateString }: {
                             <div className="w-5/12 flex justify-end">
                               <div className="w-full">
                                 <div className="flex justify-end">
-                                  <p>{historyRow.player_3}</p>
+                                  <p>{truncateString(historyRow.player_3, 12)}</p>
                                 </div>
                                 <div className="flex justify-end">
-                                  <p>{historyRow.player_4}</p>
+                                  <p>{truncateString(historyRow.player_4, 12)}</p>
                                 </div>
                               </div>
                             </div>
