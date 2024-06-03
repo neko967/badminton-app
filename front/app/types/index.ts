@@ -75,3 +75,13 @@ export interface DoublesPlayer {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface Group {
+  id: number;
+  name: string;
+  slug: string;
+  admin_uid: string;
+  number_of_peaple: number;
+  created_at: Date;
+  updated_at: Date;
+}
