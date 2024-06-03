@@ -6,10 +6,12 @@ import Members from './_components/Members';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
 import BottomNavigation from '@/app/_components/_shared/BottomNavigation';
 import type { Member } from '@/app/types/index';
+import type { Group } from '@/app/types/index';
 
 export default function Home({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [members, setMembers] = useState([] as Member[]);
+  const [group, setGroup] = useState<Group | undefined>();
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
 
   const fetchMemberData = useCallback(async () => {
@@ -21,7 +23,8 @@ export default function Home({ params }: { params: { slug: string } }) {
       },
     });
     const data = await response.json();
-    setMembers(data);
+    setMembers(data.members);
+    setGroup(data.group);
   }, [API_URL, params]);
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export default function Home({ params }: { params: { slug: string } }) {
         <Members
           members={members}
           handleMemberDelete={handleMemberDelete}
+          group={group}
         />
       }
       <SpeedDialTooltipOpen

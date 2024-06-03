@@ -15,12 +15,15 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { Member } from '@/app/types/index';
+import type { Group } from '@/app/types/index';
+import { useSession } from 'next-auth/react';
 
-type SortKey = keyof Omit<Member, 'history'>; // 'history' プロパティを除く
+type SortKey = keyof Omit<Member, 'history'>;
 
-function Row({ member, handleMemberDelete }: {
-               member: Member; handleMemberDelete: (id: number) => void; }) {
+function Row({ member, handleMemberDelete, group }: {
+               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined}) {
   const [open, setOpen] = React.useState(false);
+  const { data: session, status } = useSession();
 
   return (
     <React.Fragment>
@@ -102,10 +105,12 @@ function Row({ member, handleMemberDelete }: {
                     </React.Fragment>
                   ))}
                 </TableBody>
-              </Table>   
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleMemberDelete(member.id)} className="float-right my-2">
-                メンバーを削除
-              </Button>
+              </Table>
+              {group?.admin_uid == session?.user?.uid &&
+                <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleMemberDelete(member.id)} className="float-right my-2">
+                  メンバーを削除
+                </Button>
+              }
             </Box>
           </Collapse>
         </TableCell>
@@ -114,8 +119,8 @@ function Row({ member, handleMemberDelete }: {
   );
 }
 
-export default function Members({members, handleMemberDelete}: 
-                               {members: Member[]; handleMemberDelete: (id: number) => void; }) {
+export default function Members({members, handleMemberDelete, group}: {
+                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined }) {
   const [sortedMembers, setSortedMembers] = React.useState(members);
   const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'descending' });
 
@@ -158,7 +163,7 @@ export default function Members({members, handleMemberDelete}:
             </TableHead>
             <TableBody>
               {sortedMembers.map((member: Member) => (
-                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete}/>
+                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group}/>
               ))}
             </TableBody>
           </Table>
