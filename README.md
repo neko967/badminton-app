@@ -32,4 +32,4 @@
 ### 画面遷移図
 
 ### ER図
-https://gyazo.com/f925f649276e07799df68b920b5c874a
+[![Image from Gyazo](https://i.gyazo.com/f1c6002ce0c53cd1f620643fbf7d9cd7.jpg)](https://gyazo.com/f1c6002ce0c53cd1f620643fbf7d9cd7)
