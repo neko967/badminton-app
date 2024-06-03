@@ -52,6 +52,27 @@ export default function DoublesBeforeSendPareDialog({
     router.push(`/records/${params.slug}?set_value=1`);
   };
 
+  function isFullWidth(char: string) {
+    return char.match(/[^\x00-\xff]/);
+  }
+  
+  function truncateString(str: string, maxLength: number) {
+    let length = 0;
+    let truncated = '';
+  
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      length += isFullWidth(char) ? 2 : 1;
+      if (length > maxLength) {
+        truncated += '...';
+        break;
+      }
+      truncated += char;
+    }
+  
+    return truncated;
+  }
+
   return (
     <Dialog
       open={beforeSendPareDialogOpen}
@@ -73,10 +94,10 @@ export default function DoublesBeforeSendPareDialog({
                   <div className="w-5/12 flex justify-start">
                     <div className="w-full">
                       <div className="flex justify-start">
-                        <p>{pare[0].name}</p>
+                        <p>{truncateString(pare[0].name, 12)}</p>
                       </div>
                       <div className="flex justify-start">
-                        <p>{pare[1].name}</p>
+                        <p>{truncateString(pare[1].name, 12)}</p>
                       </div>
                     </div>
                   </div>
@@ -86,10 +107,10 @@ export default function DoublesBeforeSendPareDialog({
                   <div className="w-5/12 flex justify-end">
                     <div className="w-full">
                       <div className="flex justify-end">
-                        <p>{pare[2].name}</p>
+                        <p>{truncateString(pare[2].name, 12)}</p>
                       </div>
                       <div className="flex justify-end">
-                        <p>{pare[3].name}</p>
+                        <p>{truncateString(pare[3].name, 12)}</p>
                       </div>
                     </div>
                   </div>

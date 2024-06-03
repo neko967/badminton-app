@@ -47,6 +47,27 @@ export default function SinglesBeforeSendPareDialog({
     router.push(`/records/${params.slug}?set_value=0`);
   };
 
+  function isFullWidth(char: string) {
+    return char.match(/[^\x00-\xff]/);
+  }
+  
+  function truncateString(str: string, maxLength: number) {
+    let length = 0;
+    let truncated = '';
+  
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      length += isFullWidth(char) ? 2 : 1;
+      if (length > maxLength) {
+        truncated += '...';
+        break;
+      }
+      truncated += char;
+    }
+  
+    return truncated;
+  }
+
   return (
     <Dialog
       open={beforeSendPareDialogOpen}
@@ -66,13 +87,13 @@ export default function SinglesBeforeSendPareDialog({
               {makedPare.map((pare, index) => (
                 <div key={index} className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-1">
                   <div className="w-5/12 flex justify-start">
-                    <p>{pare[0].name}</p>
+                    <p>{truncateString(pare[0].name, 12)}</p>
                   </div>
                   <div className="w-1/6 flex justify-center">
                     <p>-</p>
                   </div>
                   <div className="w-5/12 flex justify-end">
-                    <p>{pare[1].name}</p>
+                    <p>{truncateString(pare[1].name, 12)}</p>
                   </div>
                 </div>
               ))}
