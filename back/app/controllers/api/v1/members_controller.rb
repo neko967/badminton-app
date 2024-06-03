@@ -3,7 +3,7 @@ class Api::V1::MembersController < ApplicationController
   before_action :set_current_group, only: %i[index create destroy]
 
   def index
-    render json: @current_group.members, methods: :history, status: :ok
+    render json: { group: @current_group, members: @current_group.members.as_json(methods: :history) }, status: :ok
   end
 
   def create
