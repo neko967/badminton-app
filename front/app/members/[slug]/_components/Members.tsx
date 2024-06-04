@@ -14,14 +14,17 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import type { Member } from '@/app/types/index';
 import type { Group } from '@/app/types/index';
+import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+import EditMemberDialog from './EditMemberDialog';
 
 type SortKey = keyof Omit<Member, 'history'>;
 
-function Row({ member, handleMemberDelete, group, truncateString }: {
-               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any}) {
+function Row({ member, handleMemberDelete, group, truncateString, handleEditMemberClickOpen }: {
+               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any; handleEditMemberClickOpen: any; }) {
   const [open, setOpen] = React.useState(false);
   const { data: session, status } = useSession();
 
@@ -111,6 +114,9 @@ function Row({ member, handleMemberDelete, group, truncateString }: {
                   メンバーを削除
                 </Button>
               }
+              <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditMemberClickOpen(member.id)} className="float-right my-2">
+                メンバー名を変更
+              </Button>
             </Box>
           </Collapse>
         </TableCell>
@@ -119,8 +125,8 @@ function Row({ member, handleMemberDelete, group, truncateString }: {
   );
 }
 
-export default function Members({members, handleMemberDelete, group, truncateString}: {
-                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any }) {
+export default function Members({members, handleMemberDelete, group, truncateString, fetchMemberData, params }: {
+                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any; fetchMemberData: any; params: any; }) {
   const [sortedMembers, setSortedMembers] = React.useState(members);
   const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'descending' });
 
@@ -148,6 +154,16 @@ export default function Members({members, handleMemberDelete, group, truncateStr
     setSortedMembers(sortedArray);
   }, [members, sortConfig]);
 
+  const [memberID, setMemberID] = useState<number>(0);
+  const [editMemberOpen, setEditMemberOpen] = useState(false);
+  const handleEditMemberClickOpen = (id: number) => {
+    setMemberID(id);
+    setEditMemberOpen(true);
+  };
+  const handleEditMemberClose = () => {
+    setEditMemberOpen(false);
+  };
+
   return (
     <>
       {members.length > 0 ?
@@ -163,7 +179,7 @@ export default function Members({members, handleMemberDelete, group, truncateStr
             </TableHead>
             <TableBody>
               {sortedMembers.map((member: Member) => (
-                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} truncateString={truncateString}/>
+                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} truncateString={truncateString} handleEditMemberClickOpen={handleEditMemberClickOpen}/>
               ))}
             </TableBody>
           </Table>
@@ -173,6 +189,14 @@ export default function Members({members, handleMemberDelete, group, truncateStr
           <p>メンバーが登録されていません</p>
         </div>
       }
+      <EditMemberDialog
+        members={members}
+        editMemberOpen={editMemberOpen}
+        handleEditMemberClose={handleEditMemberClose}
+        fetchMemberData={fetchMemberData}
+        params={params}
+        memberID={memberID}
+      />
     </>
   );
 }
