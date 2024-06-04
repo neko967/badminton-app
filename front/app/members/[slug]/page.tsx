@@ -93,6 +93,8 @@ export default function Home({ params }: { params: { slug: string } }) {
           handleMemberDelete={handleMemberDelete}
           group={group}
           truncateString={truncateString}
+          fetchMemberData={fetchMemberData}
+          params={params}
         />
       }
       <SpeedDialTooltipOpen
