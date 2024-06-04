@@ -12,7 +12,7 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def update
-    @group = @current_user.groups_joined_by_user.find(params[:group_id])
+    @group = @current_user.groups_joined_by_user.find(params[:id])
     @group.update(name: params[:name])
   end
 

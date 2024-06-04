@@ -9,7 +9,7 @@ interface GroupEditDialogProps {
   handleGroupEditDialogClose: () => void;
   fetchGroupsData: () => void;
   groups: Group[];
-  group_id: number;
+  groupID: number;
 }
 
 export default function GroupEditDialog({
@@ -17,10 +17,10 @@ export default function GroupEditDialog({
   handleGroupEditDialogClose,
   fetchGroupsData,
   groups,
-  group_id,
+  groupID,
 }: GroupEditDialogProps) {
   const [group, setGroup] = useState({} as Group);
-  const API_URL_GROUP = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}/groups`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
 
   const handleGroupUpdate = async (id: number) => {
@@ -33,11 +33,10 @@ export default function GroupEditDialog({
         "Content-Type": "application/json",
         Authorization: `Bearer ${session?.user.accessToken}`,
       };
-      await fetch(`${API_URL_GROUP}/${id}`, {
+      await fetch(`${API_URL}/groups/${id}`, {
         method: "PATCH",
         headers: headers,
         body: JSON.stringify({
-          group_id : group_id,
           name: group.name,
         }),
         next: { revalidate: 3600 },
@@ -74,7 +73,7 @@ export default function GroupEditDialog({
               </div>
               <div className="w-full m-auto mt-4 text-center">
                 <button className="w-full border-2 p-2 hover:bg-slate-400 transition-all" type="submit"
-                        onClick={() => {handleGroupUpdate(group_id); handleGroupEditDialogClose();}}>
+                        onClick={() => {handleGroupUpdate(groupID); handleGroupEditDialogClose();}}>
                   更新
                 </button>
               </div>

@@ -23,10 +23,10 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                                 {groups: Group[]; handleGroupDelete: (id: number) => void; fetchGroupsData: () => void; }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [group_id, setGroup_id] = useState<number>(0);
+  const [groupID, setGroupID] = useState<number>(0);
   const [groupEditDialogOpen, setGroupEditDialogOpen] = useState(false);
   const handleGroupEditDialogOpen = (id: number) => {
-    setGroup_id(id);
+    setGroupID(id);
     setGroupEditDialogOpen(true);
   };
   const handleGroupEditDialogClose = () => {
@@ -78,7 +78,7 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
         handleGroupEditDialogClose={handleGroupEditDialogClose}
         fetchGroupsData={fetchGroupsData}
         groups={groups}
-        group_id={group_id}
+        groupID={groupID}
       />
     </>
   );
