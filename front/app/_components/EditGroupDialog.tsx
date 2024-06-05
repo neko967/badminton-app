@@ -6,31 +6,53 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from 'next-auth/react';
 import type { Group } from '@/app/types/index';
 
-type FetchDataType = () => Promise<void>;
-
-interface DialogSelectProps {
-  addGroupOpen: boolean;
-  handleAddGroupClose: () => void;
-  fetchGroupsData: FetchDataType;
+interface GroupEditDialogProps {
+  editGroupDialogOpen: boolean;
+  handleEditGroupDialogClose: () => void;
+  fetchGroupsData: () => void;
+  groups: Group[];
+  groupID: number;
 }
 
-export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchGroupsData }: DialogSelectProps) {
+export default function GroupEditDialog({
+  editGroupDialogOpen,
+  handleEditGroupDialogClose,
+  fetchGroupsData,
+  groups,
+  groupID,
+}: GroupEditDialogProps) {
   const [group, setGroup] = useState({} as Group);
+  const [inputValue, setInputValue] = useState('');
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
 
-  const handleOnSubmit = async () => {
+  useEffect(() => {
+    if (editGroupDialogOpen) {
+      const currentGroup = groups.find(g => g.id === groupID);
+      if (currentGroup) {
+        setGroup(currentGroup);
+        setInputValue(currentGroup.name);
+      }
+    }
+  }, [editGroupDialogOpen, groupID, groups]);
+
+  const handleGroupUpdate = async (id: number) => {
+    if ( group.name === '') {
+      return;
+    }
+
     if (session) {
-      await fetch(`${API_URL}/groups`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user.accessToken}`,
-        },
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      };
+      await fetch(`${API_URL}/groups/${id}`, {
+        method: "PATCH",
+        headers: headers,
         body: JSON.stringify({
           name: group.name,
         }),
@@ -38,27 +60,27 @@ export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchG
       }).then(() => {
         fetchGroupsData();
       });
-    } else {
-      console.log("セッションがありません。");
     }
   };
 
   return (
     <React.Fragment>
       <Dialog
-        open={addGroupOpen}
-        onClose={handleAddGroupClose}
+        open={editGroupDialogOpen}
+        onClose={handleEditGroupDialogClose}
         PaperProps={{
           style: { minWidth: '320px' },
         }}
       >
-        <DialogTitle>グループを追加</DialogTitle>
+        <DialogTitle>グループを変更</DialogTitle>
         <DialogContent>
           <Autocomplete
             freeSolo
             options={[]}
             disableClearable
+            inputValue={inputValue}
             onInputChange={(event, newValue) => {
+              setInputValue(newValue);
               setGroup({ ...group, name: newValue });
             }}
             renderInput={(params) => (
@@ -77,8 +99,8 @@ export default function DialogSelect({ addGroupOpen, handleAddGroupClose, fetchG
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleAddGroupClose();}}>キャンセル</Button>
-          <Button onClick={() => {handleAddGroupClose(); handleOnSubmit();}}>追加</Button>
+          <Button onClick={() => {handleEditGroupDialogClose();}}>キャンセル</Button>
+          <Button onClick={() => {handleEditGroupDialogClose(); handleGroupUpdate(groupID);}}>更新</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
