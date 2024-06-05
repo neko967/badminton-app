@@ -6,20 +6,22 @@ class Api::V1::DoublesRecordsController < ApplicationController
   end
 
   def create
-    doubles_record = @current_group.doubles_records.create!(player_1: Member.find(params[:member_1_id]).name,
-                                                            player_2: Member.find(params[:member_2_id]).name,
-                                                            player_3: Member.find(params[:member_3_id]).name,
-                                                            player_4: Member.find(params[:member_4_id]).name)
-    doubles_player_1 = doubles_record.doubles_players.create(member_id: params[:member_1_id])
-    doubles_player_2 = doubles_record.doubles_players.create(member_id: params[:member_2_id])
-    doubles_player_3 = doubles_record.doubles_players.create(member_id: params[:member_3_id])
-    doubles_player_4 = doubles_record.doubles_players.create(member_id: params[:member_4_id])
-    if doubles_player_1 && doubles_player_2 && doubles_player_3 && doubles_player_4
+    ActiveRecord::Base.transaction do
+      params[:maked_pare_id].each do |pare_id_array|
+        doubles_record = @current_group.doubles_records.create!(player_1: Member.find(pare_id_array[0]).name,
+                                                                player_2: Member.find(pare_id_array[1]).name,
+                                                                player_3: Member.find(pare_id_array[2]).name,
+                                                                player_4: Member.find(pare_id_array[3]).name)
+        doubles_player_1 = doubles_record.doubles_players.create(member_id: pare_id_array[0])
+        doubles_player_2 = doubles_record.doubles_players.create(member_id: pare_id_array[1])
+        doubles_player_3 = doubles_record.doubles_players.create(member_id: pare_id_array[2])
+        doubles_player_4 = doubles_record.doubles_players.create(member_id: pare_id_array[3])
+      end
       @current_group.touch # グループの最終更新日を更新
-      render json: doubles_player_1, status: :created
-    else
-      render json: doubles_player_1.errors, status: :unprocessable_entity
     end
+    render json: { message: 'Doubles records created successfully' }, status: :created
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   def update
