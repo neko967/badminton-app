@@ -337,7 +337,6 @@ export default function DoublesMakePareDialog({
           handleBeforeSendPareDialogClose={handleBeforeSendPareDialogClose}
           makedPare={makedPare}
           handleMakePare={handleMakePare}
-          selectedMembers={selectedMembers}
           params={params}
         />
       </React.Fragment>

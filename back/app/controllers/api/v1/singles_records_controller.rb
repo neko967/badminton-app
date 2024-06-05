@@ -6,15 +6,17 @@ class Api::V1::SinglesRecordsController < ApplicationController
   end
 
   def create
-    singles_record = @current_group.singles_records.create!(player_1: Member.find(params[:member_1_id]).name, player_2: Member.find(params[:member_2_id]).name)
-    singles_player_1 = singles_record.singles_players.create(member_id: params[:member_1_id])
-    singles_player_2 = singles_record.singles_players.create(member_id: params[:member_2_id])
-    if singles_player_1 && singles_player_2
+    ActiveRecord::Base.transaction do
+      params[:maked_pare_id].each do |pare_id_array|
+        singles_record = @current_group.singles_records.create!(player_1: Member.find(pare_id_array[0]).name, player_2: Member.find(pare_id_array[1]).name)
+        singles_player_1 = singles_record.singles_players.create(member_id: pare_id_array[0])
+        singles_player_2 = singles_record.singles_players.create(member_id: pare_id_array[1])
+      end
       @current_group.touch # グループの最終更新日を更新
-      render json: singles_player_1, status: :created
-    else
-      render json: singles_player_1.errors, status: :unprocessable_entity
     end
+    render json: { message: 'Singles records created successfully' }, status: :created
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   def update
