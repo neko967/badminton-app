@@ -92,7 +92,7 @@ export default function SinglesRecordEditDialog({
         <DialogTitle>ポイントを入力してください</DialogTitle>
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <FormControl sx={{ m: 0.5, minWidth: 240 }}>
               <InputLabel htmlFor="demo-dialog-select-label-1">{player_1?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
@@ -106,7 +106,7 @@ export default function SinglesRecordEditDialog({
                 ))}
               </Select>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <FormControl sx={{ m: 0.5, minWidth: 240 }}>
               <InputLabel id="demo-dialog-select-label-2">{player_2?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
