@@ -8,7 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import GroupEditDialog from './GroupEditDialog';
+import EditGroupDialog from './EditGroupDialog';
 import Grid from '@mui/material/Grid';
 import type { Group } from '@/app/types/index';
 
@@ -24,13 +24,13 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
   const router = useRouter();
   const { data: session, status } = useSession();
   const [groupID, setGroupID] = useState<number>(0);
-  const [groupEditDialogOpen, setGroupEditDialogOpen] = useState(false);
-  const handleGroupEditDialogOpen = (id: number) => {
+  const [editGroupDialogOpen, setEditGroupDialogOpen] = useState(false);
+  const handleEditGroupDialogOpen = (id: number) => {
     setGroupID(id);
-    setGroupEditDialogOpen(true);
+    setEditGroupDialogOpen(true);
   };
-  const handleGroupEditDialogClose = () => {
-    setGroupEditDialogOpen(false);
+  const handleEditGroupDialogClose = () => {
+    setEditGroupDialogOpen(false);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                         {group.admin_uid == session?.user?.uid ?
                           <div className="flex justify-end">
                             <CardActions>
-                              <Button size="small" onClick={() => handleGroupEditDialogOpen(group.id)}>グループ名を変更</Button>
+                              <Button size="small" onClick={() => handleEditGroupDialogOpen(group.id)}>グループ名を変更</Button>
                               <Button size="small" onClick={() => handleGroupDelete(group.id)}>グループを削除</Button>
                             </CardActions>
                           </div>
@@ -73,9 +73,9 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
             </Grid>
           )}
       </div>
-      <GroupEditDialog 
-        groupEditDialogOpen={groupEditDialogOpen} 
-        handleGroupEditDialogClose={handleGroupEditDialogClose}
+      <EditGroupDialog 
+        editGroupDialogOpen={editGroupDialogOpen} 
+        handleEditGroupDialogClose={handleEditGroupDialogClose}
         fetchGroupsData={fetchGroupsData}
         groups={groups}
         groupID={groupID}
