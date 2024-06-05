@@ -12,7 +12,6 @@ interface SinglesBeforeSendPareDialogProps {
   handleBeforeSendPareDialogClose: () => void;
   makedPare: Member[][];
   handleMakePare: () => void;
-  selectedMembers: Member[];
   params: { slug: string };
 }
 
@@ -21,29 +20,24 @@ export default function SinglesBeforeSendPareDialog({
   handleBeforeSendPareDialogClose,
   makedPare,
   handleMakePare,
-  selectedMembers,
   params,
 }: SinglesBeforeSendPareDialogProps) {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const router = useRouter();
 
   const handlePareSubmit = async () => {
-    for (let i = 0; i < makedPare.length; i ++) {
-      const member1 = makedPare[i][0];
-      const member2 = makedPare[i][1];
+    const makedPareID = makedPare.map(pare => [pare[0].id, pare[1].id]);
 
-      await fetch(`${API_URL}/singles_records`, {
-        method: "POST",
-        headers: {
-          'slug': `${params.slug}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          member_1_id: member1.id,
-          member_2_id: member2.id,
-        }),
-      })
-    }
+    await fetch(`${API_URL}/singles_records`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'slug': `${params.slug}`,
+      },
+      body: JSON.stringify({
+        maked_pare_id: makedPareID,
+      }),
+    })
     router.push(`/records/${params.slug}?set_value=0`);
   };
 
