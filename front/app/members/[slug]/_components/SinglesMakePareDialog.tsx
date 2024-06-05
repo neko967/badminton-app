@@ -25,7 +25,7 @@ export default function SinglesMakePareDialog({
   selectedMembers,
   params,
 }: SinglesMakePareDialogProps) {
-  const [howToPare, setHowToPare] = useState<string>('random');
+  const [howToPare, setHowToPare] = useState<string>('');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
   };
