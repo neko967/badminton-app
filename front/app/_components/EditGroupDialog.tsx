@@ -72,7 +72,7 @@ export default function GroupEditDialog({
           style: { minWidth: '320px' },
         }}
       >
-        <DialogTitle>グループを変更</DialogTitle>
+        <DialogTitle>グループ名を変更</DialogTitle>
         <DialogContent>
           <Autocomplete
             freeSolo
