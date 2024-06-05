@@ -102,7 +102,7 @@ export default function DoublesRecordEditDialog({
         <DialogTitle>ポイントを入力してください</DialogTitle>
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <FormControl sx={{ m: 0.5, minWidth: 240 }}>
               <InputLabel htmlFor="demo-dialog-select-label-1">{player_1?.name} {player_2?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-1"
@@ -116,7 +116,7 @@ export default function DoublesRecordEditDialog({
                 ))}
               </Select>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <FormControl sx={{ m: 0.5, minWidth: 240 }}>
               <InputLabel id="demo-dialog-select-label-2">{player_3?.name} {player_4?.name}</InputLabel>
               <Select
                 labelId="demo-dialog-select-label-2"
