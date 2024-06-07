@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -13,9 +15,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Image from "next/image";
 import Link from "next/link";
-import { useSession, signOut } from 'next-auth/react';
 import Login from './login';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+
 
 type Anchor = 'right';
 
@@ -24,6 +27,7 @@ interface State extends SnackbarOrigin {
 }
 
 const Header = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [state, setState] = React.useState({
     right: false,
@@ -81,6 +85,14 @@ const Header = () => {
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary={'ログアウト'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => router.push(`https://forms.gle/tmB6rgzjFvqtunbh9`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ContactSupportIcon />
+            </ListItemIcon>
+            <ListItemText primary={'お問い合わせ'} />
           </ListItemButton>
         </ListItem>
       </List>
