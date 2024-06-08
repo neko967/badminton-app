@@ -28,6 +28,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
 
       singles_record.update(score_1: score_1, score_2: score_2)
       update_player_strengths(player_1, player_2, score_1, score_2)
+      update_total_game_count(player_1, player_2)
       update_win_game_count(player_1, player_2, score_1, score_2)
       @current_group.touch
     end
@@ -52,17 +53,20 @@ class Api::V1::SinglesRecordsController < ApplicationController
     minus_strength_player_1 = (((player_1.singles_strength - 50).to_f / total_strength.to_f) * total_score).round
     minus_strength_player_2 = total_score - minus_strength_player_1
 
-    new_strength_player_1 = player_1.singles_strength - minus_strength_player_1 + score_1
-    player_1.update(
-      singles_strength: new_strength_player_1,
-      singles_total_game: player_1.singles_total_game + 1
-    )
+    players_scores = [
+      { player: player_1, minus_strength: minus_strength_player_1, score: score_1 },
+      { player: player_2, minus_strength: minus_strength_player_2, score: score_2 },
+    ]
 
-    new_strength_player_2 = player_2.singles_strength - minus_strength_player_2 + score_2
-    player_2.update(
-      singles_strength: new_strength_player_2,
-      singles_total_game: player_2.singles_total_game + 1
-    )
+    players_scores.each do |ps|
+      new_strength = ps[:player].singles_strength - ps[:minus_strength] + ps[:score]
+      ps[:player].update(singles_strength: new_strength)
+    end
+  end
+
+  def update_total_game_count(player_1, player_2)
+    player_1.increment!(:singles_total_game)
+    player_2.increment!(:singles_total_game)
   end
 
   def update_win_game_count(player_1, player_2, score_1, score_2)
