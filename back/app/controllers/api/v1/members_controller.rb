@@ -63,4 +63,3 @@ class Api::V1::MembersController < ApplicationController
     params.permit(:name)
   end
 end
-  
