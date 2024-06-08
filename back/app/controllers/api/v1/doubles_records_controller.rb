@@ -28,8 +28,9 @@ class Api::V1::DoublesRecordsController < ApplicationController
       score_12 = params[:score_12]
       score_34 = params[:score_34]
 
-      doubles_record.update(score_12: params[:score_12], score_34: params[:score_34])
+      doubles_record.update(score_12: score_12, score_34: score_34)
       update_player_strengths(player_1, player_2, player_3, player_4, score_12, score_34)
+      update_total_game_count(player_1, player_2, player_3, player_4)
       update_win_game_count(player_1, player_2, player_3, player_4, score_12, score_34)
       @current_group.touch
     end
@@ -58,29 +59,24 @@ class Api::V1::DoublesRecordsController < ApplicationController
     minus_strength_player_12 = (((player_12_strength - 100).to_f / total_strength.to_f) * total_score).round
     minus_strength_player_34 = total_score - minus_strength_player_12
 
-    new_strength_player_1 = player_1.doubles_strength - minus_strength_player_12 + score_12
-    player_1.update(
-      doubles_strength: new_strength_player_1,
-      doubles_total_game: player_1.doubles_total_game + 1
-    )
+    players_scores = [
+      { player: player_1, minus_strength: minus_strength_player_12, score: score_12 },
+      { player: player_2, minus_strength: minus_strength_player_12, score: score_12 },
+      { player: player_3, minus_strength: minus_strength_player_34, score: score_34 },
+      { player: player_4, minus_strength: minus_strength_player_34, score: score_34 }
+    ]
 
-    new_strength_player_2 = player_2.doubles_strength - minus_strength_player_12 + score_12
-    player_2.update(
-      doubles_strength: new_strength_player_2,
-      doubles_total_game: player_2.doubles_total_game + 1
-    )
+    players_scores.each do |ps|
+      new_strength = ps[:player].doubles_strength - ps[:minus_strength] + ps[:score]
+      ps[:player].update(doubles_strength: new_strength)
+    end
+  end
 
-    new_strength_player_3 = player_3.doubles_strength - minus_strength_player_34 + score_34
-    player_3.update(
-      doubles_strength: new_strength_player_3,
-      doubles_total_game: player_3.doubles_total_game + 1
-    )
-
-    new_strength_player_4 = player_4.doubles_strength - minus_strength_player_34 + score_34
-    player_4.update(
-      doubles_strength: new_strength_player_4,
-      doubles_total_game: player_4.doubles_total_game + 1
-    )
+  def update_total_game_count(player_1, player_2, player_3, player_4)
+    player_1.increment!(:doubles_total_game)
+    player_2.increment!(:doubles_total_game)
+    player_3.increment!(:doubles_total_game)
+    player_4.increment!(:doubles_total_game)
   end
 
   def update_win_game_count(player_1, player_2, player_3, player_4, score_12, score_34)
