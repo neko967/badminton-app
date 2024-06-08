@@ -15,6 +15,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.find_by(email: params[:email])
     if user
       user.destroy
+      head :no_content
     else
       render json: { error: "ユーザーが見つかりませんでした" }, status: :not_found
     end
