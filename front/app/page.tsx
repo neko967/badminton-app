@@ -20,7 +20,7 @@ export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
-  const isMdDown = useMediaQuery('(max-width: 960px)');
+  const isMdDown = useMediaQuery('(max-width: 899px)');
 
   const fetchGroupsData = useCallback(async () => {
     if (!session?.user.accessToken) {
