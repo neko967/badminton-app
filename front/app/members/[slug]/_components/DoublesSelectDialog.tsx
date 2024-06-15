@@ -54,6 +54,8 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
     setDoublesMakePareDialogOpen(false);
   };
 
+  const sortedMembers = [...members].sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+
   return (
     <div>
       <Dialog disableEscapeKeyDown open={doublesOpen} onClose={handleDoublesClose}>
@@ -72,7 +74,7 @@ export default function DoublesSelectDialog({ members, doublesOpen, handleDouble
                 renderValue={(selected) => (selected as number[]).map(id => members.find(member => member.id === id)?.name).join(', ')}
                 MenuProps={MenuProps}
               >
-                {members.map((member: Member) => (
+                {sortedMembers.map((member: Member) => (
                   <MenuItem key={member.id} value={member.id}>
                     <Checkbox checked={selectedMembersID.indexOf(member.id) > -1} />
                     <ListItemText primary={member.name} />
