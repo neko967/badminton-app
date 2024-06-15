@@ -127,8 +127,8 @@ function Row({ member, handleMemberDelete, group, truncateString, handleEditMemb
 
 export default function Members({members, handleMemberDelete, group, truncateString, fetchMemberData, params }: {
                                  members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any; fetchMemberData: any; params: any; }) {
-  const [sortedMembers, setSortedMembers] = React.useState(members);
-  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'descending' });
+  const [sortedMembers, setSortedMembers] = React.useState<Member[]>([]);
+  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'ascending' });
 
   const onSort = (key: SortKey) => {
     let direction: 'descending' | 'ascending' = 'descending';
@@ -142,6 +142,9 @@ export default function Members({members, handleMemberDelete, group, truncateStr
     let sortedArray = [...members];
     if (sortConfig.key) {
       sortedArray.sort((a, b) => {
+        if (sortConfig.key === 'name') {
+          return a.name.localeCompare(b.name, 'ja', { sensitivity: 'base' }) * (sortConfig.direction === 'descending' ? -1 : 1);
+        }
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'descending' ? 1 : -1;
         }
