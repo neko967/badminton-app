@@ -7,7 +7,9 @@ import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import EditIcon from '@mui/icons-material/Edit';
 import SinglesRecordEditDialog from './SinglesRecordEditDialog';
+import SinglesRecordDeleteDialog from './SinglesRecordDeleteDialog';
 import DoublesRecordEditDialog from './DoublesRecordEditDialog';
+import DoublesRecordDeleteDialog from './DoublesRecordDeleteDialog';
 import type { Member } from '@/app/types/index';
 import type { SinglesRecord } from '@/app/types/index';
 import type { SinglesPlayer } from '@/app/types/index';
@@ -53,16 +55,20 @@ interface TabComponentProps {
   doublesRecords: DoublesRecord[];
   doublesPlayers: DoublesPlayer[];
   handleSinglesRecordEditDialogOpen: (id: number) => void;
+  handleSinglesRecordDeleteDialogOpen: (id: number) => void;
   handleDoublesRecordEditDialogOpen: (id: number) => void;
+  handleDoublesRecordDeleteDialogOpen: (id: number) => void;
 }
 
 function TabComponent({
   singlesRecords,
   singlesPlayers,
   handleSinglesRecordEditDialogOpen,
+  handleSinglesRecordDeleteDialogOpen,
   doublesRecords,
   doublesPlayers,
   handleDoublesRecordEditDialogOpen,
+  handleDoublesRecordDeleteDialogOpen,
 }: TabComponentProps) {
 
   const searchParams = useSearchParams();
@@ -113,7 +119,9 @@ function TabComponent({
                     key={singlesRecord.id}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                   >
-                    <div className="w-5/6 flex items-center justify-between">
+                    <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
+                         onClick={() => handleSinglesRecordDeleteDialogOpen(singlesRecord.id)}
+                    >
                       <div className="w-2/5 flex justify-start">
                         <p>{truncateString(singlesRecord.player_1, 12)}</p>
                       </div>
@@ -156,7 +164,9 @@ function TabComponent({
                     key={doublesRecord.id}
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                   >
-                    <div className="w-5/6 flex items-center">
+                    <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
+                         onClick={() => handleDoublesRecordDeleteDialogOpen(doublesRecord.id)}
+                    >
                       <div className="w-2/5 flex justify-start">
                         <div className="w-full">
                           <div className="flex justify-start">
@@ -292,6 +302,15 @@ export default function Records({ params }: { params: { slug: string } }) {
     setSinglesRecordEditDialogOpen(false);
   };
 
+  const [singlesRecordDeleteDialogOpen, setSinglesRecordDeleteDialogOpen] = useState(false);
+  const handleSinglesRecordDeleteDialogOpen = (id: number) => {
+    setSinglesRecordID(id);
+    setSinglesRecordDeleteDialogOpen(true);
+  };
+  const handleSinglesRecordDeleteDialogClose = () => {
+    setSinglesRecordDeleteDialogOpen(false);
+  };
+
   const [doublesRecordID, setDoublesRecordID] = useState<number>(0);
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
   const handleDoublesRecordEditDialogOpen = (id: number) => {
@@ -300,6 +319,15 @@ export default function Records({ params }: { params: { slug: string } }) {
   };
   const handleDoublesRecordEditDialogClose = () => {
     setDoublesRecordEditDialogOpen(false);
+  };
+
+  const [doublesRecordDeleteDialogOpen, setDoublesRecordDeleteDialogOpen] = useState(false);
+  const handleDoublesRecordDeleteDialogOpen = (id: number) => {
+    setDoublesRecordID(id);
+    setDoublesRecordDeleteDialogOpen(true);
+  };
+  const handleDoublesRecordDeleteDialogClose = () => {
+    setDoublesRecordDeleteDialogOpen(false);
   };
 
   useEffect(() => {
@@ -328,7 +356,9 @@ export default function Records({ params }: { params: { slug: string } }) {
             doublesRecords={doublesRecords}
             doublesPlayers={doublesPlayers}
             handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
-            handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}/>
+            handleSinglesRecordDeleteDialogOpen={handleSinglesRecordDeleteDialogOpen}
+            handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}
+            handleDoublesRecordDeleteDialogOpen={handleDoublesRecordDeleteDialogOpen}/>
         </Suspense>
       </Box>
       <SinglesRecordEditDialog
@@ -340,6 +370,14 @@ export default function Records({ params }: { params: { slug: string } }) {
         members={members}
         params={params}
       />
+      <SinglesRecordDeleteDialog
+        singlesRecords={singlesRecords}
+        singlesRecordDeleteDialogOpen={singlesRecordDeleteDialogOpen}
+        handleSinglesRecordDeleteDialogClose={handleSinglesRecordDeleteDialogClose}
+        fetchSinglesRecordData={fetchSinglesRecordData}
+        singlesRecordID={singlesRecordID}
+        params={params}
+      />
       <DoublesRecordEditDialog
         doublesRecordEditDialogOpen={doublesRecordEditDialogOpen}
         handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
@@ -347,6 +385,14 @@ export default function Records({ params }: { params: { slug: string } }) {
         doublesPlayers={doublesPlayers}
         doublesRecordID={doublesRecordID}
         members={members}
+        params={params}
+      />
+      <DoublesRecordDeleteDialog
+        doublesRecords={doublesRecords}
+        doublesRecordDeleteDialogOpen={doublesRecordDeleteDialogOpen}
+        handleDoublesRecordDeleteDialogClose={handleDoublesRecordDeleteDialogClose}
+        fetchDoublesRecordData={fetchDoublesRecordData}
+        doublesRecordID={doublesRecordID}
         params={params}
       />
     </>
