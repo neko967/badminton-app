@@ -25,9 +25,11 @@ export default function SinglesMakePareDialog({
   selectedMembers,
   params,
 }: SinglesMakePareDialogProps) {
+  const [disable, setDisable] = useState(true);
   const [howToPare, setHowToPare] = useState<string>('');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
+    setDisable(false);
   };
 
   const [makedPare, setMakedPare] = useState<Member[][]>([]);
@@ -139,7 +141,7 @@ export default function SinglesMakePareDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePareClose}>Cancel</Button>
-          <Button onClick={() => {handlePareClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}}>Ok</Button>
+          <Button onClick={() => {handlePareClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}} disabled={disable}>Ok</Button>
         </DialogActions>
       </Dialog>
       <React.Fragment>
