@@ -84,7 +84,7 @@ export default function DoublesRecordEditDialog({
   const [player_4, setPlayer_4] = useState<Member>();
 
   useEffect(() => {
-    if (doublesRecordID) {
+    if (doublesRecordID && doublesRecordEditDialogOpen) {
       const firstPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[0].member_id;
       const secondPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[1].member_id;
       const thirdPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[2].member_id;
@@ -94,7 +94,7 @@ export default function DoublesRecordEditDialog({
       setPlayer_3(members.find( ({ id }) => id == thirdPlayersMemberID ));
       setPlayer_4(members.find( ({ id }) => id == fourthPlayersMemberID ));
     }
-  }, [doublesRecordID, doublesPlayers, members]);
+  }, [doublesRecordID, doublesRecordEditDialogOpen, doublesPlayers, members]);
 
   return (
     <div>

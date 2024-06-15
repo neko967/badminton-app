@@ -62,10 +62,10 @@ export default function DoublesRecordDeleteDialog({
 
   const [doublesRecord, setDoublesRecord] = useState<DoublesRecord>();
   useEffect(() => {
-    if (doublesRecordID) {
+    if (doublesRecordID && doublesRecordDeleteDialogOpen) {
       setDoublesRecord(doublesRecords.find(item => item.id === doublesRecordID));
     }
-  }, [doublesRecordID, doublesRecords]);
+  }, [doublesRecordID, doublesRecordDeleteDialogOpen, doublesRecords]);
 
   return (
     <div>
