@@ -62,6 +62,8 @@ export default function SinglesSelectDialog({
     setPareOpen(false);
   };
 
+  const sortedMembers = [...members].sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+
   return (
     <div>
       <Dialog disableEscapeKeyDown open={singlesOpen} onClose={handleSinglesClose}>
@@ -80,7 +82,7 @@ export default function SinglesSelectDialog({
                 renderValue={(selected) => (selected as number[]).map(id => members.find(member => member.id === id)?.name).join(', ')}
                 MenuProps={MenuProps}
               >
-                {members.map((member: Member) => (
+                {sortedMembers.map((member: Member) => (
                   <MenuItem key={member.id} value={member.id}>
                     <Checkbox checked={selectedMembersID.indexOf(member.id) > -1} />
                     <ListItemText primary={member.name} />
