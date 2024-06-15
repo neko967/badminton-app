@@ -78,13 +78,13 @@ export default function SinglesRecordEditDialog({
   const [player_1, setPlayer_1] = useState<Member>();
   const [player_2, setPlayer_2] = useState<Member>();
   useEffect(() => {
-    if (singlesRecordID) {
+    if (singlesRecordID && singlesRecordEditDialogOpen) {
       const firstPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[0].member_id;
       const secondPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[1].member_id;
       setPlayer_1(members.find( ({ id }) => id == firstPlayersMemberID ));
       setPlayer_2(members.find( ({ id }) => id == secondPlayersMemberID ));
     }
-  }, [singlesRecordID, singlesPlayers, members]);
+  }, [singlesRecordID, singlesRecordEditDialogOpen, singlesPlayers, members]);
 
   return (
     <div>

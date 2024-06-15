@@ -62,10 +62,10 @@ export default function SinglesRecordDeleteDialog({
 
   const [singlesRecord, setSinglesRecord] = useState<SinglesRecord>();
   useEffect(() => {
-    if (singlesRecordID) {
+    if (singlesRecordID && singlesRecordDeleteDialogOpen) {
       setSinglesRecord(singlesRecords.find(item => item.id === singlesRecordID));
     }
-  }, [singlesRecordID, singlesRecords]);
+  }, [singlesRecordID, singlesRecordDeleteDialogOpen, singlesRecords]);
 
   return (
     <div>
