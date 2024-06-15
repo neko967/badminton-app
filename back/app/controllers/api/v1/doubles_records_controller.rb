@@ -1,5 +1,5 @@
 class Api::V1::DoublesRecordsController < ApplicationController
-  before_action :set_current_group, only: %i[index create update]
+  before_action :set_current_group, only: %i[index create update destroy]
 
   def index
     doubles_records = @current_group.doubles_records.order(created_at: :desc)
@@ -35,6 +35,15 @@ class Api::V1::DoublesRecordsController < ApplicationController
       @current_group.touch
     end
     render json: { message: 'Doubles record updated successfully' }, status: :ok
+  end
+
+  def destroy
+    ActiveRecord::Base.transaction do
+      doubles_record = DoublesRecord.find(params[:id])
+      doubles_record.destroy
+      @current_group.touch
+    end
+    head :no_content
   end
 
   private
