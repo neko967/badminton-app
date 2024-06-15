@@ -25,10 +25,11 @@ export default function DoublesMakePareDialog({
   selectedMembers,
   params,
 }: DoublesMakePareDialogProps) {
-
+  const [disable, setDisable] = useState(true);
   const [howToPare, setHowToPare] = useState<string>('');
   const handleHowToPareChange = (event: SelectChangeEvent) => {
     setHowToPare(event.target.value as string);
+    setDisable(false);
   };
 
   const [makedPare, setMakedPare] = useState<Member[][]>([]);
@@ -328,7 +329,7 @@ export default function DoublesMakePareDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDoublesMakePareDialogClose}>Cancel</Button>
-          <Button onClick={() => {handleDoublesMakePareDialogClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}}>Ok</Button>
+          <Button onClick={() => {handleDoublesMakePareDialogClose(); handleMakePare(); handleBeforeSendPareDialogOpen();}} disabled={disable}>Ok</Button>
         </DialogActions>
       </Dialog>
       <React.Fragment>
