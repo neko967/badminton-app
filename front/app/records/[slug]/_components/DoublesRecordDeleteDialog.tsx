@@ -5,15 +5,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useState } from "react";
 import type { DoublesRecord } from '@/app/types/index';
 
 interface DoublesRecordDeleteDialogProps {
   doublesRecordDeleteDialogOpen: boolean;
   handleDoublesRecordDeleteDialogClose: () => void;
   fetchDoublesRecordData: () => void;
-  doublesRecords: DoublesRecord[];
-  doublesRecordID: number;
+  doublesRecord: DoublesRecord | undefined;
   params: { slug: string };
 }
 
@@ -21,13 +19,12 @@ export default function DoublesRecordDeleteDialog({
   doublesRecordDeleteDialogOpen,
   handleDoublesRecordDeleteDialogClose,
   fetchDoublesRecordData,
-  doublesRecords,
-  doublesRecordID,
+  doublesRecord,
   params,
 }: DoublesRecordDeleteDialogProps) {
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
-  const handleDoublesRecordDelete = async (id: number) => {
+  const handleDoublesRecordDelete = async (id: number | undefined) => {
     await fetch(`${API_URL}/doubles_records/${id}`, {
       method: 'DELETE',
       headers: {
@@ -59,13 +56,6 @@ export default function DoublesRecordDeleteDialog({
   
     return truncated;
   }
-
-  const [doublesRecord, setDoublesRecord] = useState<DoublesRecord>();
-  useEffect(() => {
-    if (doublesRecordID && doublesRecordDeleteDialogOpen) {
-      setDoublesRecord(doublesRecords.find(item => item.id === doublesRecordID));
-    }
-  }, [doublesRecordID, doublesRecordDeleteDialogOpen, doublesRecords]);
 
   return (
     <div>
@@ -102,7 +92,7 @@ export default function DoublesRecordDeleteDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleDoublesRecordDeleteDialogClose();}}>Cancel</Button>
-          <Button onClick={() => {handleDoublesRecordDeleteDialogClose(); handleDoublesRecordDelete(doublesRecordID);}}>Ok</Button>
+          <Button onClick={() => {handleDoublesRecordDeleteDialogClose(); handleDoublesRecordDelete(doublesRecord?.id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
