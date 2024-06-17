@@ -129,7 +129,7 @@ function TabComponent({
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { singlesRecord.score_1 == null && singlesRecord.score_2 == null && singlesRecord.singles_players.length == 2 ?
+                      { singlesRecord.score_1 == null && singlesRecord.score_2 == null && singlesRecord.singles_recorded_players.length == 2 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
                           onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord)}
@@ -191,7 +191,7 @@ function TabComponent({
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { doublesRecord.score_12 == null && doublesRecord.score_34 == null && doublesRecord.doubles_players.length == 4 ?
+                      { doublesRecord.score_12 == null && doublesRecord.score_34 == null && doublesRecord.doubles_recorded_players.length == 4 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
                           onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord)}
