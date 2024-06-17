@@ -12,15 +12,13 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
 import type { Member } from '@/app/types/index';
-import type { DoublesPlayer } from '@/app/types/index';
+import type { DoublesRecord } from '@/app/types/index';
 
 interface DoublesRecordEditDialogProps {
   doublesRecordEditDialogOpen: boolean;
   handleDoublesRecordEditDialogClose: () => void;
   fetchDoublesRecordData: () => void;
-  doublesPlayers: DoublesPlayer[];
-  doublesRecordID: number;
-  members: Member[];
+  doublesRecord: DoublesRecord | undefined;
   params: { slug: string };
 }
 
@@ -28,9 +26,7 @@ export default function DoublesRecordEditDialog({
   doublesRecordEditDialogOpen,
   handleDoublesRecordEditDialogClose,
   fetchDoublesRecordData,
-  doublesPlayers,
-  doublesRecordID,
-  members,
+  doublesRecord,
   params,
 }: DoublesRecordEditDialogProps) {
 
@@ -46,7 +42,7 @@ export default function DoublesRecordEditDialog({
     setScore_34_plus_100_with_none(Number(event.target.value) || '');
   };
 
-  const handleDoublesRecordUpdate = async (id: number) => {
+  const handleDoublesRecordUpdate = async (id: number | undefined) => {
     if ( score_12_plus_100_with_none === '' || score_34_plus_100_with_none === '') {
       return;
     }
@@ -84,17 +80,13 @@ export default function DoublesRecordEditDialog({
   const [player_4, setPlayer_4] = useState<Member>();
 
   useEffect(() => {
-    if (doublesRecordID && doublesRecordEditDialogOpen) {
-      const firstPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[0].member_id;
-      const secondPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[1].member_id;
-      const thirdPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[2].member_id;
-      const fourthPlayersMemberID = doublesPlayers.filter(item => item.doubles_record_id === doublesRecordID)[3].member_id;
-      setPlayer_1(members.find( ({ id }) => id == firstPlayersMemberID ));
-      setPlayer_2(members.find( ({ id }) => id == secondPlayersMemberID ));
-      setPlayer_3(members.find( ({ id }) => id == thirdPlayersMemberID ));
-      setPlayer_4(members.find( ({ id }) => id == fourthPlayersMemberID ));
+    if (doublesRecord && doublesRecordEditDialogOpen) {
+      setPlayer_1(doublesRecord.doubles_recorded_players[0]);
+      setPlayer_2(doublesRecord.doubles_recorded_players[1]);
+      setPlayer_3(doublesRecord.doubles_recorded_players[2]);
+      setPlayer_4(doublesRecord.doubles_recorded_players[3]);
     }
-  }, [doublesRecordID, doublesRecordEditDialogOpen, doublesPlayers, members]);
+  }, [doublesRecord, doublesRecordEditDialogOpen]);
 
   return (
     <div>
@@ -134,7 +126,7 @@ export default function DoublesRecordEditDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
-          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset(); handleDoublesRecordUpdate(doublesRecordID);}}>Ok</Button>
+          <Button onClick={() => {handleDoublesRecordEditDialogClose(); handleScoreReset(); handleDoublesRecordUpdate(doublesRecord?.id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -16,9 +16,6 @@ interface MemberSinglesRecord {
   score_1: number;
   player_2: string;
   score_2: number;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
 }
 
 interface MemberDoublesRecord {
@@ -29,9 +26,6 @@ interface MemberDoublesRecord {
   player_3: string;
   player_4: string;
   score_34: number;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
 }
 
 export interface SinglesRecord {
@@ -40,18 +34,14 @@ export interface SinglesRecord {
   score_1: number;
   player_2: string;
   score_2: number;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  players: SinglesPlayer[];
+  singles_players: SinglesPlayer[];
+  singles_recorded_players: Member[];
 }
 
 export interface SinglesPlayer {
   id: number;
   member_id: number;
   singles_record_id: number;
-  created_at: Date;
-  updated_at: Date;
 }
 
 export interface DoublesRecord {
@@ -62,18 +52,14 @@ export interface DoublesRecord {
   player_3: string;
   player_4: string;
   score_34: number;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  players: DoublesPlayer[];
+  doubles_players: DoublesPlayer[];
+  doubles_recorded_players: Member[];
 }
 
 export interface DoublesPlayer {
   id: number;
   member_id: number;
   doubles_record_id: number;
-  created_at: Date;
-  updated_at: Date;
 }
 
 export interface Group {

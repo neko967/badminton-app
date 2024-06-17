@@ -3,7 +3,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
 
   def index
     singles_records = @current_group.singles_records.order(created_at: :desc)
-    render json: singles_records, status: :ok
+    render json: singles_records, each_serializer: SinglesRecordSerializer, status: :ok
   end
 
   def create

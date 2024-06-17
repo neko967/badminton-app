@@ -5,15 +5,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useState } from "react";
 import type { SinglesRecord } from '@/app/types/index';
 
 interface SinglesRecordDeleteDialogProps {
   singlesRecordDeleteDialogOpen: boolean;
   handleSinglesRecordDeleteDialogClose: () => void;
   fetchSinglesRecordData: () => void;
-  singlesRecords: SinglesRecord[];
-  singlesRecordID: number;
+  singlesRecord: SinglesRecord | undefined;
   params: { slug: string };
 }
 
@@ -21,13 +19,12 @@ export default function SinglesRecordDeleteDialog({
   singlesRecordDeleteDialogOpen,
   handleSinglesRecordDeleteDialogClose,
   fetchSinglesRecordData,
-  singlesRecords,
-  singlesRecordID,
+  singlesRecord,
   params,
 }: SinglesRecordDeleteDialogProps) {
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
-  const handleSinglesRecordDelete = async (id: number) => {
+  const handleSinglesRecordDelete = async (id: number | undefined) => {
     await fetch(`${API_URL}/singles_records/${id}`, {
       method: 'DELETE',
       headers: {
@@ -60,13 +57,6 @@ export default function SinglesRecordDeleteDialog({
     return truncated;
   }
 
-  const [singlesRecord, setSinglesRecord] = useState<SinglesRecord>();
-  useEffect(() => {
-    if (singlesRecordID && singlesRecordDeleteDialogOpen) {
-      setSinglesRecord(singlesRecords.find(item => item.id === singlesRecordID));
-    }
-  }, [singlesRecordID, singlesRecordDeleteDialogOpen, singlesRecords]);
-
   return (
     <div>
       <Dialog disableEscapeKeyDown open={singlesRecordDeleteDialogOpen} onClose={handleSinglesRecordDeleteDialogClose}>
@@ -96,7 +86,7 @@ export default function SinglesRecordDeleteDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleSinglesRecordDeleteDialogClose();}}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordDeleteDialogClose(); handleSinglesRecordDelete(singlesRecordID);}}>Ok</Button>
+          <Button onClick={() => {handleSinglesRecordDeleteDialogClose(); handleSinglesRecordDelete(singlesRecord?.id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
