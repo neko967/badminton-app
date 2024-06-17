@@ -120,7 +120,10 @@ function TabComponent({
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                   >
                     <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
-                         onClick={() => handleSinglesRecordDeleteDialogOpen(singlesRecord.id)}
+                         onContextMenu={(e) => {
+                          e.preventDefault(); // コンテキストメニューの表示を防止
+                          handleSinglesRecordDeleteDialogOpen(singlesRecord.id);
+                        }}
                     >
                       <div className="w-2/5 flex justify-start">
                         <p>{truncateString(singlesRecord.player_1, 12)}</p>
@@ -165,7 +168,10 @@ function TabComponent({
                     className="w-full flex items-center border-b border-slate-500 border-opacity-45 py-2 h-16"
                   >
                     <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
-                         onClick={() => handleDoublesRecordDeleteDialogOpen(doublesRecord.id)}
+                         onContextMenu={(e) => {
+                          e.preventDefault(); // コンテキストメニューの表示を防止
+                          handleDoublesRecordDeleteDialogOpen(doublesRecord.id);
+                        }}
                     >
                       <div className="w-2/5 flex justify-start">
                         <div className="w-full">
