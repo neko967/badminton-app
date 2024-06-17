@@ -113,7 +113,7 @@ function TabComponent({
             {singlesRecords.length === 0 ? (
               <p>記録がありません</p>
             ) : (
-              <dl className="flex flex-col w-full">
+              <dl className="flex flex-col w-full" style={{ userSelect: 'none' }}>
                 {singlesRecords.map((singlesRecord) => (
                   <div
                     key={singlesRecord.id}
@@ -161,7 +161,7 @@ function TabComponent({
             {doublesRecords.length === 0 ? (
               <p>記録がありません</p>
             ) : (
-              <dl className="flex flex-col w-full">
+              <dl className="flex flex-col w-full" style={{ userSelect: 'none' }}>
                 {doublesRecords.map((doublesRecord) => (
                   <div
                     key={doublesRecord.id}
