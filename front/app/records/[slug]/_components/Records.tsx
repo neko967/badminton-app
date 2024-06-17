@@ -10,11 +10,8 @@ import SinglesRecordEditDialog from './SinglesRecordEditDialog';
 import SinglesRecordDeleteDialog from './SinglesRecordDeleteDialog';
 import DoublesRecordEditDialog from './DoublesRecordEditDialog';
 import DoublesRecordDeleteDialog from './DoublesRecordDeleteDialog';
-import type { Member } from '@/app/types/index';
 import type { SinglesRecord } from '@/app/types/index';
-import type { SinglesPlayer } from '@/app/types/index';
 import type { DoublesRecord } from '@/app/types/index';
-import type { DoublesPlayer } from '@/app/types/index';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,22 +48,18 @@ function a11yProps(index: number) {
 
 interface TabComponentProps {
   singlesRecords: SinglesRecord[];
-  singlesPlayers: SinglesPlayer[];
   doublesRecords: DoublesRecord[];
-  doublesPlayers: DoublesPlayer[];
-  handleSinglesRecordEditDialogOpen: (id: number) => void;
-  handleSinglesRecordDeleteDialogOpen: (id: number) => void;
-  handleDoublesRecordEditDialogOpen: (id: number) => void;
-  handleDoublesRecordDeleteDialogOpen: (id: number) => void;
+  handleSinglesRecordEditDialogOpen: (singlesRecord: SinglesRecord) => void;
+  handleSinglesRecordDeleteDialogOpen: (singlesRecord: SinglesRecord) => void;
+  handleDoublesRecordEditDialogOpen: (doublesRecord: DoublesRecord) => void;
+  handleDoublesRecordDeleteDialogOpen: (doublesRecord: DoublesRecord) => void;
 }
 
 function TabComponent({
   singlesRecords,
-  singlesPlayers,
+  doublesRecords,
   handleSinglesRecordEditDialogOpen,
   handleSinglesRecordDeleteDialogOpen,
-  doublesRecords,
-  doublesPlayers,
   handleDoublesRecordEditDialogOpen,
   handleDoublesRecordDeleteDialogOpen,
 }: TabComponentProps) {
@@ -83,11 +76,11 @@ function TabComponent({
   function isFullWidth(char: string) {
     return char.match(/[^\x00-\xff]/);
   }
-  
+
   function truncateString(str: string, maxLength: number) {
     let length = 0;
     let truncated = '';
-  
+
     for (let i = 0; i < str.length; i++) {
       const char = str[i];
       length += isFullWidth(char) ? 2 : 1;
@@ -97,7 +90,7 @@ function TabComponent({
       }
       truncated += char;
     }
-  
+
     return truncated;
   }
 
@@ -122,7 +115,7 @@ function TabComponent({
                     <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
                          onContextMenu={(e) => {
                           e.preventDefault(); // コンテキストメニューの表示を防止
-                          handleSinglesRecordDeleteDialogOpen(singlesRecord.id);
+                          handleSinglesRecordDeleteDialogOpen(singlesRecord);
                         }}
                     >
                       <div className="w-2/5 flex justify-start">
@@ -136,10 +129,10 @@ function TabComponent({
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { singlesRecord.score_1 == null && singlesRecord.score_2 == null && singlesPlayers.filter(item => item.singles_record_id === singlesRecord.id).length == 2 ?
+                      { singlesRecord.score_1 == null && singlesRecord.score_2 == null && singlesRecord.singles_players.length == 2 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
-                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord.id)}
+                          onClick={() => handleSinglesRecordEditDialogOpen(singlesRecord)}
                           type="button"
                         >
                           <EditIcon />
@@ -170,7 +163,7 @@ function TabComponent({
                     <div className="w-5/6 flex items-center rounded hover:bg-slate-400 transition-all"
                          onContextMenu={(e) => {
                           e.preventDefault(); // コンテキストメニューの表示を防止
-                          handleDoublesRecordDeleteDialogOpen(doublesRecord.id);
+                          handleDoublesRecordDeleteDialogOpen(doublesRecord);
                         }}
                     >
                       <div className="w-2/5 flex justify-start">
@@ -198,10 +191,10 @@ function TabComponent({
                       </div>
                     </div>
                     <div className="w-1/6 flex items-center justify-end">
-                      { doublesRecord.score_12 == null && doublesRecord.score_34 == null && doublesPlayers.filter(item => item.doubles_record_id === doublesRecord.id).length == 4 ?
+                      { doublesRecord.score_12 == null && doublesRecord.score_34 == null && doublesRecord.doubles_players.length == 4 ?
                         <button
                           className="border rounded p-2 hover:bg-slate-400 transition-all"
-                          onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord.id)}
+                          onClick={() => handleDoublesRecordEditDialogOpen(doublesRecord)}
                           type="button"
                         >
                           <EditIcon />
@@ -224,10 +217,7 @@ function TabComponent({
 export default function Records({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
   const [singlesRecords, setSinglesRecords] = useState<SinglesRecord[]>([]);
-  const [singlesPlayers, setSinglesPlayers] = useState<SinglesPlayer[]>([]);
   const [doublesRecords, setDoublesRecords] = useState<DoublesRecord[]>([]);
-  const [doublesPlayers, setDoublesPlayers] = useState<DoublesPlayer[]>([]);
-  const [members, setMembers] = useState<Member[]>([]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
 
   const fetchSinglesRecordData = useCallback(async () => {
@@ -242,18 +232,6 @@ export default function Records({ params }: { params: { slug: string } }) {
     setSinglesRecords(data);
   }, [API_URL, params]);
 
-  const fetchSinglesPlayerData = useCallback(async () => {
-    const response = await fetch(`${API_URL}/singles_players`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'slug': `${params.slug}`,
-      },
-    });
-    const data = await response.json();
-    setSinglesPlayers(data);
-  }, [API_URL, params]);
-
   const fetchDoublesRecordData = useCallback(async () => {
     const response = await fetch(`${API_URL}/doubles_records`, {
       method: 'GET',
@@ -266,73 +244,50 @@ export default function Records({ params }: { params: { slug: string } }) {
     setDoublesRecords(data);
   }, [API_URL, params]);
 
-  const fetchDoublesPlayerData = useCallback(async () => {
-    const response = await fetch(`${API_URL}/doubles_players`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'slug': `${params.slug}`,
-      },
-    });
-    const data = await response.json();
-    setDoublesPlayers(data);
-  }, [API_URL, params]);
-
-  const fetchMemberData = useCallback(async () => {
-    const response = await fetch(`${API_URL}/members`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'slug': `${params.slug}`,
-      },
-    });
-    const data = await response.json();
-    setMembers(data.members);
-  }, [API_URL, params]);
-
   useEffect(() => {
     fetchSinglesRecordData();
-    fetchSinglesPlayerData();
     fetchDoublesRecordData();
-    fetchDoublesPlayerData();
-    fetchMemberData();
-  }, [fetchSinglesRecordData, fetchSinglesPlayerData, fetchDoublesRecordData, fetchDoublesPlayerData, fetchMemberData]);
+  }, [fetchSinglesRecordData, fetchDoublesRecordData]);
 
-  const [singlesRecordID, setSinglesRecordID] = useState<number>(0);
+  const [singlesRecord, setSinglesRecord] = useState<SinglesRecord>();
   const [singlesRecordEditDialogOpen, setSinglesRecordEditDialogOpen] = useState(false);
-  const handleSinglesRecordEditDialogOpen = (id: number) => {
-    setSinglesRecordID(id);
+  const handleSinglesRecordEditDialogOpen = (singlesRecord: SinglesRecord) => {
+    setSinglesRecord(singlesRecord);
     setSinglesRecordEditDialogOpen(true);
   };
   const handleSinglesRecordEditDialogClose = () => {
+    setSinglesRecord(undefined);
     setSinglesRecordEditDialogOpen(false);
   };
 
   const [singlesRecordDeleteDialogOpen, setSinglesRecordDeleteDialogOpen] = useState(false);
-  const handleSinglesRecordDeleteDialogOpen = (id: number) => {
-    setSinglesRecordID(id);
+  const handleSinglesRecordDeleteDialogOpen = (singlesRecord: SinglesRecord) => {
+    setSinglesRecord(singlesRecord);
     setSinglesRecordDeleteDialogOpen(true);
   };
   const handleSinglesRecordDeleteDialogClose = () => {
+    setSinglesRecord(undefined);
     setSinglesRecordDeleteDialogOpen(false);
   };
 
-  const [doublesRecordID, setDoublesRecordID] = useState<number>(0);
+  const [doublesRecord, setDoublesRecord] = useState<DoublesRecord>();
   const [doublesRecordEditDialogOpen, setDoublesRecordEditDialogOpen] = useState(false);
-  const handleDoublesRecordEditDialogOpen = (id: number) => {
-    setDoublesRecordID(id);
+  const handleDoublesRecordEditDialogOpen = (doublesRecord: DoublesRecord) => {
+    setDoublesRecord(doublesRecord);
     setDoublesRecordEditDialogOpen(true);
   };
   const handleDoublesRecordEditDialogClose = () => {
+    setDoublesRecord(undefined);
     setDoublesRecordEditDialogOpen(false);
   };
 
   const [doublesRecordDeleteDialogOpen, setDoublesRecordDeleteDialogOpen] = useState(false);
-  const handleDoublesRecordDeleteDialogOpen = (id: number) => {
-    setDoublesRecordID(id);
+  const handleDoublesRecordDeleteDialogOpen = (doublesRecord: DoublesRecord) => {
+    setDoublesRecord(doublesRecord);
     setDoublesRecordDeleteDialogOpen(true);
   };
   const handleDoublesRecordDeleteDialogClose = () => {
+    setDoublesRecord(undefined);
     setDoublesRecordDeleteDialogOpen(false);
   };
 
@@ -358,9 +313,7 @@ export default function Records({ params }: { params: { slug: string } }) {
         <Suspense fallback={<div>Loading...</div>}>
           <TabComponent
             singlesRecords={singlesRecords}
-            singlesPlayers={singlesPlayers}
             doublesRecords={doublesRecords}
-            doublesPlayers={doublesPlayers}
             handleSinglesRecordEditDialogOpen={handleSinglesRecordEditDialogOpen}
             handleSinglesRecordDeleteDialogOpen={handleSinglesRecordDeleteDialogOpen}
             handleDoublesRecordEditDialogOpen={handleDoublesRecordEditDialogOpen}
@@ -371,34 +324,28 @@ export default function Records({ params }: { params: { slug: string } }) {
         singlesRecordEditDialogOpen={singlesRecordEditDialogOpen}
         handleSinglesRecordEditDialogClose={handleSinglesRecordEditDialogClose}
         fetchSinglesRecordData={fetchSinglesRecordData}
-        singlesPlayers={singlesPlayers}
-        singlesRecordID={singlesRecordID}
-        members={members}
+        singlesRecord={singlesRecord}
         params={params}
       />
       <SinglesRecordDeleteDialog
-        singlesRecords={singlesRecords}
         singlesRecordDeleteDialogOpen={singlesRecordDeleteDialogOpen}
         handleSinglesRecordDeleteDialogClose={handleSinglesRecordDeleteDialogClose}
         fetchSinglesRecordData={fetchSinglesRecordData}
-        singlesRecordID={singlesRecordID}
+        singlesRecord={singlesRecord}
         params={params}
       />
       <DoublesRecordEditDialog
         doublesRecordEditDialogOpen={doublesRecordEditDialogOpen}
         handleDoublesRecordEditDialogClose={handleDoublesRecordEditDialogClose}
         fetchDoublesRecordData={fetchDoublesRecordData}
-        doublesPlayers={doublesPlayers}
-        doublesRecordID={doublesRecordID}
-        members={members}
+        doublesRecord={doublesRecord}
         params={params}
       />
       <DoublesRecordDeleteDialog
-        doublesRecords={doublesRecords}
         doublesRecordDeleteDialogOpen={doublesRecordDeleteDialogOpen}
         handleDoublesRecordDeleteDialogClose={handleDoublesRecordDeleteDialogClose}
         fetchDoublesRecordData={fetchDoublesRecordData}
-        doublesRecordID={doublesRecordID}
+        doublesRecord={doublesRecord}
         params={params}
       />
     </>

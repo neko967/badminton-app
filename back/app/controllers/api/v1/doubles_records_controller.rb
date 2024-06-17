@@ -3,7 +3,7 @@ class Api::V1::DoublesRecordsController < ApplicationController
 
   def index
     doubles_records = @current_group.doubles_records.order(created_at: :desc)
-    render json: doubles_records, status: :ok
+    render json: doubles_records, each_serializer: DoublesRecordSerializer, status: :ok
   end
 
   def create

@@ -12,15 +12,13 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from "react";
 import type { Member } from '@/app/types/index';
-import type { SinglesPlayer } from '@/app/types/index';
+import type { SinglesRecord } from '@/app/types/index';
 
 interface SinglesRecordEditDialogProps {
   singlesRecordEditDialogOpen: boolean;
   handleSinglesRecordEditDialogClose: () => void;
   fetchSinglesRecordData: () => void;
-  singlesPlayers: SinglesPlayer[];
-  singlesRecordID: number;
-  members: Member[];
+  singlesRecord: SinglesRecord | undefined;
   params: { slug: string };
 }
 
@@ -28,9 +26,7 @@ export default function SinglesRecordEditDialog({
   singlesRecordEditDialogOpen,
   handleSinglesRecordEditDialogClose,
   fetchSinglesRecordData,
-  singlesPlayers,
-  singlesRecordID,
-  members,
+  singlesRecord,
   params,
 }: SinglesRecordEditDialogProps) {
 
@@ -46,7 +42,7 @@ export default function SinglesRecordEditDialog({
     setScore_2_plus_100_with_none(Number(event.target.value) || '');
   };
 
-  const handleSinglesRecordUpdate = async (id: number) => {
+  const handleSinglesRecordUpdate = async (id: number | undefined) => {
     if ( score_1_plus_100_with_none === '' || score_2_plus_100_with_none === '') {
       return;
     }
@@ -78,13 +74,11 @@ export default function SinglesRecordEditDialog({
   const [player_1, setPlayer_1] = useState<Member>();
   const [player_2, setPlayer_2] = useState<Member>();
   useEffect(() => {
-    if (singlesRecordID && singlesRecordEditDialogOpen) {
-      const firstPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[0].member_id;
-      const secondPlayersMemberID = singlesPlayers.filter(item => item.singles_record_id === singlesRecordID)[1].member_id;
-      setPlayer_1(members.find( ({ id }) => id == firstPlayersMemberID ));
-      setPlayer_2(members.find( ({ id }) => id == secondPlayersMemberID ));
+    if (singlesRecord && singlesRecordEditDialogOpen) {
+      setPlayer_1(singlesRecord.singles_recorded_players[0]);
+      setPlayer_2(singlesRecord.singles_recorded_players[1]);
     }
-  }, [singlesRecordID, singlesRecordEditDialogOpen, singlesPlayers, members]);
+  }, [singlesRecord, singlesRecordEditDialogOpen]);
 
   return (
     <div>
@@ -124,7 +118,7 @@ export default function SinglesRecordEditDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset();}}>Cancel</Button>
-          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecordID);}}>Ok</Button>
+          <Button onClick={() => {handleSinglesRecordEditDialogClose(); handleScoreReset(); handleSinglesRecordUpdate(singlesRecord?.id);}}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
