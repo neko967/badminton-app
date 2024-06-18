@@ -17,14 +17,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import type { Member } from '@/app/types/index';
 import type { Group } from '@/app/types/index';
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from 'next-auth/react';
 import EditMemberDialog from './EditMemberDialog';
+import { truncateString } from '@/app/utils';
 
 type SortKey = keyof Omit<Member, 'history'>;
 
-function Row({ member, handleMemberDelete, group, truncateString, handleEditMemberClickOpen }: {
-               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any; handleEditMemberClickOpen: any; }) {
+function Row({ member, handleMemberDelete, group, handleEditMemberClickOpen }: {
+               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; handleEditMemberClickOpen: any; }) {
   const [open, setOpen] = React.useState(false);
   const { data: session, status } = useSession();
 
@@ -125,8 +126,8 @@ function Row({ member, handleMemberDelete, group, truncateString, handleEditMemb
   );
 }
 
-export default function Members({members, handleMemberDelete, group, truncateString, fetchMemberData, params }: {
-                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; truncateString: any; fetchMemberData: any; params: any; }) {
+export default function Members({members, handleMemberDelete, group, fetchMemberData, params }: {
+                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; fetchMemberData: any; params: any; }) {
   const [sortedMembers, setSortedMembers] = React.useState<Member[]>([]);
   const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'ascending' });
 
@@ -182,7 +183,7 @@ export default function Members({members, handleMemberDelete, group, truncateStr
             </TableHead>
             <TableBody>
               {sortedMembers.map((member: Member) => (
-                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} truncateString={truncateString} handleEditMemberClickOpen={handleEditMemberClickOpen}/>
+                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} handleEditMemberClickOpen={handleEditMemberClickOpen}/>
               ))}
             </TableBody>
           </Table>
