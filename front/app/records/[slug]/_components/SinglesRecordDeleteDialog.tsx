@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import type { SinglesRecord } from '@/app/types/index';
+import { truncateString } from '@/app/utils';
 
 interface SinglesRecordDeleteDialogProps {
   singlesRecordDeleteDialogOpen: boolean;
@@ -35,27 +36,6 @@ export default function SinglesRecordDeleteDialog({
       fetchSinglesRecordData();
     });
   };
-
-  function isFullWidth(char: string) {
-    return char.match(/[^\x00-\xff]/);
-  }
-  
-  function truncateString(str: string, maxLength: number) {
-    let length = 0;
-    let truncated = '';
-  
-    for (let i = 0; i < str.length; i++) {
-      const char = str[i];
-      length += isFullWidth(char) ? 2 : 1;
-      if (length > maxLength) {
-        truncated += '...';
-        break;
-      }
-      truncated += char;
-    }
-  
-    return truncated;
-  }
 
   return (
     <div>

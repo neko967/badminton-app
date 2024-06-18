@@ -62,27 +62,6 @@ export default function Home({ params }: { params: { slug: string } }) {
     }
   }, [status, API_URL ,params, session]);
 
-  function isFullWidth(char: string) {
-    return char.match(/[^\x00-\xff]/);
-  }
-  
-  function truncateString(str: string, maxLength: number) {
-    let length = 0;
-    let truncated = '';
-  
-    for (let i = 0; i < str.length; i++) {
-      const char = str[i];
-      length += isFullWidth(char) ? 2 : 1;
-      if (length > maxLength) {
-        truncated += '...';
-        break;
-      }
-      truncated += char;
-    }
-  
-    return truncated;
-  }
-
   return (
     <>
       {status === 'loading' ? 
@@ -92,7 +71,6 @@ export default function Home({ params }: { params: { slug: string } }) {
           members={members}
           handleMemberDelete={handleMemberDelete}
           group={group}
-          truncateString={truncateString}
           fetchMemberData={fetchMemberData}
           params={params}
         />
