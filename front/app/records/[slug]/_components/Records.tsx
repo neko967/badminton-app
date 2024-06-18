@@ -12,6 +12,7 @@ import DoublesRecordEditDialog from './DoublesRecordEditDialog';
 import DoublesRecordDeleteDialog from './DoublesRecordDeleteDialog';
 import type { SinglesRecord } from '@/app/types/index';
 import type { DoublesRecord } from '@/app/types/index';
+import { truncateString } from '@/app/utils';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -72,27 +73,6 @@ function TabComponent({
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  function isFullWidth(char: string) {
-    return char.match(/[^\x00-\xff]/);
-  }
-
-  function truncateString(str: string, maxLength: number) {
-    let length = 0;
-    let truncated = '';
-
-    for (let i = 0; i < str.length; i++) {
-      const char = str[i];
-      length += isFullWidth(char) ? 2 : 1;
-      if (length > maxLength) {
-        truncated += '...';
-        break;
-      }
-      truncated += char;
-    }
-
-    return truncated;
-  }
 
   return (
     <>
