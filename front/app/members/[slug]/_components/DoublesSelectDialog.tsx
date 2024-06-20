@@ -33,7 +33,12 @@ interface DoublesSelectDialogProps {
   params: { slug: string };
 }
 
-export default function DoublesSelectDialog({ members, doublesOpen, handleDoublesClose, params }: DoublesSelectDialogProps) {
+export default function DoublesSelectDialog({
+  members,
+  doublesOpen,
+  handleDoublesClose,
+  params,
+}: DoublesSelectDialogProps) {
   const [selectedMembersID, setSelectedMembersID] = useState<number[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
   const handleChange = (event: SelectChangeEvent<number[]>) => {

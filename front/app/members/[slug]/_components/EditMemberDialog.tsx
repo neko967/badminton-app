@@ -16,11 +16,18 @@ interface DialogSelectProps {
   editMemberOpen: boolean;
   handleEditMemberClose: () => void;
   fetchMemberData: FetchDataType;
-  params: { slug: string }
+  params: { slug: string };
   memberID: number;
 }
 
-export default function FormDialog({ members, editMemberOpen, handleEditMemberClose, fetchMemberData, params, memberID }: DialogSelectProps) {
+export default function FormDialog({
+  members,
+  editMemberOpen,
+  handleEditMemberClose,
+  fetchMemberData,
+  params,
+  memberID,
+}: DialogSelectProps) {
   const [member, setMember] = useState({} as Member);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState(false);

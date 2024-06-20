@@ -19,7 +19,13 @@ interface DialogSelectProps {
   params: { slug: string }
 }
 
-export default function FormDialog({ members, addMemberOpen, handleAddMemberClose, fetchMemberData, params }: DialogSelectProps) {
+export default function FormDialog({
+  members,
+  addMemberOpen,
+  handleAddMemberClose,
+  fetchMemberData,
+  params,
+}: DialogSelectProps) {
   const [member, setMember] = useState({} as Member);
   const [error, setError] = useState(false);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
