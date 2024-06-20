@@ -17,16 +17,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import type { Member } from '@/app/types/index';
 import type { Group } from '@/app/types/index';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from 'next-auth/react';
 import EditMemberDialog from './EditMemberDialog';
 import { truncateString } from '@/app/utils';
 
 type SortKey = keyof Omit<Member, 'history'>;
 
-function Row({ member, handleMemberDelete, group, handleEditMemberClickOpen }: {
-               member: Member; handleMemberDelete: (id: number) => void; group: Group | undefined; handleEditMemberClickOpen: any; }) {
-  const [open, setOpen] = React.useState(false);
+interface MemberRowProps {
+  member: Member;
+  handleMemberDelete: (id: number) => void;
+  group: Group | undefined;
+  handleEditMemberOpen: (id: number) => void;
+}
+
+function Row({
+  member,
+  handleMemberDelete,
+  group,
+  handleEditMemberOpen,
+}: MemberRowProps) {
+  const [open, setOpen] = useState(false);
   const { data: session, status } = useSession();
 
   return (
@@ -115,7 +126,7 @@ function Row({ member, handleMemberDelete, group, handleEditMemberClickOpen }: {
                   メンバーを削除
                 </Button>
               }
-              <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditMemberClickOpen(member.id)} className="float-right my-2">
+              <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditMemberOpen(member.id)} className="float-right my-2">
                 メンバー名を変更
               </Button>
             </Box>
@@ -126,10 +137,25 @@ function Row({ member, handleMemberDelete, group, handleEditMemberClickOpen }: {
   );
 }
 
-export default function Members({members, handleMemberDelete, group, fetchMemberData, params }: {
-                                 members: Member[]; handleMemberDelete: (id: number) => void; group: Group | undefined; fetchMemberData: any; params: any; }) {
-  const [sortedMembers, setSortedMembers] = React.useState<Member[]>([]);
-  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'ascending' });
+type FetchDataType = () => Promise<void>;
+
+interface MembersProps {
+  members: Member[];
+  handleMemberDelete: (id: number) => void;
+  group: Group | undefined;
+  fetchMemberData: FetchDataType;
+  params: { slug: string };
+}
+
+export default function Members({
+  members,
+  handleMemberDelete,
+  group,
+  fetchMemberData,
+  params,
+}: MembersProps) {
+  const [sortedMembers, setSortedMembers] = useState<Member[]>([]);
+  const [sortConfig, setSortConfig] = useState<{ key: SortKey; direction: 'descending' | 'ascending' }>({ key: 'name', direction: 'ascending' });
 
   const onSort = (key: SortKey) => {
     let direction: 'descending' | 'ascending' = 'descending';
@@ -139,7 +165,7 @@ export default function Members({members, handleMemberDelete, group, fetchMember
     setSortConfig({ key, direction });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     let sortedArray = [...members];
     if (sortConfig.key) {
       sortedArray.sort((a, b) => {
@@ -160,7 +186,7 @@ export default function Members({members, handleMemberDelete, group, fetchMember
 
   const [memberID, setMemberID] = useState<number>(0);
   const [editMemberOpen, setEditMemberOpen] = useState(false);
-  const handleEditMemberClickOpen = (id: number) => {
+  const handleEditMemberOpen = (id: number) => {
     setMemberID(id);
     setEditMemberOpen(true);
   };
@@ -183,7 +209,13 @@ export default function Members({members, handleMemberDelete, group, fetchMember
             </TableHead>
             <TableBody>
               {sortedMembers.map((member: Member) => (
-                <Row key={member.id} member={member} handleMemberDelete={handleMemberDelete} group={group} handleEditMemberClickOpen={handleEditMemberClickOpen}/>
+                <Row 
+                  key={member.id}
+                  member={member}
+                  handleMemberDelete={handleMemberDelete}
+                  group={group}
+                  handleEditMemberOpen={handleEditMemberOpen}
+                />
               ))}
             </TableBody>
           </Table>
