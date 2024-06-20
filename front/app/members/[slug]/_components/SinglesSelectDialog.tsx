@@ -40,7 +40,6 @@ export default function SinglesSelectDialog({
   handleSinglesClose,
   params,
 }: SinglesSelectDialogProps) {
-
   const [selectedMembersID, setSelectedMembersID] = useState<number[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([]);
   const handleChange = (event: SelectChangeEvent<number[]>) => {

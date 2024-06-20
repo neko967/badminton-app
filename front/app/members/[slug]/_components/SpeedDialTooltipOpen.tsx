@@ -20,7 +20,11 @@ interface SpeedDialTooltipOpenProps {
   params: { slug: string };
 }
 
-export default function SpeedDialTooltipOpen({members, fetchMemberData, params}: SpeedDialTooltipOpenProps) {
+export default function SpeedDialTooltipOpen({
+  members,
+  fetchMemberData,
+  params,
+}: SpeedDialTooltipOpenProps) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
