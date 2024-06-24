@@ -18,7 +18,7 @@ import Link from "next/link";
 import Login from './login';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
-
+import ArticleIcon from '@mui/icons-material/Article';
 
 type Anchor = 'right';
 
@@ -85,6 +85,14 @@ const Header = () => {
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary={'ログアウト'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding >
+          <ListItemButton>
+            <ListItemIcon>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText primary={'利用規約'} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding onClick={() => router.push(`https://forms.gle/tmB6rgzjFvqtunbh9`)}>
