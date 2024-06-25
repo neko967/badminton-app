@@ -3,7 +3,8 @@ class Api::V1::MembersController < ApplicationController
   before_action :set_current_group, only: %i[index create update destroy]
 
   def index
-    render json: { group: @current_group, members: @current_group.members.as_json(methods: :history) }, status: :ok
+    members = @current_group.members.includes(:singles_played_records, :doubles_played_records, singles_players: :singles_record, doubles_players: :doubles_record)
+    render json: { group: @current_group, members: members.as_json(methods: :history) }, status: :ok
   end
 
   def create
