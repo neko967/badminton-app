@@ -87,7 +87,7 @@ const Header = () => {
             <ListItemText primary={'ログアウト'} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding >
+        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/termsOfService/FcbIUNNQitS7bX6Q3G4M`)}>
           <ListItemButton>
             <ListItemIcon>
               <ArticleIcon />
