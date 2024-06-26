@@ -2,7 +2,7 @@ class Api::V1::SinglesRecordsController < ApplicationController
   before_action :set_current_group, only: %i[index create update destroy]
 
   def index
-    singles_records = @current_group.singles_records.order(created_at: :desc)
+    singles_records = @current_group.singles_records.includes(:singles_recorded_players).order(created_at: :desc)
     render json: singles_records, each_serializer: SinglesRecordSerializer, status: :ok
   end
 
