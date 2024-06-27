@@ -19,6 +19,8 @@ import Login from './login';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import ArticleIcon from '@mui/icons-material/Article';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import CloseIcon from '@mui/icons-material/Close';
 
 type Anchor = 'right';
 
@@ -56,12 +58,28 @@ const Header = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
+      <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <CloseIcon />
+            </ListItemIcon>
+            <ListItemText primary={'閉じる'} />
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding onClick={() => {urlCopyHandler(location.href); handleCopyLinkClick();}}>
           <ListItemButton>
             <ListItemIcon>
               <LinkIcon />
             </ListItemIcon>
             <ListItemText primary={'リンクをコピー'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => signOut()}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={'ログアウト'} />
           </ListItemButton>
         </ListItem>
         {/*
@@ -79,20 +97,20 @@ const Header = () => {
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding onClick={() => signOut()}>
-          <ListItemButton>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary={'ログアウト'} />
-          </ListItemButton>
-        </ListItem>
         <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/termsOfService/FcbIUNNQitS7bX6Q3G4M`)}>
           <ListItemButton>
             <ListItemIcon>
               <ArticleIcon />
             </ListItemIcon>
             <ListItemText primary={'利用規約'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/privacypolicy/PjJVth4jmcgDBcCzoWIG`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <PrivacyTipIcon />
+            </ListItemIcon>
+            <ListItemText primary={'プライバシーポリシー'} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding onClick={() => router.push(`https://forms.gle/tmB6rgzjFvqtunbh9`)}>
