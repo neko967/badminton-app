@@ -18,6 +18,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const provider = 'google';
 
   return (
     <html lang="en">
@@ -45,7 +46,7 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <NextAuthProvider>
-          <Header />
+          <Header provider={provider}/>
           {children}
         </NextAuthProvider>
       </body>

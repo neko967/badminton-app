@@ -1,8 +1,11 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { useSession, signOut } from 'next-auth/react';
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut, signIn } from 'next-auth/react';
+import Image from "next/image";
+import Link from "next/link";
+import error from "next/error";
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -11,16 +14,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import LinkIcon from '@mui/icons-material/Link';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Image from "next/image";
-import Link from "next/link";
-import Login from './login';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import LinkIcon from '@mui/icons-material/Link';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import ArticleIcon from '@mui/icons-material/Article';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import CloseIcon from '@mui/icons-material/Close';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 type Anchor = 'right';
 
@@ -28,7 +30,11 @@ interface State extends SnackbarOrigin {
   open: boolean;
 }
 
-const Header = () => {
+interface HeaderProps {
+  provider: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ provider }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [state, setState] = React.useState({
@@ -66,14 +72,6 @@ const Header = () => {
             <ListItemText primary={'閉じる'} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => {urlCopyHandler(location.href); handleCopyLinkClick();}}>
-          <ListItemButton>
-            <ListItemIcon>
-              <LinkIcon />
-            </ListItemIcon>
-            <ListItemText primary={'リンクをコピー'} />
-          </ListItemButton>
-        </ListItem>
         <ListItem disablePadding onClick={() => signOut()}>
           <ListItemButton>
             <ListItemIcon>
@@ -82,18 +80,82 @@ const Header = () => {
             <ListItemText primary={'ログアウト'} />
           </ListItemButton>
         </ListItem>
-        {/*
-        {['メンバー管理', '試合記録管理'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))
-        */}
+        <ListItem disablePadding onClick={() => {urlCopyHandler(location.href); handleCopyLinkClick();}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LinkIcon />
+            </ListItemIcon>
+            <ListItemText primary={'リンクをコピー'} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/termsOfService/FcbIUNNQitS7bX6Q3G4M`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText primary={'利用規約'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/privacypolicy/PjJVth4jmcgDBcCzoWIG`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <PrivacyTipIcon />
+            </ListItemIcon>
+            <ListItemText primary={'プライバシーポリシー'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => router.push(`https://forms.gle/tmB6rgzjFvqtunbh9`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ContactSupportIcon />
+            </ListItemIcon>
+            <ListItemText primary={'お問い合わせ'} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  const before_login_list = (anchor: Anchor) => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+      <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <CloseIcon />
+            </ListItemIcon>
+            <ListItemText primary={'閉じる'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem 
+          disablePadding
+          onClick={() => { signIn(provider, { callbackUrl: "/" }).catch(() => {
+              console.error(error);
+            });
+          }}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LoginIcon />
+            </ListItemIcon>
+            <ListItemText primary={'ログイン'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => {urlCopyHandler(location.href); handleCopyLinkClick();}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LinkIcon />
+            </ListItemIcon>
+            <ListItemText primary={'リンクをコピー'} />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
@@ -161,8 +223,30 @@ const Header = () => {
         </Link>
       </div>
       <ul className="flex items-center space-x-4">
-        {session ? (
-          <>
+        <>
+          {status === 'loading' && 
+            <div>Loading...</div>
+          }
+          {status === 'unauthenticated' &&
+            <li>
+              <React.Fragment>
+                <AccountCircleIcon 
+                  sx={{ fontSize: 35 }}
+                  className="rounded-full"
+                  onClick={toggleDrawer('right', true)}
+                />
+                <SwipeableDrawer
+                  anchor={'right'}
+                  open={state['right']}
+                  onClose={toggleDrawer('right', false)}
+                  onOpen={toggleDrawer('right', true)}
+                >
+                  {before_login_list('right')}
+                </SwipeableDrawer>
+              </React.Fragment>
+            </li>
+          }
+          {status === 'authenticated' &&
             <li>
               <React.Fragment>
                 <Image
@@ -183,10 +267,8 @@ const Header = () => {
                 </SwipeableDrawer>
               </React.Fragment>
             </li>
-          </>
-        ) : (
-          <Login provider="google" />
-        )}
+          }
+        </>
       </ul>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
