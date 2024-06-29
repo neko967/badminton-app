@@ -5,6 +5,7 @@ import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 import { getServerSession } from "next-auth/next";
 import NextAuthProvider from '@/providers/NextAuth';
 import Header from "@/app/_components/_shared/header";
+import Footer from "@/app/_components/_shared/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,10 +45,11 @@ export default async function RootLayout({
         <meta name="twitter:description" content="バドミントンの試合を組むアプリ" />
         <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_FRONT_URL}/og-image.jpg`} />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <NextAuthProvider>
-          <Header provider={provider}/>
-          {children}
+          <Header provider={provider} />
+          <main className="flex-grow">{children}</main>
+          <Footer />
         </NextAuthProvider>
       </body>
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GA_ID}`}/>
