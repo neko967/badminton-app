@@ -15,7 +15,6 @@ import top5Gif from '../public/top5.gif';
 import top6Gif from '../public/top6.gif';
 import type { Group } from '@/app/types/index';
 import { useMediaQuery, Grid } from '@mui/material';
-import { redirect } from "next/navigation";
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -45,7 +44,7 @@ export default function Home() {
     }
     const data = await response.json();
     setGroups(data);
-  }, [session, API_URL]);
+  }, [session, API_URL, router]);
 
   useEffect(() => {
     if (session) {
