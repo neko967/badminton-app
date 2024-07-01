@@ -15,12 +15,15 @@ import top5Gif from '../public/top5.gif';
 import top6Gif from '../public/top6.gif';
 import type { Group } from '@/app/types/index';
 import { useMediaQuery, Grid } from '@mui/material';
+import { redirect } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
   const isMdDown = useMediaQuery('(max-width: 899px)');
+  const router = useRouter();
 
   const fetchGroupsData = useCallback(async () => {
     if (!session?.user.accessToken) {
@@ -38,7 +41,7 @@ export default function Home() {
     });
     if (!response.ok) {
       console.error("Failed to fetch groups data");
-      return;
+      router.push(`/auth/signin`);
     }
     const data = await response.json();
     setGroups(data);
