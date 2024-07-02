@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
-import Groups from '@/app/_components/Groups';
-import SpeedDialTooltipOpen from '@/app/_components/SpeedDialTooltipOpen';
+import Groups from './Groups';
+import SpeedDialTooltipOpen from './SpeedDialTooltipOpen';
 import type { Group } from '@/app/types/index';
 import { useRouter } from 'next/navigation';
 
@@ -36,10 +36,8 @@ export default function Home() {
   }, [session, API_URL, router]);
 
   useEffect(() => {
-    if (session) {
-      fetchGroupsData();
-    }
-  }, [session, fetchGroupsData]);
+    fetchGroupsData();
+  }, [fetchGroupsData]);
 
   const handleGroupDelete = async (id: number) => {
     const name = prompt(`グループを削除すると、今までのメンバーと試合記録が失われます。グループを削除する場合は、下の記入欄に"${groups.find(group => group.id === id)?.name}"と入力してください。`);
