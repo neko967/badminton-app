@@ -3,7 +3,12 @@ class Api::V1::GroupsController < ApplicationController
   before_action :set_current_user, only: %i[index create update]
 
   def index
-    render json: @current_user.groups_joined_by_user.order(updated_at: :desc), status: :ok
+    if @current_user
+      groups = @current_user.groups_joined_by_user.order(updated_at: :desc)
+      render json: groups, status: :ok
+    else
+      render json: { error: '認証に失敗しました' }, status: :unauthorized
+    end
   end
 
   def create
