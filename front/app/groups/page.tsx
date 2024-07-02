@@ -6,12 +6,12 @@ import Groups from './Groups';
 import SpeedDialTooltipOpen from './SpeedDialTooltipOpen';
 import type { Group } from '@/app/types/index';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
-  const router = useRouter();
 
   const fetchGroupsData = useCallback(async () => {
     if (!session?.user.accessToken) {
@@ -27,13 +27,14 @@ export default function Home() {
       headers: headers,
       next: { revalidate: 3600 },
     });
-    if (!response.ok) {
+    if (response.ok) {
+      const data = await response.json();
+      setGroups(data);
+    } else {
       console.error("Failed to fetch groups data");
-      router.push(`/auth/signin`);
+      signIn("google", { callbackUrl: "/" })
     }
-    const data = await response.json();
-    setGroups(data);
-  }, [session, API_URL, router]);
+  }, [session, API_URL]);
 
   useEffect(() => {
     fetchGroupsData();
