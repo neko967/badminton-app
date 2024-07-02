@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation';
+import { Typography, Box} from '@mui/material';
 
 export default function Footer() {
   const router = useRouter();
@@ -15,6 +16,11 @@ export default function Footer() {
           <a className="block hover:underline" href="https://forms.gle/tmB6rgzjFvqtunbh9">お問い合わせ</a>
         </div>
       </nav>
+      <Box sx={{ p: 6 }} component="footer">
+        <Typography variant="body2" color="text.secondary" align="center">
+          © 2024 試合決めるくん. All rights reserved.
+        </Typography>
+      </Box>
     </footer>
   );
 }
