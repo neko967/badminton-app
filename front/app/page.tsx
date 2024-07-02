@@ -1,117 +1,120 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
-import Groups from './_components/Groups';
-import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
-import Image from 'next/image';
-import TopSmall from '../public/top-small.jpg';
-import TopLarge from '../public/top-large.jpg';
-import top1Gif from '../public/top1.gif';
-import top2Gif from '../public/top2.gif';
-import top3Gif from '../public/top3.gif';
-import top4Gif from '../public/top4.gif';
-import top5Gif from '../public/top5.gif';
-import top6Gif from '../public/top6.gif';
-import type { Group } from '@/app/types/index';
-import { useMediaQuery, Grid } from '@mui/material';
+import { Grid, Typography, Box, Button, Container, Paper } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { styled } from '@mui/system';
+import { signIn } from 'next-auth/react';
+import error from "next/error";
+
+const HeroSection = styled(Box)(({ theme }) => ({
+  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+  color: 'white',
+  padding: theme.spacing(15, 0),
+  textAlign: 'center',
+}));
+
+const FeatureSection = styled(Box)({
+  padding: '80px 0', // テーマのspacingを使用する代わりに直接値を指定
+  backgroundColor: "white", // theme.palette.grey[100]の代わりに直接色を指定
+});
+
+const FeatureItem = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(2),
+  padding: theme.spacing(1, 4),
+}));
 
 export default function Home() {
-  const [groups, setGroups] = useState([] as Group[]);
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
   const { data: session, status } = useSession();
-  const isMdDown = useMediaQuery('(max-width: 899px)');
   const router = useRouter();
 
-  const fetchGroupsData = useCallback(async () => {
-    if (!session?.user.accessToken) {
-      console.error("Access token is missing");
-      return;
-    }
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user.accessToken}`,
-    };
-    const response = await fetch(`${API_URL}/groups`, {
-      method: 'GET',
-      headers: headers,
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) {
-      console.error("Failed to fetch groups data");
-      router.push(`/auth/signin`);
-    }
-    const data = await response.json();
-    setGroups(data);
-  }, [session, API_URL, router]);
-
-  useEffect(() => {
+  const handleNavigateToGroups = () => {
     if (session) {
-      fetchGroupsData();
-    }
-  }, [session, fetchGroupsData]);
-
-  const handleGroupDelete = async (id: number) => {
-    const name = prompt(`グループを削除すると、今までのメンバーと試合記録が失われます。グループを削除する場合は、下の記入欄に"${groups.find(group => group.id === id)?.name}"と入力してください。`);
-    if (name == groups.find(group => group.id === id)?.name) {
-      await fetch(`${API_URL}/groups/${id}`, {
-        method: "DELETE",
-      }).then(() => {
-        fetchGroupsData();
+      router.push('/groups');
+    } else {
+      signIn("google", { callbackUrl: "/groups" }).catch(() => {
+        console.error(error);
       });
     }
   };
 
-  if (status === 'loading') {
-  	return <div>Loading...</div>;
-  }
-
   return (
     <>
-      {session ?
-        <>
-          <Groups
-            groups={groups}
-            handleGroupDelete={handleGroupDelete}
-            fetchGroupsData={fetchGroupsData}
-          />
-          <SpeedDialTooltipOpen
-            groups={groups}
-            fetchGroupsData={fetchGroupsData}
-          />
-        </>
-      :
-        <>
-          {isMdDown ? <Image src={TopSmall} alt="TopSmall" /> : <Image src={TopLarge} alt="TopLarge" />}
-          <Grid container spacing={3} className="text-start px-6 mt-6">
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">①ログイン状態でグループを作成します。</p>
-              <Image src={top1Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
+      <HeroSection>
+        <Container maxWidth="md">
+          <Typography variant="h2" component="h1" gutterBottom fontWeight="bold">
+            スポーツチーム管理を簡単に
+          </Typography>
+          <Typography variant="h5" component="h2" gutterBottom sx={{ mb: 4 }}>
+            試合記録、メンバー管理、パフォーマンス分析を一つのアプリで
+          </Typography>
+          <Box>
+            <StyledButton
+              variant="contained"
+              size="large"
+              onClick={() => { signIn("google", { callbackUrl: "/" }).catch(() => {
+                  console.error(error);
+                });
+              }}
+            >
+              Googleでログイン
+            </StyledButton>
+            <StyledButton
+              variant="outlined"
+              size="large"
+              onClick={handleNavigateToGroups}
+              sx={{ backgroundColor: 'white' }}
+            >
+              グループ一覧へ
+            </StyledButton>
+          </Box>
+        </Container>
+      </HeroSection>
+      <FeatureSection>
+        <Container>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={4}>
+              <FeatureItem elevation={3}>
+                <Typography variant="h4" component="h3" gutterBottom fontWeight="bold">
+                  簡単グループ作成
+                </Typography>
+                <Typography>
+                  チームやグループを簡単に作成し、メンバーを管理できます。
+                </Typography>
+              </FeatureItem>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">②グループをクリックして、メンバーを追加します。</p>
-              <Image src={top2Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
+            <Grid item xs={12} md={4}>
+              <FeatureItem elevation={3}>
+                <Typography variant="h4" component="h3" gutterBottom fontWeight="bold">
+                  試合記録
+                </Typography>
+                <Typography>
+                  シングルスやダブルスの試合結果を簡単に記録し、保存できます。
+                </Typography>
+              </FeatureItem>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">③メンバーの画面で右上のアイコンをクリックして開くサイドバーからコピーできるリンクを使うと、他の人も同じデータにアクセスできます。</p>
-              <Image src={top3Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">④シングルスの試合作成の様子。プレイヤーと組み方を選びます。</p>
-              <Image src={top4Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">⑤ダブルスの試合作成の様子。プレイヤーと組み方を選びます。</p>
-              <Image src={top5Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <p className="text-lg md:text-xl lg:text-xl">⑥シングルス・ダブルスの試合に点数を記録すると、プレイヤーの試合履歴と試合結果に応じた個人のパワーが更新されます。</p>
-              <Image src={top6Gif} alt="Example GIF" className="w-full max-w-xs md:max-w-none" />
+            <Grid item xs={12} md={4}>
+              <FeatureItem elevation={3}>
+                <Typography variant="h4" component="h3" gutterBottom fontWeight="bold">
+                  パフォーマンス分析
+                </Typography>
+                <Typography>
+                  試合結果に基づいて個人やチームのパフォーマンスを分析します。
+                </Typography>
+              </FeatureItem>
             </Grid>
           </Grid>
-        </>
-      }
+        </Container>
+      </FeatureSection>
     </>
   );
 }
