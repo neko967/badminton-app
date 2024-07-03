@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Members from './_components/Members';
 import SpeedDialTooltipOpen from './_components/SpeedDialTooltipOpen';
 import BottomNavigation from '@/app/_components/_shared/BottomNavigation';
+import Sidebar from '@/app/_components/_shared/Sidebar';
 import type { Member } from '@/app/types/index';
 import type { Group } from '@/app/types/index';
 
@@ -13,6 +15,7 @@ export default function Home({ params }: { params: { slug: string } }) {
   const [members, setMembers] = useState([] as Member[]);
   const [group, setGroup] = useState<Group | undefined>();
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/${process.env.NEXT_PUBLIC_API_VERSION}`;
+  const isDesktop = useMediaQuery('(min-width:699px)');
 
   const fetchMemberData = useCallback(async () => {
     const response = await fetch(`${API_URL}/members`, {
@@ -63,24 +66,27 @@ export default function Home({ params }: { params: { slug: string } }) {
   }, [status, API_URL ,params, session]);
 
   return (
-    <>
-      {status === 'loading' ? 
-        <div>Loading...</div>
-      :
-        <Members
+    <div className={`${isDesktop ? 'flex' : ''}`}>
+      {isDesktop && <Sidebar params={params} currentPage="members" />}
+      <div className="flex-grow">
+        {status === 'loading' ? 
+          <div>Loading...</div>
+        :
+          <Members
+            members={members}
+            handleMemberDelete={handleMemberDelete}
+            group={group}
+            fetchMemberData={fetchMemberData}
+            params={params}
+          />
+        }
+        <SpeedDialTooltipOpen
           members={members}
-          handleMemberDelete={handleMemberDelete}
-          group={group}
           fetchMemberData={fetchMemberData}
           params={params}
         />
-      }
-      <SpeedDialTooltipOpen
-        members={members}
-        fetchMemberData={fetchMemberData}
-        params={params}
-      />
-      <BottomNavigation params={params} bottomValue={0}/>
-    </>
+        {!isDesktop && <BottomNavigation params={params} bottomValue={0}/>}
+      </div>
+    </div>
   );
 }

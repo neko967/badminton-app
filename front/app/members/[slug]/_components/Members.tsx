@@ -197,7 +197,7 @@ export default function Members({
   return (
     <>
       {members.length > 0 ?
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ maxWidth: 699 }}>
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
