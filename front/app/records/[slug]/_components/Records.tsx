@@ -289,7 +289,7 @@ export default function Records({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <Box sx={{ width: '100%', overflow: 'hidden' }}>
+      <Box sx={{ width: '100%', maxWidth: 699, overflow: 'hidden' }}>
         <Suspense fallback={<div>Loading...</div>}>
           <TabComponent
             singlesRecords={singlesRecords}
