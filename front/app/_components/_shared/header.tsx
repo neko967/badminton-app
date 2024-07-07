@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ provider }) => {
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/termsOfService/FcbIUNNQitS7bX6Q3G4M`)}>
+        <ListItem disablePadding onClick={() => router.push(`/terms`)}>
           <ListItemButton>
             <ListItemIcon>
               <ArticleIcon />
@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ provider }) => {
             <ListItemText primary={'利用規約'} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/privacypolicy/PjJVth4jmcgDBcCzoWIG`)}>
+        <ListItem disablePadding onClick={() => router.push(`/privacy`)}>
           <ListItemButton>
             <ListItemIcon>
               <PrivacyTipIcon />
@@ -159,7 +159,7 @@ const Header: React.FC<HeaderProps> = ({ provider }) => {
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/termsOfService/FcbIUNNQitS7bX6Q3G4M`)}>
+        <ListItem disablePadding onClick={() => router.push(`/terms`)}>
           <ListItemButton>
             <ListItemIcon>
               <ArticleIcon />
@@ -167,7 +167,7 @@ const Header: React.FC<HeaderProps> = ({ provider }) => {
             <ListItemText primary={'利用規約'} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => router.push(`https://www.kiyac.app/privacypolicy/PjJVth4jmcgDBcCzoWIG`)}>
+        <ListItem disablePadding onClick={() => router.push(`/privacy`)}>
           <ListItemButton>
             <ListItemIcon>
               <PrivacyTipIcon />
