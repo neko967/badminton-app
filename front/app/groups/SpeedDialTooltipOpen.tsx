@@ -33,7 +33,7 @@ export default function SpeedDialTooltipOpen({groups, fetchGroupsData}: SpeedDia
   ];
 
   return (
-    <>
+    <div className="z-50 relative">
       <Box sx={{ position: 'fixed', bottom: 60, left: 0, right: {xs: 10, md:100 ,lg:276}}}>
         <Backdrop open={dialOpen} />
         <SpeedDial
@@ -60,6 +60,6 @@ export default function SpeedDialTooltipOpen({groups, fetchGroupsData}: SpeedDia
           fetchGroupsData={fetchGroupsData}
         />
       </Box>
-    </>
+    </div>
   );
 }
