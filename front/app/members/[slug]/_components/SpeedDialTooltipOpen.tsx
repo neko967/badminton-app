@@ -60,8 +60,8 @@ export default function SpeedDialTooltipOpen({
   ];
 
   return (
-    <>
-      <Box sx={{ position: 'fixed', bottom: 60, left: 0, right: {xs: 10, md:100 ,lg:276}}}>
+    <div className="z-50 relative">
+      <Box sx={{ position: 'fixed', bottom: 60, left: 0, right: {xs: 10, md:100 ,lg:276}}} >
         <Backdrop open={dialOpen} />
         <SpeedDial
           ariaLabel="SpeedDial tooltip example"
@@ -101,6 +101,6 @@ export default function SpeedDialTooltipOpen({
           params={params}
         />
       </Box>
-    </>
+    </div>
   );
 }

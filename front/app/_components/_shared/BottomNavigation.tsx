@@ -13,7 +13,7 @@ export default function Menu({ params, bottomValue }: { params: { slug: string }
   const router = useRouter();
 
   return (
-    <div>
+    <div className="z-50 relative">
       <Box sx={{ flexGrow: 1 }} className="mt-36">
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
           <BottomNavigation
