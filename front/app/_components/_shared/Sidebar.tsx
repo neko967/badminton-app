@@ -6,7 +6,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 
 export default function Sidebar({ params, currentPage }: { params: { slug: string }, currentPage: string }) {
   return (
-    <div className="w-80 bg-gray-100 left-0 top-0 p-4">
+    <div className="w-80 bg-gray-100 left-0 top-0 p-4 min-h-screen">
       <nav>
         <ul>
           <li className={`mb-4 ${currentPage === 'members' ? 'font-bold' : ''}`}>
