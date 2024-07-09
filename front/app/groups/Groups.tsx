@@ -2,14 +2,10 @@ import * as React from 'react';
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Card, CardContent, CardActions, Button, Typography, Grid, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditGroupDialog from './EditGroupDialog';
-import Grid from '@mui/material/Grid';
 import type { Group } from '@/app/types/index';
 
 const formatDate = (dateString: string) => {
@@ -35,44 +31,39 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
 
   return (
     <>
-      <div className="mx-auto w-full flex justify-start items-center">
-          {groups.length === 0 ? (
-            <p className="text-start w-96 px-6 mt-6">グループがありません</p>
-          ) : (
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6} lg={4}>
-                <dl className="flex flex-col w-full">
-                  {groups.map((group) => (
-                    <div key={group.id}>
-                      <Card sx={{ minWidth: 275 }} variant="outlined">
-                        <CardContent onClick={() => router.push(`/members/${group.slug}`)}>
-                          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            {`最終更新日: ${formatDate(group.updated_at.toString())}`}
-                          </Typography>
-                          <Typography variant="h5" component="div">
-                            <button>
-                              <p>{`${group.name} (${group.number_of_people})`}</p>
-                            </button>
-                          </Typography>
-                        </CardContent>
-                        {group.admin_uid == session?.user?.uid ?
-                          <div className="flex justify-end">
-                            <CardActions>
-                              <Button size="small" onClick={() => handleEditGroupDialogOpen(group.id)}>グループ名を変更</Button>
-                              <Button size="small" onClick={() => handleGroupDelete(group.id)}>グループを削除</Button>
-                            </CardActions>
-                          </div>
-                        :
-                          undefined
-                        }
-                      </Card>
-                    </div>
-                  ))}
-                </dl>
-              </Grid>
+      {groups.length === 0 ? (
+        <Typography variant="body1" sx={{ mt: 2 }}>No groups available</Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {groups.map((group) => (
+            <Grid item xs={12} sm={6} md={4} key={group.id}>
+              <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <CardContent sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => router.push(`/members/${group.slug}`)}>
+                  <Typography variant="overline" color="text.secondary">
+                    最終更新日: {formatDate(group.updated_at.toString())}
+                  </Typography>
+                  <Typography variant="h6" component="div" gutterBottom>
+                    {group.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    メンバー数: {group.number_of_people}
+                  </Typography>
+                </CardContent>
+                {group.admin_uid === session?.user?.uid && (
+                  <CardActions sx={{ justifyContent: 'flex-end' }}>
+                    <IconButton size="small" onClick={() => handleEditGroupDialogOpen(group.id)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton size="small" onClick={() => handleGroupDelete(group.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </CardActions>
+                )}
+              </Card>
             </Grid>
-          )}
-      </div>
+          ))}
+        </Grid>
+      )}
       <EditGroupDialog 
         editGroupDialogOpen={editGroupDialogOpen} 
         handleEditGroupDialogClose={handleEditGroupDialogClose}

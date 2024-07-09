@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from 'next-auth/react';
 import Groups from './Groups';
-import SpeedDialTooltipOpen from './SpeedDialTooltipOpen';
+import AddGroupButton from './AddGroupButton';
 import type { Group } from '@/app/types/index';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { Container, Typography, CircularProgress, Box } from '@mui/material';
 
 export default function Home() {
   const [groups, setGroups] = useState([] as Group[]);
@@ -52,20 +52,26 @@ export default function Home() {
   };
 
   if (status === 'loading') {
-  	return <div>Loading...</div>;
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
-    <>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          グループ一覧
+        </Typography>
+        <AddGroupButton fetchGroupsData={fetchGroupsData} />
+      </Box>
       <Groups
         groups={groups}
         handleGroupDelete={handleGroupDelete}
         fetchGroupsData={fetchGroupsData}
       />
-      <SpeedDialTooltipOpen
-        groups={groups}
-        fetchGroupsData={fetchGroupsData}
-      />
-    </>
+    </Container>
   );
 }
