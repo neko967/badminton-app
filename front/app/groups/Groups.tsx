@@ -37,12 +37,36 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
         <Grid container spacing={3}>
           {groups.map((group) => (
             <Grid item xs={12} sm={6} md={4} key={group.id}>
-              <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => router.push(`/members/${group.slug}`)}>
-                  <Typography variant="overline" color="text.secondary">
+              <Card 
+                elevation={3} 
+                sx={{ 
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: '1px solid',
+                  borderColor: 'primary.main',
+                  background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(33, 150, 243, 0.1) 100%)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&:hover': {
+                    borderColor: 'secondary.main',
+                  }
+                }}
+              >
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      background: 'rgba(76, 175, 80, 0.1)',
+                    },
+                  }}
+                  onClick={() => router.push(`/members/${group.slug}`)}
+                >
+                  <Typography variant="overline" color="primary.main">
                     最終更新日: {formatDate(group.updated_at.toString())}
                   </Typography>
-                  <Typography variant="h6" component="div" gutterBottom>
+                  <Typography variant="h6" component="div" gutterBottom sx={{ color: 'text.primary' }}>
                     {group.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -51,10 +75,28 @@ export default function Members({groups, handleGroupDelete, fetchGroupsData}:
                 </CardContent>
                 {group.admin_uid === session?.user?.uid && (
                   <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <IconButton size="small" onClick={() => handleEditGroupDialogOpen(group.id)}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleEditGroupDialogOpen(group.id)}
+                      sx={{
+                        color: 'primary.main',
+                        '&:hover': {
+                          color: 'secondary.main',
+                        },
+                      }}
+                    >
                       <EditIcon />
                     </IconButton>
-                    <IconButton size="small" onClick={() => handleGroupDelete(group.id)}>
+                    <IconButton 
+                      size="small" 
+                      onClick={() => handleGroupDelete(group.id)}
+                      sx={{ 
+                        color: 'primary.main',
+                        '&:hover': {
+                          color: 'secondary.main',
+                        },
+                      }}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </CardActions>
