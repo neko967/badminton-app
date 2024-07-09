@@ -1,12 +1,5 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import type { Group } from '@/app/types/index';
 
@@ -63,46 +56,42 @@ export default function GroupEditDialog({
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    setGroup({ ...group, name: newValue });
+  };
+
   return (
-    <React.Fragment>
-      <Dialog
-        open={editGroupDialogOpen}
-        onClose={handleEditGroupDialogClose}
-        PaperProps={{
-          style: { minWidth: '320px' },
-        }}
-      >
-        <DialogTitle>グループ名を変更</DialogTitle>
-        <DialogContent>
-          <Autocomplete
-            freeSolo
-            options={[]}
-            disableClearable
-            inputValue={inputValue}
-            onInputChange={(event, newValue) => {
-              setInputValue(newValue);
-              setGroup({ ...group, name: newValue });
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                required
-                margin="dense"
-                id="name"
-                label="グループ名"
-                type="text"
-                fullWidth
-                variant="standard"
-              />
-            )}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => {handleEditGroupDialogClose();}}>キャンセル</Button>
-          <Button onClick={() => {handleEditGroupDialogClose(); handleGroupUpdate(groupID);}}>更新</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <Dialog
+      open={editGroupDialogOpen}
+      onClose={handleEditGroupDialogClose}
+      PaperProps={{
+        style: { minWidth: '320px' },
+      }}
+    >
+      <DialogTitle>グループ名を変更</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="グループ名"
+          type="text"
+          fullWidth
+          variant="outlined"
+          value={inputValue}
+          onChange={handleChange}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleEditGroupDialogClose} color="primary">
+          キャンセル
+        </Button>
+        <Button onClick={() => {handleEditGroupDialogClose(); handleGroupUpdate(groupID);}} color="primary" variant="contained">
+          更新
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
