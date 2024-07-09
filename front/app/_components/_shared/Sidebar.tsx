@@ -1,4 +1,3 @@
-// front/app/_components/_shared/Sidebar.tsx
 import React from 'react'
 import Link from 'next/link';
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,43 +9,34 @@ export default function Sidebar({ params, currentPage }: { params: { slug: strin
 
   return (
     <>
-      {isLarge ?
-        <div className="bg-gray-100 p-4 min-h-screen">
+        <div className='bg-gray-200 text-gray-700 p-4 min-h-screen shadow-md'>
           <nav>
-            <ul>
-              <li className={`mb-4 ${currentPage === 'members' ? 'font-bold' : ''}`}>
-                <Link href={`/members/${params.slug}`} className="flex items-center">
-                  <HomeIcon className="mr-2" />
-                  メンバー
+            <ul className="space-y-4">
+              <li>
+                <Link
+                  href={`/members/${params.slug}`}
+                  className={`flex items-center p-3 rounded-lg transition-all duration-300 hover:bg-gray-300 ${
+                    currentPage === 'members' && 'font-bold'
+                  }`}
+                >
+                  <HomeIcon className={isLarge ? 'mr-3' : 'mx-auto'} />
+                  {isLarge && <span className="text-lg">メンバー</span>}
                 </Link>
               </li>
-              <li className={`mb-4 ${currentPage === 'records' ? 'font-bold' : ''}`}>
-                <Link href={`/records/${params.slug}`} className="flex items-center">
-                  <RestoreIcon className="mr-2" />
-                  試合記録
+              <li>
+                <Link 
+                  href={`/records/${params.slug}`} 
+                  className={`flex items-center p-3 rounded-lg transition-all duration-300 hover:bg-gray-300 ${
+                    currentPage === 'records' && 'font-bold'
+                  }`}
+                >
+                  <RestoreIcon className={isLarge ? 'mr-3' : 'mx-auto'} />
+                  {isLarge && <span className="text-lg">試合記録</span>}
                 </Link>
               </li>
             </ul>
           </nav>
         </div>
-        :
-        <div className="bg-gray-100 p-4 min-h-screen">
-          <nav>
-            <ul>
-              <li className={`mb-4 ${currentPage === 'members' ? 'font-bold' : ''}`}>
-                <Link href={`/members/${params.slug}`} className="flex items-center">
-                  <HomeIcon className="mr-2" />
-                </Link>
-              </li>
-              <li className={`mb-4 ${currentPage === 'records' ? 'font-bold' : ''}`}>
-                <Link href={`/records/${params.slug}`} className="flex items-center">
-                  <RestoreIcon className="mr-2" />
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      }
     </>
   );
 }
