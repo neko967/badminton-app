@@ -56,6 +56,7 @@
 ## インフラ構成
 
 ## 画面遷移図
+https://www.figma.com/design/1otuqBjkC1bZP95FZYrXh4/%E8%A9%A6%E5%90%88%E6%B1%BA%E3%82%81%E3%82%8B%E3%81%8F%E3%82%93?node-id=0-1&t=ZXrlmxjZcrswWj6H-1
 
 ## ER図
 [![Image from Gyazo](https://i.gyazo.com/f1c6002ce0c53cd1f620643fbf7d9cd7.jpg)](https://gyazo.com/f1c6002ce0c53cd1f620643fbf7d9cd7)
