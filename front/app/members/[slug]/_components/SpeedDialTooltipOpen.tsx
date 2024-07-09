@@ -7,8 +7,6 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SinglesSelectDialog from './SinglesSelectDialog';
-import DoublesSelectDialog from './DoublesSelectDialog';
 import AddMemberDialog from './AddMemberDialog';
 import type { Member } from '@/app/types/index';
 
@@ -18,32 +16,20 @@ interface SpeedDialTooltipOpenProps {
   members: Member[];
   fetchMemberData: FetchDataType;
   params: { slug: string };
+  handleSinglesClickOpen: () => void;
+  handleDoublesClickOpen: () => void;
 }
 
 export default function SpeedDialTooltipOpen({
   members,
   fetchMemberData,
   params,
+  handleSinglesClickOpen,
+  handleDoublesClickOpen,
 }: SpeedDialTooltipOpenProps) {
   const [dialOpen, setDialOpen] = React.useState(false);
   const handleDialOpen = () => setDialOpen(true);
   const handleDialClose = () => setDialOpen(false);
-
-  const [singlesOpen, setSinglesOpen] = React.useState(false);
-  const handleSinglesClickOpen = () => {
-    setSinglesOpen(true);
-  };
-  const handleSinglesClose = () => {
-    setSinglesOpen(false);
-  };
-
-  const [doublesOpen, setDoublesOpen] = React.useState(false);
-  const handleDoublesClickOpen = () => {
-    setDoublesOpen(true);
-  };
-  const handleDoublesClose = () => {
-    setDoublesOpen(false);
-  };
 
   const [addMemberOpen, setAddMemberOpen] = React.useState(false);
   const handleAddMemberClickOpen = () => {
@@ -81,26 +67,14 @@ export default function SpeedDialTooltipOpen({
             />
           ))}
         </SpeedDial>
-        <SinglesSelectDialog
-          members={members}
-          singlesOpen={singlesOpen}
-          handleSinglesClose={handleSinglesClose}
-          params={params}
-        />
-        <DoublesSelectDialog
-          members={members}
-          doublesOpen={doublesOpen}
-          handleDoublesClose={handleDoublesClose}
-          params={params}
-        />
-        <AddMemberDialog
-          members={members}
-          addMemberOpen={addMemberOpen}
-          handleAddMemberClose={handleAddMemberClose}
-          fetchMemberData={fetchMemberData}
-          params={params}
-        />
       </Box>
+      <AddMemberDialog
+        members={members}
+        addMemberOpen={addMemberOpen}
+        handleAddMemberClose={handleAddMemberClose}
+        fetchMemberData={fetchMemberData}
+        params={params}
+      />
     </div>
   );
 }
