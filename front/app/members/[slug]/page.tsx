@@ -11,6 +11,11 @@ import Sidebar from '@/app/_components/_shared/Sidebar';
 import AddMemberPanel from './_components/AddMemberPanel';
 import type { Member } from '@/app/types/index';
 import type { Group } from '@/app/types/index';
+import Button from '@mui/material/Button';
+import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
+import SinglesSelectDialog from './_components/SinglesSelectDialog';
+import DoublesSelectDialog from './_components/DoublesSelectDialog';
 
 export default function Home({ params }: { params: { slug: string } }) {
   const { data: session, status } = useSession();
@@ -68,6 +73,22 @@ export default function Home({ params }: { params: { slug: string } }) {
     }
   }, [status, API_URL ,params, session]);
 
+  const [singlesOpen, setSinglesOpen] = useState(false);
+  const handleSinglesClickOpen = () => {
+    setSinglesOpen(true);
+  };
+  const handleSinglesClose = () => {
+    setSinglesOpen(false);
+  };
+
+  const [doublesOpen, setDoublesOpen] = useState(false);
+  const handleDoublesClickOpen = () => {
+    setDoublesOpen(true);
+  };
+  const handleDoublesClose = () => {
+    setDoublesOpen(false);
+  };
+
   return (
     <Grid container>
       {isDesktop && (
@@ -79,7 +100,6 @@ export default function Home({ params }: { params: { slug: string } }) {
         {status === 'loading' ? 
           <div>Loading...</div>
         :
-        <>
           <Members
             members={members}
             handleMemberDelete={handleMemberDelete}
@@ -87,14 +107,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             fetchMemberData={fetchMemberData}
             params={params}
           />
-        </>
         }
-        <SpeedDialTooltipOpen
-          members={members}
-          fetchMemberData={fetchMemberData}
-          params={params}
-        />
-        {!isDesktop && <BottomNavigation params={params} bottomValue={0}/>}
       </Grid>
       {isDesktop && (
         <Grid item xs={isLarge ? 4 : 5}>
@@ -103,8 +116,48 @@ export default function Home({ params }: { params: { slug: string } }) {
             fetchMemberData={fetchMemberData}
             params={params}
           />
+          <div className="flex flex-col space-y-4 mt-4 mx-4">
+            <Button
+              onClick={handleSinglesClickOpen}
+              startIcon={<PersonIcon />}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300 ease-in-out"
+            >
+              シングルスを作成する
+            </Button>
+            <Button
+              onClick={handleDoublesClickOpen}
+              startIcon={<PeopleIcon />}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300 ease-in-out"
+            >
+              ダブルスを作成する
+            </Button>
+          </div>
         </Grid>
       )}
+      {!isDesktop && (
+        <>
+          <SpeedDialTooltipOpen
+            members={members}
+            fetchMemberData={fetchMemberData}
+            params={params}
+            handleSinglesClickOpen={handleSinglesClickOpen}
+            handleDoublesClickOpen={handleDoublesClickOpen}
+          />
+          <BottomNavigation params={params} bottomValue={0}/>
+        </>
+      )}
+      <SinglesSelectDialog
+        members={members}
+        singlesOpen={singlesOpen}
+        handleSinglesClose={handleSinglesClose}
+        params={params}
+      />
+      <DoublesSelectDialog
+        members={members}
+        doublesOpen={doublesOpen}
+        handleDoublesClose={handleDoublesClose}
+        params={params}
+      />
     </Grid>
   );
 }
