@@ -31,7 +31,7 @@
 ### メイン機能① 試合の作成
 |1. シングルスまたは<br>ダブルスを選択|2. 参加するプレイヤーを選択|3. 対戦ペアの組み方を選択|4. 組み合わせを確認して試合を登録|
 |:-------------|:-------------|:-------------|:-------------|
-| <img height="380px" align="center" src="https://gyazo.com/788af840e2c648611b5d71a63aec7c24.jpg"> | <img height="380px" align="center" src="https://gyazo.com/92ae37b0c61c21774b319a844809a236.jpg"> | <img height="380px" align="center" src="https://gyazo.com/58e7d1b235a605089edf3f004440a78b.jpg"> | <img height="380px" align="center" src="https://gyazo.com/27373a79354b5c680279530a3a209291.jpg"> |
+| <img height="300px" align="center" src="https://gyazo.com/788af840e2c648611b5d71a63aec7c24.jpg"> | <img height="300px" align="center" src="https://gyazo.com/92ae37b0c61c21774b319a844809a236.jpg"> | <img height="300px" align="center" src="https://gyazo.com/58e7d1b235a605089edf3f004440a78b.jpg"> | <img height="300px" align="center" src="https://gyazo.com/27373a79354b5c680279530a3a209291.jpg"> |
 
 ### メイン機能② 試合の記録および削除
 |1. 試合の得点を記録する|2. 試合を削除する|
