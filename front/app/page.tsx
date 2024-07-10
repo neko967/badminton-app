@@ -88,7 +88,7 @@ export default function Home() {
                   簡単グループ作成
                 </Typography>
                 <Typography>
-                  チームやグループを簡単に作成し、メンバーを管理できます。
+                  グループを簡単に作成し、メンバーを管理できます。
                 </Typography>
               </FeatureItem>
             </Grid>
@@ -108,7 +108,7 @@ export default function Home() {
                   パフォーマンス分析
                 </Typography>
                 <Typography>
-                  試合結果に基づいて個人やチームのパフォーマンスを分析します。
+                  試合結果に基づいて個人のパフォーマンスを分析します。
                 </Typography>
               </FeatureItem>
             </Grid>
