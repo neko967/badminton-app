@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many :user_groups, dependent: :destroy
   has_many :groups_joined_by_user, through: :user_groups, source: :group
+  validates :uid, presence: true, uniqueness: true
+  validates :provider, presence: true
 
   def self.find_with_jwt(encoded_token)
     decoded_token = JWT.decode(encoded_token,
