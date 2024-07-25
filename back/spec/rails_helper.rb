@@ -66,8 +66,8 @@ RSpec.configure do |config|
   # 追加することで、FactoryBotのメソッドを簡単に使えるようになる
   config.include FactoryBot::Syntax::Methods
 
-  config.include AuthenticationHelper, type: :request
-  config.include RequestHelpers, type: :request
+  # config.include AuthenticationHelper, type: :request
+  # config.include RequestHelpers, type: :request
 end
 
 require 'shoulda/matchers'
