@@ -25,7 +25,7 @@ RSpec.describe User, type: :model do
       end
 
       # 重複したuidなら無効であること
-      it 'is invalid with a duplicate email address' do
+      it 'is invalid with a duplicate uid' do
         create(:user, uid: '01010101010')
         user = build(:user, uid: '01010101010')
         expect(user).not_to be_valid
